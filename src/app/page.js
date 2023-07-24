@@ -2,6 +2,8 @@
 import React, { useState, useEffect } from 'react'
 import Image from 'next/image'
 import { Avatar, Paper } from '@mui/material'
+import { BsCalendar, BsGraphUp, BsPencil } from 'react-icons/bs'
+import { BiDumbbell} from 'react-icons/bi'
 
 export default function Home() {
   const [streak, setStreak] = useState(0)
@@ -23,7 +25,7 @@ export default function Home() {
   },[day])
 
   return (
-    <main className="flex min-h-screen flex-col items-center pt-6 lg:pt-12 px-2 lg:p-12 gap-4">
+    <main className="flex min-h-screen flex-col items-center py-6 lg:pt-12 px-2 lg:p-12 gap-4">
       <div className='flex items-center justify-between w-full gap-3 lg:w-1/2'>
         <Avatar>JP</Avatar>
         <div className='w-full border border-gray-300 rounded-lg bg-stone-50 px-4 py-2'>
@@ -36,9 +38,9 @@ export default function Home() {
         <div className={streak > 0 ? `text-green-500` : `text-red-500`}>🔥&nbsp;{streak}</div>
         <div className='text-sm'>Best: 12</div>
       </div>
-      <div className='flex'>
+      <div className='flex lg:gap-3'>
           {week.map((day,id)=>
-            <div className='border border-gray-300 rounded-lg bg-stone-50 p-2' key={id}>
+            <div className='border border-gray-300 rounded-lg bg-stone-50 p-2 lg:px-5' key={id}>
                 <div className='text-sm text-gray-400'>
                 {day}
                 </div>
@@ -56,11 +58,12 @@ export default function Home() {
             </div>
           )}
         </div>
-        <div className='w-full lg:w-1/2 flex-col gap-2 items-center border border-gray-300 rounded-lg bg-stone-50 px-4 py-2'>
+        <div className='w-full lg:w-1/2 flex-col gap-2 items-center border border-gray-300 rounded-lg bg-stone-50 px-4 py-1'>
           <div className='flex justify-between items-center'>
             <p className='font-semibold text-lg'>Today's Workout</p>
-            <button className='shadow-md py-1 px-4 rounded-full bg-green-700 hover:bg-opacity-70 text-white'>Start</button>    
+            <button className='border border-gray-300 py-1 px-3 rounded-full mr-0 ml-auto my-2 flex items-center text-gray-500'>Edit &nbsp;<BsPencil /></button>    
           </div>
+          <hr className='my-1' />
           <div>Back</div>
           <div className='text-sm border border-gray-300 rounded-md px-2 py-1 mt-2'>
             <table className='w-full'>
@@ -104,6 +107,21 @@ export default function Home() {
                 </tr>
               </tbody>
             </table>
+          </div>
+          <button className='block shadow-md py-2 px-5 rounded-full bg-green-700 hover:bg-opacity-70 text-white mr-0 ml-auto my-2'>Start Workout</button>    
+        </div>
+        <div className='w-full lg:w-1/2 flex justify-between items-center gap-3 px-2'>
+          <div className='shadow-md rounded-lg w-full bg-zinc-500 px-4 py-2 text-white'>
+            <BsGraphUp />
+            <p className='text-sm mt-2'>Stats</p>
+          </div>
+          <div className='shadow-md rounded-lg w-full bg-zinc-500 px-4 py-2 text-white'>
+            <BiDumbbell />
+            <p className='text-sm mt-2'>Workouts</p>
+          </div>
+          <div className='shadow-md rounded-lg w-full bg-zinc-500 px-4 py-2 text-white'>
+            <BsCalendar />
+            <p className='text-sm mt-2'>Schedule</p>
           </div>
         </div>
     </main>
