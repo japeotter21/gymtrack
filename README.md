@@ -1,5 +1,6 @@
 ## Workout/Progress Tracking
 App for tracking workout attendance and progress, emphasis on mobile layout
+
 Core Features:
 - Choose exercises to perform and select weight/rep range
 - Add additional info or reminders to exercises
