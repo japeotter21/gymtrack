@@ -4,14 +4,29 @@ import Image from 'next/image'
 import { Avatar, Paper } from '@mui/material'
 import { BsCalendar, BsGraphUp, BsPencil } from 'react-icons/bs'
 import { BiDumbbell} from 'react-icons/bi'
+import axios from 'axios'
 
 export default function Home() {
-  const [streak, setStreak] = useState(0)
   const [day, setDay] = useState(0)
   const [week, setWeek] = useState(['S', 'M', 'T', 'W', 'R', 'F', 'S'])
+  const [profile, setProfile] = useState({})
+  const [loading, setLoading] = useState(true)
+  const [current, setCurrent] = useState(null)
+  const [programs, setPrograms] = useState([])
 
   useEffect(()=>{
     setDay(new Date().getDay())
+    axios.get('/api/user')
+    .then(res=>{
+      setProfile(res.data.documents[0].profile)
+      setLoading(false)
+      setPrograms(res.data.documents[0].programs)
+      const currentIndex = res.data.documents[0].currentProgram
+      setCurrent(res.data.documents[0].programs[currentIndex])
+    })
+    .catch(err=>{
+      console.error(err.message)
+    })
   },[])
 
   useEffect(()=>{
@@ -23,36 +38,44 @@ export default function Home() {
       setWeek(newWeek)
     }
   },[day])
+  
+  if(loading)
+  {
+    return (
+      <></>
+    )
+  }
 
   return (
     <main className="flex min-h-screen flex-col items-center py-6 lg:pt-12 px-2 lg:p-12 gap-4">
       <div className='flex items-center justify-between w-full gap-3 lg:w-1/2'>
-        <Avatar>JP</Avatar>
+        <Avatar>{ profile.name.charAt(0)}</Avatar>
         <div className='w-full border border-gray-300 rounded-lg bg-stone-50 px-4 py-2'>
-          <div className='text-sm'>Name</div>
+          <div className='text-sm'>{profile.name}</div>
           <hr className='my-1'/>
-          <div className='text-sm'>Goal: 160 lbs, 10.5% BF</div>
+          <div className='text-sm'>Goal: {profile.goal}</div>
         </div>
       </div>
       <div className='w-full lg:w-1/2 flex gap-5 items-center'>
-        <div className={streak > 0 ? `text-green-500` : `text-red-500`}>🔥&nbsp;{streak}</div>
-        <div className='text-sm'>Best: 12</div>
+        <div className={profile.streak.current > 0 ? `text-green-500` : `text-red-500`}>🔥&nbsp;{profile.streak.current}</div>
+        <div className='text-sm'>Best: {profile.streak.best}</div>
       </div>
-      <div className='flex lg:gap-3'>
+      <p>Current Program: {current.name}</p>
+      <div className='flex lg:gap-3 gap-1 flex-nowrap w-11/12 lg:w-max overflow-auto'>
           {week.map((day,id)=>
-            <div className='border border-gray-300 rounded-lg bg-stone-50 p-2 lg:px-5' key={id}>
+            <div className={`border rounded-lg bg-stone-50 py-2 px-4 lg:px-5 ${id === 0 ? `border-green-500 ring ring-2 ring-inset ring-green-400 bg-green-200` : ` border-gray-300`}`} key={id}>
                 <div className='text-sm text-gray-400'>
                 {day}
                 </div>
                 <div className='text-sm'>
                   { id % 4 === 0 ?
-                    <>Rest</>
-                  : id % 2 === 0 ?
                     <>Back</>
+                  : id % 2 === 0 ?
+                    <>Rest</>
                   : id % 3 === 0 ?
-                    <>Legs</>
-                  : 
                     <>Chest</>
+                  : 
+                    <>Legs</>
                   }
                 </div>
             </div>
@@ -108,7 +131,9 @@ export default function Home() {
               </tbody>
             </table>
           </div>
-          <button className='block shadow-md py-2 px-5 rounded-full bg-green-700 hover:bg-opacity-70 text-white mr-0 ml-auto my-2'>Start Workout</button>    
+          <button className='block shadow-md py-2 px-5 rounded-full bg-green-700 hover:bg-opacity-70 text-white mr-0 ml-auto my-2'
+            
+          >Start Workout</button>    
         </div>
         <div className='w-full lg:w-1/2 flex justify-between items-center gap-3 px-2'>
           <div className='shadow-md rounded-lg w-full bg-zinc-500 px-4 py-2 text-white'>
