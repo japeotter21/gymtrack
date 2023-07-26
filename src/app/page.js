@@ -98,6 +98,25 @@ export default function Home() {
     console.log(postObj)
   }
 
+  function AddExercise(e) {
+    const newExercise = exercises[e.target.value]
+    const newWorkout = currentWorkout.exercises
+    newWorkout.push(newExercise)
+    const postObj = newWorkout
+    axios.post('/api/workouts',postObj, {params:{workout: currentWorkoutIndex, user:profile.username}})
+    .then(res=>{
+      axios.get('/api/user')
+      .then(r=>{
+          const currentIndex = r.data.documents[0].currentProgram
+          const dayIndex = r.data.documents[0].currentDay
+          const workoutIndex = r.data.documents[0].programs[currentIndex].schedule[dayIndex]
+          setCurrentWorkoutIndex(workoutIndex)
+          setCurrentWorkout(r.data.documents[0].workouts[workoutIndex])
+          HandleClose()
+      })
+    })
+  } 
+
   if(loading)
   {
     return (
@@ -123,34 +142,10 @@ export default function Home() {
         <div className={profile.streak.current > 0 ? 'text-green-500' : 'text-red-500'}>🔥&nbsp;{profile.streak.current}</div>
         <div className='text-sm'>Best: {profile.streak.best}</div>
       </div>
-      {/* <div className='flex lg:gap-3 gap-1 flex-nowrap w-11/12 lg:w-max overflow-auto'>
-          {week.map((day,id)=>
-            <div className={`border rounded-lg bg-stone-50 py-2 px-4 lg:px-5 ${id === 0 ? `border-green-500 ring ring-2 ring-inset ring-green-400 bg-green-200` : ` border-gray-300`}`} key={id}>
-                <div className='text-sm text-gray-400'>
-                {day}
-                </div>
-                <div className='text-sm'>
-                  { id % 4 === 0 ?
-                    <>Back</>
-                  : id % 2 === 0 ?
-                    <>Rest</>
-                  : id % 3 === 0 ?
-                    <>Chest</>
-                  : 
-                    <>Legs</>
-                  }
-                </div>
-            </div>
-          )}
-        </div> */}
         <div className='w-full lg:w-1/2 flex-col gap-2 items-center'>
           <div className='flex items-baseline'>
             <p className='text-gray-600 text-lg my-2'>Today's Workout:&nbsp;</p>
             <p className='font-semibold text-lg my-2'>{currentWorkout.name}</p>
-            {/* <button
-              className='border border-gray-300 py-1 px-3 rounded-full mr-0 ml-auto my-2 flex items-center text-gray-500 hover:bg-gray-100 hover:scale-105 transition duration-300'>
-                Edit &nbsp;<BsPencil />
-            </button>     */}
           </div>
           <p className='text-sm text-gray-600'>from {currentProgram.name}</p>
           <div className='border border-gray-300 rounded-md pt-1 mt-4 bg-stone-50'>
@@ -170,6 +165,16 @@ export default function Home() {
                       <div className='p-2 text-gray-400 border-t-2'>{item.target.notes}</div>
                   </div>
               )}
+              <div className='flex justify-between px-3 py-2 items-center'>
+                <p>Add Exercise</p>
+                <select className='border border-gray-400 rounded-md p-1'
+                  onChange={(e)=>AddExercise(e)}
+                >
+                  {exercises.map((ex,id)=>
+                      <option value={id}>{ex.name}</option>
+                  )}
+                </select>
+              </div>
           </div>
           <Link href="/workout">
             <button
