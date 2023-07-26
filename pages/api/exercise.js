@@ -38,6 +38,19 @@ export default async function handler(req, res) {
         {
             const index = req.query.id
             const user = req.query.user
+            const workout = req.query.workout
+            const loggingWorkout = req.query.log
+            const updateData = loggingWorkout == 1 ? {
+                "$push": {
+                    [`workouts.${workout}.exercises.${index}.results`]: req.body
+                }
+            }
+            :
+            {
+                "$set": {
+                    [`workouts.${workout}.exercises.${index}.target`]: req.body
+                }
+            }
             const data = JSON.stringify({
                 "collection": "user0",
                 "database": "gymtrack",
@@ -45,11 +58,7 @@ export default async function handler(req, res) {
                 "filter": {
                     "username": user
                 },
-                "update": {
-                    "$set": {
-                        [`exercises.${index}.target`]: req.body
-                    }
-                }
+                "update": updateData
             });
             const config = {
                 method: 'post',
