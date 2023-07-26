@@ -56,7 +56,7 @@ export default async function handler(req, res) {
                 "database": "gymtrack",
                 "dataSource": "link0",
                 "filter": {
-                    "username": user
+                    [`profile.username`]: user
                 },
                 "update": updateData
             });

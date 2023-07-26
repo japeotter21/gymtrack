@@ -66,7 +66,7 @@ export default function Home() {
                 dayNum = currentDay + 1
             }
             const postObj = {day: dayNum}
-            axios.post('/api/finished',postObj)
+            axios.post('/api/finished',postObj,{ params: {user:profile.username}})
             .then(res=>{
                 router.push('/')
             })

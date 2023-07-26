@@ -119,7 +119,7 @@ export default function Home() {
           </div>
         </div>
       </div>
-      <div className='w-full flex gap-2 items-baseline justify-start mt-1'>
+      <div className='w-full lg:w-1/2 flex gap-2 items-baseline justify-start mt-1'>
         <div className={profile.streak.current > 0 ? `text-green-500` : `text-red-500`}>🔥&nbsp;{profile.streak.current}</div>
         <div className='text-sm'>Best: {profile.streak.best}</div>
       </div>

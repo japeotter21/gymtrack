@@ -11,12 +11,13 @@ export default function handler(req, res) {
     // {
         if (req.method === 'POST')
         {
+            const user = req.query.user
             const data = JSON.stringify({
                 "collection": "user0",
                 "database": "gymtrack",
                 "dataSource": "link0",
                 "filter": {
-                    "username": user
+                    [`profile.username`]: user
                 },
                 "update": {
                     "$set": {
@@ -26,7 +27,7 @@ export default function handler(req, res) {
             });
             const config = {
                 method: 'post',
-                url: 'https://us-east-2.aws.data.mongodb-api.com/app/data-hdjhg/endpoint/data/v1/action/insertOne',
+                url: 'https://us-east-2.aws.data.mongodb-api.com/app/data-hdjhg/endpoint/data/v1/action/updateOne',
                 headers: {
                 'Content-Type': 'application/json',
                 'Access-Control-Request-Headers': '*',
