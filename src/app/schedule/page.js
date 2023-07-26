@@ -7,7 +7,7 @@ import { BiDumbbell} from 'react-icons/bi'
 import axios from 'axios'
 import Pagenav from '../components/Pagenav'
 
-export default function Home() {
+export default function Schedule() {
     const [loading, setLoading] = useState(true)
     const [current, setCurrent] = useState(null)
     const [programs, setPrograms] = useState([])

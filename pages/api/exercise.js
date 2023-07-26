@@ -40,9 +40,11 @@ export default async function handler(req, res) {
             const user = req.query.user
             const workout = req.query.workout
             const loggingWorkout = req.query.log
+            const exercise = req.query.exercise
             const updateData = loggingWorkout == 1 ? {
                 "$push": {
-                    [`workouts.${workout}.exercises.${index}.results`]: req.body
+                    [`workouts.${workout}.exercises.${index}.results`]: req.body,
+                    [`exercises.${exercise}.results`]: req.body
                 }
             }
             :

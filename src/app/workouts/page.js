@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import Pagenav from '../components/Pagenav'
 
-export default function Home() {
+export default function Workouts() {
     const [loading, setLoading] = useState(true)
     const [currentProgram, setCurrentProgram] = useState(null)
     const [programs, setPrograms] = useState([])

@@ -4,7 +4,7 @@ import { BsPause, BsPauseBtn, BsPlay } from 'react-icons/bs'
 import axios from 'axios'
 import { useRouter } from 'next/navigation';
 
-export default function Home() {
+export default function Workout() {
     const [profile, setProfile] = useState({})
     const [loading, setLoading] = useState(true)
     const [currentProgram, setCurrentProgram] = useState(null)
@@ -98,7 +98,9 @@ export default function Home() {
             reminder: "",
             date: new Date().getTime()
         }
-        axios.post('/api/exercise',postObj,{ params: {id: exerciseIndex, user:profile.username, workout:currentWorkoutIndex, log:1}})
+        const allExercisesIndex = exercises.findIndex(ex=>ex.name === currentExercise.name)
+
+        axios.post('/api/exercise',postObj,{ params: {id: exerciseIndex, user:profile.username, workout:currentWorkoutIndex, log:1, exercise: allExercisesIndex}})
         .then(res=>{
             const storeComplete = [...complete]
             storeComplete.push(exerciseIndex)

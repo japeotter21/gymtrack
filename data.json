@@ -1,9 +1,9 @@
 
         {
             "key": "profile",
-            "username": "me@gwhatever.com",
             "profile": {
                 "name": "me",
+                "username": "me@gwhatever.com",
                 "bio": "blank",
                 "goal": "target",
                 "gym": "location",
@@ -21,11 +21,7 @@
                         "notes": "",
                         "reminder": ""
                     },
-                    "results": [{
-                            "sets": [[0,0],[0,0],[0,0]],
-                            "notes": "",
-                            "reminder": ""
-                    }]
+                    "results": []
                 },
                 {
                     "name": "Incline bench",
@@ -35,11 +31,7 @@
                         "notes": "",
                         "reminder": ""
                     },
-                    "results": [{
-                            "sets": [[0,0],[0,0],[0,0]],
-                            "notes": "",
-                            "reminder": ""
-                    }]
+                    "results": []
                 },
                 {
                     "name": "Decline bench",
@@ -49,11 +41,7 @@
                         "notes": "",
                         "reminder": ""
                     },
-                    "results": [{
-                            "sets": [[0,0],[0,0],[0,0]],
-                            "notes": "",
-                            "reminder": ""
-                    }]
+                    "results": []
                 },
                 {
                     "name": "Flat Dumbbell press",
@@ -63,11 +51,7 @@
                         "notes": "",
                         "reminder": ""
                     },
-                    "results": [{
-                            "sets": [[0,0],[0,0],[0,0]],
-                            "notes": "",
-                            "reminder": ""
-                    }]
+                    "results": []
                 },
                 {
                     "name": "Incline Dumbbell press",
@@ -77,11 +61,7 @@
                         "notes": "",
                         "reminder": ""
                     },
-                    "results": [{
-                            "sets": [[0,0],[0,0],[0,0]],
-                            "notes": "",
-                            "reminder": ""
-                    }]
+                    "results": []
                 },
                 {
                     "name": "Dumbbell fly",
@@ -91,11 +71,7 @@
                         "notes": "",
                         "reminder": ""
                     },
-                    "results": [{
-                            "sets": [[0,0],[0,0],[0,0]],
-                            "notes": "",
-                            "reminder": ""
-                    }]
+                    "results": []
                 },
                 {
                     "name": "Cable fly",
@@ -105,11 +81,7 @@
                         "notes": "",
                         "reminder": ""
                     },
-                    "results": [{
-                            "sets": [[0,0],[0,0],[0,0]],
-                            "notes": "",
-                            "reminder": ""
-                    }]
+                    "results": []
                 },
                 {
                     "name": "Dip",
@@ -119,11 +91,7 @@
                         "notes": "",
                         "reminder": ""
                     },
-                    "results": [{
-                            "sets": [[0,0],[0,0],[0,0]],
-                            "notes": "",
-                            "reminder": ""
-                    }]
+                    "results": []
                 },
                 {
                     "name": "Barbell overhead press",
@@ -133,11 +101,7 @@
                         "notes": "",
                         "reminder": ""
                     },
-                    "results": [{
-                            "sets": [[0,0],[0,0],[0,0]],
-                            "notes": "",
-                            "reminder": ""
-                    }]
+                    "results": []
                 },
                 {
                     "name": "Dumbbell overhead press",
@@ -147,11 +111,7 @@
                         "notes": "",
                         "reminder": ""
                     },
-                    "results": [{
-                            "sets": [[0,0],[0,0],[0,0]],
-                            "notes": "",
-                            "reminder": ""
-                    }]
+                    "results": []
                 },
                 {
                     "name": "Cable lateral raise",
@@ -161,11 +121,7 @@
                         "notes": "",
                         "reminder": ""
                     },
-                    "results": [{
-                            "sets": [[0,0],[0,0],[0,0]],
-                            "notes": "",
-                            "reminder": ""
-                    }]
+                    "results": []
                 },
                 {
                     "name": "Dumbbell lateral raise",
@@ -175,11 +131,7 @@
                         "notes": "",
                         "reminder": ""
                     },
-                    "results": [{
-                            "sets": [[0,0],[0,0],[0,0]],
-                            "notes": "",
-                            "reminder": ""
-                    }]
+                    "results": []
                 },
                 {
                     "name": "Dumbbell front raise",
@@ -189,11 +141,7 @@
                         "notes": "",
                         "reminder": ""
                     },
-                    "results": [{
-                            "sets": [[0,0],[0,0],[0,0]],
-                            "notes": "",
-                            "reminder": ""
-                    }]
+                    "results": []
                 },
                 {
                     "name": "Rear delt raise",
@@ -203,11 +151,7 @@
                         "notes": "",
                         "reminder": ""
                     },
-                    "results": [{
-                            "sets": [[0,0],[0,0],[0,0]],
-                            "notes": "",
-                            "reminder": ""
-                    }]
+                    "results": []
                 },
                 {
                     "name": "Upright row",
@@ -217,11 +161,7 @@
                         "notes": "",
                         "reminder": ""
                     },
-                    "results": [{
-                            "sets": [[0,0],[0,0],[0,0]],
-                            "notes": "",
-                            "reminder": ""
-                    }]
+                    "results": []
                 },
                 {
                     "name": "Lat pulldown",
@@ -231,11 +171,7 @@
                         "notes": "",
                         "reminder": ""
                     },
-                    "results": [{
-                            "sets": [[0,0],[0,0],[0,0]],
-                            "notes": "",
-                            "reminder": ""
-                    }]
+                    "results": []
                 },
                 {
                     "name": "Pullups",
@@ -245,11 +181,7 @@
                         "notes": "",
                         "reminder": ""
                     },
-                    "results": [{
-                            "sets": [[0,0],[0,0],[0,0]],
-                            "notes": "",
-                            "reminder": ""
-                    }]
+                    "results": []
                 },
                 {
                     "name": "Chinups",
@@ -259,11 +191,7 @@
                         "notes": "",
                         "reminder": ""
                     },
-                    "results": [{
-                            "sets": [[0,0],[0,0],[0,0]],
-                            "notes": "",
-                            "reminder": ""
-                    }]
+                    "results": []
                 },
                 {
                     "name": "Lat Cable pushdown",
@@ -273,11 +201,7 @@
                         "notes": "",
                         "reminder": ""
                     },
-                    "results": [{
-                            "sets": [[0,0],[0,0],[0,0]],
-                            "notes": "",
-                            "reminder": ""
-                    }]
+                    "results": []
                 },
                 {
                     "name": "T-bar row",
@@ -287,11 +211,7 @@
                         "notes": "",
                         "reminder": ""
                     },
-                    "results": [{
-                            "sets": [[0,0],[0,0],[0,0]],
-                            "notes": "",
-                            "reminder": ""
-                    }]
+                    "results": []
                 },
                 {
                     "name": "Row machine",
@@ -301,11 +221,7 @@
                         "notes": "",
                         "reminder": ""
                     },
-                    "results": [{
-                            "sets": [[0,0],[0,0],[0,0]],
-                            "notes": "",
-                            "reminder": ""
-                    }]
+                    "results": []
                 },
                 {
                     "name": "Bent over row",
@@ -315,11 +231,7 @@
                         "notes": "",
                         "reminder": ""
                     },
-                    "results": [{
-                            "sets": [[0,0],[0,0],[0,0]],
-                            "notes": "",
-                            "reminder": ""
-                    }]
+                    "results": []
                 },
                 {
                     "name": "Kneeling row",
@@ -329,11 +241,7 @@
                         "notes": "",
                         "reminder": ""
                     },
-                    "results": [{
-                            "sets": [[0,0],[0,0],[0,0]],
-                            "notes": "",
-                            "reminder": ""
-                    }]
+                    "results": []
                 },
                 {
                     "name": "Kroc row",
@@ -343,11 +251,7 @@
                         "notes": "",
                         "reminder": ""
                     },
-                    "results": [{
-                            "sets": [[0,0],[0,0],[0,0]],
-                            "notes": "",
-                            "reminder": ""
-                    }]
+                    "results": []
                 },
                 {
                     "name": "Dumbbell shrug",
@@ -357,11 +261,7 @@
                         "notes": "",
                         "reminder": ""
                     },
-                    "results": [{
-                            "sets": [[0,0],[0,0],[0,0]],
-                            "notes": "",
-                            "reminder": ""
-                    }]
+                    "results": []
                 },
                 {
                     "name": "Barbell shrug",
@@ -371,11 +271,7 @@
                         "notes": "",
                         "reminder": ""
                     },
-                    "results": [{
-                            "sets": [[0,0],[0,0],[0,0]],
-                            "notes": "",
-                            "reminder": ""
-                    }]
+                    "results": []
                 },
                 {
                     "name": "Shrug machine",
@@ -385,11 +281,7 @@
                         "notes": "",
                         "reminder": ""
                     },
-                    "results": [{
-                            "sets": [[0,0],[0,0],[0,0]],
-                            "notes": "",
-                            "reminder": ""
-                    }]
+                    "results": []
                 },
                 {
                     "name": "Cable shrug",
@@ -399,11 +291,7 @@
                         "notes": "",
                         "reminder": ""
                     },
-                    "results": [{
-                            "sets": [[0,0],[0,0],[0,0]],
-                            "notes": "",
-                            "reminder": ""
-                    }]
+                    "results": []
                 },
                 {
                     "name": "Trap fly",
@@ -413,11 +301,7 @@
                         "notes": "",
                         "reminder": ""
                     },
-                    "results": [{
-                            "sets": [[0,0],[0,0],[0,0]],
-                            "notes": "",
-                            "reminder": ""
-                    }]
+                    "results": []
                 },
                 {
                     "name": "Hammer curl",
@@ -427,11 +311,7 @@
                         "notes": "",
                         "reminder": ""
                     },
-                    "results": [{
-                            "sets": [[0,0],[0,0],[0,0]],
-                            "notes": "",
-                            "reminder": ""
-                    }]
+                    "results": []
                 },
                 {
                     "name": "Preacher curl",
@@ -441,11 +321,7 @@
                         "notes": "",
                         "reminder": ""
                     },
-                    "results": [{
-                            "sets": [[0,0],[0,0],[0,0]],
-                            "notes": "",
-                            "reminder": ""
-                    }]
+                    "results": []
                 },
                 {
                     "name": "Dumbbell curl",
@@ -455,11 +331,7 @@
                         "notes": "",
                         "reminder": ""
                     },
-                    "results": [{
-                            "sets": [[0,0],[0,0],[0,0]],
-                            "notes": "",
-                            "reminder": ""
-                    }]
+                    "results": []
                 },
                 {
                     "name": "Barbell curl",
@@ -469,11 +341,7 @@
                         "notes": "",
                         "reminder": ""
                     },
-                    "results": [{
-                            "sets": [[0,0],[0,0],[0,0]],
-                            "notes": "",
-                            "reminder": ""
-                    }]
+                    "results": []
                 },
                 {
                     "name": "Incline dumbbell curl",
@@ -483,11 +351,7 @@
                         "notes": "",
                         "reminder": ""
                     },
-                    "results": [{
-                            "sets": [[0,0],[0,0],[0,0]],
-                            "notes": "",
-                            "reminder": ""
-                    }]
+                    "results": []
                 },
                 {
                     "name": "Concentration curl",
@@ -497,11 +361,7 @@
                         "notes": "",
                         "reminder": ""
                     },
-                    "results": [{
-                            "sets": [[0,0],[0,0],[0,0]],
-                            "notes": "",
-                            "reminder": ""
-                    }]
+                    "results": []
                 },
                 {
                     "name": "Drag curl",
@@ -511,11 +371,7 @@
                         "notes": "",
                         "reminder": ""
                     },
-                    "results": [{
-                            "sets": [[0,0],[0,0],[0,0]],
-                            "notes": "",
-                            "reminder": ""
-                    }]
+                    "results": []
                 },
                 {
                     "name": "Skull crusher",
@@ -525,11 +381,7 @@
                         "notes": "",
                         "reminder": ""
                     },
-                    "results": [{
-                            "sets": [[0,0],[0,0],[0,0]],
-                            "notes": "",
-                            "reminder": ""
-                    }]
+                    "results": []
                 },
                 {
                     "name": "Close-grip bench",
@@ -539,11 +391,7 @@
                         "notes": "",
                         "reminder": ""
                     },
-                    "results": [{
-                            "sets": [[0,0],[0,0],[0,0]],
-                            "notes": "",
-                            "reminder": ""
-                    }]
+                    "results": []
                 },
                 {
                     "name": "Overhead extension",
@@ -553,11 +401,7 @@
                         "notes": "",
                         "reminder": ""
                     },
-                    "results": [{
-                            "sets": [[0,0],[0,0],[0,0]],
-                            "notes": "",
-                            "reminder": ""
-                    }]
+                    "results": []
                 },
                 {
                     "name": "Rope pulldown",
@@ -567,11 +411,7 @@
                         "notes": "",
                         "reminder": ""
                     },
-                    "results": [{
-                            "sets": [[0,0],[0,0],[0,0]],
-                            "notes": "",
-                            "reminder": ""
-                    }]
+                    "results": []
                 },
                 {
                     "name": "Tricep Cable pushdown",
@@ -581,11 +421,7 @@
                         "notes": "",
                         "reminder": ""
                     },
-                    "results": [{
-                            "sets": [[0,0],[0,0],[0,0]],
-                            "notes": "",
-                            "reminder": ""
-                    }]
+                    "results": []
                 },
                 {
                     "name": "Kickback",
@@ -595,11 +431,7 @@
                         "notes": "",
                         "reminder": ""
                     },
-                    "results": [{
-                            "sets": [[0,0],[0,0],[0,0]],
-                            "notes": "",
-                            "reminder": ""
-                    }]
+                    "results": []
                 },
                 {
                     "name": "Wrist curl",
@@ -609,11 +441,7 @@
                         "notes": "",
                         "reminder": ""
                     },
-                    "results": [{
-                            "sets": [[0,0],[0,0],[0,0]],
-                            "notes": "",
-                            "reminder": ""
-                    }]
+                    "results": []
                 },
                 {
                     "name": "Reverse Wrist Curl",
@@ -623,11 +451,7 @@
                         "notes": "",
                         "reminder": ""
                     },
-                    "results": [{
-                            "sets": [[0,0],[0,0],[0,0]],
-                            "notes": "",
-                            "reminder": ""
-                    }]
+                    "results": []
                 },
                 {
                     "name": "Barbell hold",
@@ -637,11 +461,7 @@
                         "notes": "",
                         "reminder": ""
                     },
-                    "results": [{
-                            "sets": [[0,0],[0,0],[0,0]],
-                            "notes": "",
-                            "reminder": ""
-                    }]
+                    "results": []
                 },
                 {
                     "name": "Face pull",
@@ -651,11 +471,7 @@
                         "notes": "",
                         "reminder": ""
                     },
-                    "results": [{
-                            "sets": [[0,0],[0,0],[0,0]],
-                            "notes": "",
-                            "reminder": ""
-                    }]
+                    "results": []
                 },
                 {
                     "name": "Rotator cuff",
@@ -665,11 +481,7 @@
                         "notes": "",
                         "reminder": ""
                     },
-                    "results": [{
-                            "sets": [[0,0],[0,0],[0,0]],
-                            "notes": "",
-                            "reminder": ""
-                    }]
+                    "results": []
                 },
                 {
                     "name": "Y raise",
@@ -679,11 +491,7 @@
                         "notes": "",
                         "reminder": ""
                     },
-                    "results": [{
-                            "sets": [[0,0],[0,0],[0,0]],
-                            "notes": "",
-                            "reminder": ""
-                    }]
+                    "results": []
                 },
                 {
                     "name": "Reverse fly",
@@ -693,11 +501,7 @@
                         "notes": "",
                         "reminder": ""
                     },
-                    "results": [{
-                            "sets": [[0,0],[0,0],[0,0]],
-                            "notes": "",
-                            "reminder": ""
-                    }]
+                    "results": []
                 },
                 {
                     "name": "Squat",
@@ -707,11 +511,7 @@
                         "notes": "",
                         "reminder": ""
                     },
-                    "results": [{
-                            "sets": [[0,0],[0,0],[0,0]],
-                            "notes": "",
-                            "reminder": ""
-                    }]
+                    "results": []
                 },
                 {
                     "name": "Front Squat",
@@ -721,11 +521,7 @@
                         "notes": "",
                         "reminder": ""
                     },
-                    "results": [{
-                            "sets": [[0,0],[0,0],[0,0]],
-                            "notes": "",
-                            "reminder": ""
-                    }]
+                    "results": []
                 },
                 {
                     "name": "Leg press",
@@ -735,11 +531,7 @@
                         "notes": "",
                         "reminder": ""
                     },
-                    "results": [{
-                            "sets": [[0,0],[0,0],[0,0]],
-                            "notes": "",
-                            "reminder": ""
-                    }]
+                    "results": []
                 },
                 {
                     "name": "Lunge",
@@ -749,11 +541,7 @@
                         "notes": "",
                         "reminder": ""
                     },
-                    "results": [{
-                            "sets": [[0,0],[0,0],[0,0]],
-                            "notes": "",
-                            "reminder": ""
-                    }]
+                    "results": []
                 },
                 {
                     "name": "Leg extension",
@@ -763,11 +551,7 @@
                         "notes": "",
                         "reminder": ""
                     },
-                    "results": [{
-                            "sets": [[0,0],[0,0],[0,0]],
-                            "notes": "",
-                            "reminder": ""
-                    }]
+                    "results": []
                 },
                 {
                     "name": "Hamstring curl",
@@ -777,11 +561,7 @@
                         "notes": "",
                         "reminder": ""
                     },
-                    "results": [{
-                            "sets": [[0,0],[0,0],[0,0]],
-                            "notes": "",
-                            "reminder": ""
-                    }]
+                    "results": []
                 },
                 {
                     "name": "Hack squat",
@@ -791,11 +571,7 @@
                         "notes": "",
                         "reminder": ""
                     },
-                    "results": [{
-                            "sets": [[0,0],[0,0],[0,0]],
-                            "notes": "",
-                            "reminder": ""
-                    }]
+                    "results": []
                 },
                 {
                     "name": "Good morning",
@@ -805,11 +581,7 @@
                         "notes": "",
                         "reminder": ""
                     },
-                    "results": [{
-                            "sets": [[0,0],[0,0],[0,0]],
-                            "notes": "",
-                            "reminder": ""
-                    }]
+                    "results": []
                 },
                 {
                     "name": "RDL",
@@ -819,11 +591,7 @@
                         "notes": "",
                         "reminder": ""
                     },
-                    "results": [{
-                            "sets": [[0,0],[0,0],[0,0]],
-                            "notes": "",
-                            "reminder": ""
-                    }]
+                    "results": []
                 }
         ],
             "programs": [
@@ -866,11 +634,7 @@
                                 "notes": "",
                                 "reminder": ""
                             },
-                            "results": [{
-                                    "sets": [[0,0],[0,0],[0,0]],
-                                    "notes": "",
-                                    "reminder": ""
-                            }]
+                            "results": []
                         },
                         {
                             "name": "Cable fly",
@@ -880,11 +644,7 @@
                                 "notes": "",
                                 "reminder": ""
                             },
-                            "results": [{
-                                    "sets": [[0,0],[0,0],[0,0]],
-                                    "notes": "",
-                                    "reminder": ""
-                            }]
+                            "results": []
                         },
                         {
                             "name": "Barbell overhead press",
@@ -894,11 +654,7 @@
                                 "notes": "",
                                 "reminder": ""
                             },
-                            "results": [{
-                                    "sets": [[0,0],[0,0],[0,0]],
-                                    "notes": "",
-                                    "reminder": ""
-                            }]
+                            "results": []
                         },
                         {
                             "name": "Dumbbell lateral raise",
@@ -908,11 +664,7 @@
                                 "notes": "",
                                 "reminder": ""
                             },
-                            "results": [{
-                                    "sets": [[0,0],[0,0],[0,0]],
-                                    "notes": "",
-                                    "reminder": ""
-                            }]
+                            "results": []
                         }
                     ]
                 },
@@ -927,11 +679,7 @@
                                 "notes": "",
                                 "reminder": ""
                             },
-                            "results": [{
-                                    "sets": [[0,0],[0,0],[0,0]],
-                                    "notes": "",
-                                    "reminder": ""
-                            }]
+                            "results": []
                         },
                         {
                             "name": "Cable fly",
@@ -941,11 +689,7 @@
                                 "notes": "",
                                 "reminder": ""
                             },
-                            "results": [{
-                                    "sets": [[0,0],[0,0],[0,0]],
-                                    "notes": "",
-                                    "reminder": ""
-                            }]
+                            "results": []
                         },
                         {
                             "name": "Barbell overhead press",
@@ -955,11 +699,7 @@
                                 "notes": "",
                                 "reminder": ""
                             },
-                            "results": [{
-                                    "sets": [[0,0],[0,0],[0,0]],
-                                    "notes": "",
-                                    "reminder": ""
-                            }]
+                            "results": []
                         },
                         {
                             "name": "Dumbbell lateral raise",
@@ -969,11 +709,7 @@
                                 "notes": "",
                                 "reminder": ""
                             },
-                            "results": [{
-                                    "sets": [[0,0],[0,0],[0,0]],
-                                    "notes": "",
-                                    "reminder": ""
-                            }]
+                            "results": []
                         }
                     ]
                 },
@@ -988,11 +724,7 @@
                                 "notes": "",
                                 "reminder": ""
                             },
-                            "results": [{
-                                    "sets": [[0,0],[0,0],[0,0]],
-                                    "notes": "",
-                                    "reminder": ""
-                            }]
+                            "results": []
                         },
                         {
                             "name": "Lat pulldown",
@@ -1002,11 +734,7 @@
                                 "notes": "",
                                 "reminder": ""
                             },
-                            "results": [{
-                                    "sets": [[0,0],[0,0],[0,0]],
-                                    "notes": "",
-                                    "reminder": ""
-                            }]
+                            "results": []
                         },
                         {
                             "name": "Bent over row",
@@ -1016,11 +744,7 @@
                                 "notes": "",
                                 "reminder": ""
                             },
-                            "results": [{
-                                    "sets": [[0,0],[0,0],[0,0]],
-                                    "notes": "",
-                                    "reminder": ""
-                            }]
+                            "results": []
                         },
                         {
                             "name": "Barbell curl",
@@ -1030,11 +754,7 @@
                                 "notes": "",
                                 "reminder": ""
                             },
-                            "results": [{
-                                    "sets": [[0,0],[0,0],[0,0]],
-                                    "notes": "",
-                                    "reminder": ""
-                            }]
+                            "results": []
                         }
                     ]
                 },
@@ -1049,11 +769,7 @@
                                 "notes": "",
                                 "reminder": ""
                             },
-                            "results": [{
-                                    "sets": [[0,0],[0,0],[0,0]],
-                                    "notes": "",
-                                    "reminder": ""
-                            }]
+                            "results": []
                         },
                         {
                             "name": "Leg press",
@@ -1063,11 +779,7 @@
                                 "notes": "",
                                 "reminder": ""
                             },
-                            "results": [{
-                                    "sets": [[0,0],[0,0],[0,0]],
-                                    "notes": "",
-                                    "reminder": ""
-                            }]
+                            "results": []
                         },
                         {
                             "name": "Leg extension",
@@ -1077,11 +789,7 @@
                                 "notes": "",
                                 "reminder": ""
                             },
-                            "results": [{
-                                    "sets": [[0,0],[0,0],[0,0]],
-                                    "notes": "",
-                                    "reminder": ""
-                            }]
+                            "results": []
                         },
                         {
                             "name": "Hamstring curl",
@@ -1091,11 +799,7 @@
                                 "notes": "",
                                 "reminder": ""
                             },
-                            "results": [{
-                                    "sets": [[0,0],[0,0],[0,0]],
-                                    "notes": "",
-                                    "reminder": ""
-                            }]
+                            "results": []
                         }
                     ]
                 },
@@ -1110,11 +814,7 @@
                                 "notes": "",
                                 "reminder": ""
                             },
-                            "results": [{
-                                    "sets": [[0,0],[0,0],[0,0]],
-                                    "notes": "",
-                                    "reminder": ""
-                            }]
+                            "results": []
                         },
                         {
                             "name": "Cable fly",
@@ -1124,11 +824,7 @@
                                 "notes": "",
                                 "reminder": ""
                             },
-                            "results": [{
-                                    "sets": [[0,0],[0,0],[0,0]],
-                                    "notes": "",
-                                    "reminder": ""
-                            }]
+                            "results": []
                         },
                         {
                             "name": "Barbell overhead press",
@@ -1138,11 +834,7 @@
                                 "notes": "",
                                 "reminder": ""
                             },
-                            "results": [{
-                                    "sets": [[0,0],[0,0],[0,0]],
-                                    "notes": "",
-                                    "reminder": ""
-                            }]
+                            "results": []
                         },
                         {
                             "name": "Dumbbell lateral raise",
@@ -1152,11 +844,7 @@
                                 "notes": "",
                                 "reminder": ""
                             },
-                            "results": [{
-                                    "sets": [[0,0],[0,0],[0,0]],
-                                    "notes": "",
-                                    "reminder": ""
-                            }]
+                            "results": []
                         }
                     ]
                 },
@@ -1171,11 +859,7 @@
                                 "notes": "",
                                 "reminder": ""
                             },
-                            "results": [{
-                                    "sets": [[0,0],[0,0],[0,0]],
-                                    "notes": "",
-                                    "reminder": ""
-                            }]
+                            "results": []
                         },
                         {
                             "name": "Lat pulldown",
@@ -1185,11 +869,7 @@
                                 "notes": "",
                                 "reminder": ""
                             },
-                            "results": [{
-                                    "sets": [[0,0],[0,0],[0,0]],
-                                    "notes": "",
-                                    "reminder": ""
-                            }]
+                            "results": []
                         },
                         {
                             "name": "Bent over row",
@@ -1199,11 +879,7 @@
                                 "notes": "",
                                 "reminder": ""
                             },
-                            "results": [{
-                                    "sets": [[0,0],[0,0],[0,0]],
-                                    "notes": "",
-                                    "reminder": ""
-                            }]
+                            "results": []
                         },
                         {
                             "name": "Barbell curl",
@@ -1213,11 +889,7 @@
                                 "notes": "",
                                 "reminder": ""
                             },
-                            "results": [{
-                                    "sets": [[0,0],[0,0],[0,0]],
-                                    "notes": "",
-                                    "reminder": ""
-                            }]
+                            "results": []
                         }
                     ]
                 },
@@ -1232,11 +904,7 @@
                                 "notes": "",
                                 "reminder": ""
                             },
-                            "results": [{
-                                    "sets": [[0,0],[0,0],[0,0]],
-                                    "notes": "",
-                                    "reminder": ""
-                            }]
+                            "results": []
                         },
                         {
                             "name": "Leg press",
@@ -1246,11 +914,7 @@
                                 "notes": "",
                                 "reminder": ""
                             },
-                            "results": [{
-                                    "sets": [[0,0],[0,0],[0,0]],
-                                    "notes": "",
-                                    "reminder": ""
-                            }]
+                            "results": []
                         },
                         {
                             "name": "Leg extension",
@@ -1260,11 +924,7 @@
                                 "notes": "",
                                 "reminder": ""
                             },
-                            "results": [{
-                                    "sets": [[0,0],[0,0],[0,0]],
-                                    "notes": "",
-                                    "reminder": ""
-                            }]
+                            "results": []
                         },
                         {
                             "name": "Hamstring curl",
@@ -1274,11 +934,7 @@
                                 "notes": "",
                                 "reminder": ""
                             },
-                            "results": [{
-                                    "sets": [[0,0],[0,0],[0,0]],
-                                    "notes": "",
-                                    "reminder": ""
-                            }]
+                            "results": []
                         }
                     ]
                 }
