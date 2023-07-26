@@ -2,10 +2,11 @@
 import React, { useState, useEffect } from 'react'
 import Image from 'next/image'
 import { Avatar, Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material'
-import { BsPencil } from 'react-icons/bs'
+import { BsPencil, BsThreeDotsVertical, BsTrash } from 'react-icons/bs'
 import axios from 'axios'
 import Pagenav from './components/Pagenav'
 import Link from 'next/link'
+import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd'
 
 export default function Home() {
   const [day, setDay] = useState(0)
@@ -18,6 +19,7 @@ export default function Home() {
   const [currentDay, setCurrentDay] = useState(0)
   const [programs, setPrograms] = useState([])
   const [exercises, setExercises] = useState([])
+  const [deleting, setDeleting] = useState(null)
   const [editing, setEditing] = useState(null)
   const [editSets, setEditSets] = useState(0)
   const [editReps, setEditReps] = useState(0)
@@ -98,6 +100,23 @@ export default function Home() {
     console.log(postObj)
   }
 
+  function HandleDelete() {
+    const postObj = [...currentWorkout.exercises]
+    postObj.splice(deleting, 1)
+    axios.post('/api/workouts',postObj, {params:{workout: currentWorkoutIndex, user:profile.username}})
+    .then(res=>{
+      axios.get('/api/user')
+      .then(r=>{
+          const currentIndex = r.data.documents[0].currentProgram
+          const dayIndex = r.data.documents[0].currentDay
+          const workoutIndex = r.data.documents[0].programs[currentIndex].schedule[dayIndex]
+          setCurrentWorkoutIndex(workoutIndex)
+          setCurrentWorkout(r.data.documents[0].workouts[workoutIndex])
+          setDeleting(null)
+      })
+    })
+  }
+
   function AddExercise(e) {
     const newExercise = exercises[e.target.value]
     const newWorkout = currentWorkout.exercises
@@ -116,6 +135,48 @@ export default function Home() {
       })
     })
   } 
+  
+  const reorder = (list, startIndex, endIndex) => {
+    const result = list
+    const [removed] = result.splice(startIndex, 1);
+    result.splice(endIndex, 0, removed);
+    return result;
+  };
+  function onDragEnd(result) {
+      const { source, destination } = result;
+      // dropped outside the list
+      if (!destination) {
+        return;
+      }
+      //sInd: index of source group
+      const sInd = source.droppableId
+
+      const postObj = reorder(currentWorkout.exercises, source.index, destination.index);
+      axios.post('/api/workouts',postObj, {params:{workout: currentWorkoutIndex, user:profile.username}})
+      .then(res=>{
+        axios.get('/api/user')
+        .then(r=>{
+            const currentIndex = r.data.documents[0].currentProgram
+            const dayIndex = r.data.documents[0].currentDay
+            const workoutIndex = r.data.documents[0].programs[currentIndex].schedule[dayIndex]
+            setCurrentWorkoutIndex(workoutIndex)
+            setCurrentWorkout(r.data.documents[0].workouts[workoutIndex])
+            HandleClose()
+        })
+      })
+  }
+
+  const getListStyle = isDraggingOver => ({
+      // background: isDraggingOver && mode === 'light' ? 'linear-gradient(#2997ff55, white)' : isDraggingOver && mode === 'dark' ? 'linear-gradient(#010304, #2997ff55)' : 'none',
+      boxShadow: isDraggingOver ? '0 0 10px 2px #2997ff55' : 'none',
+      padding: 0,
+      width: '100%',
+      minHeight: 50
+  })
+  const getItemStyle = (isDragging, draggableStyle) => ({
+      userSelect: 'none',
+      ...draggableStyle
+  })
 
   if(loading)
   {
@@ -149,22 +210,46 @@ export default function Home() {
           </div>
           <p className='text-sm text-gray-600'>from {currentProgram.name}</p>
           <div className='border border-gray-300 rounded-md pt-1 mt-4 bg-stone-50'>
-              <div className='text-sm font-semibold grid grid-cols-6'>
-                  <div className='p-2 col-span-2'>Exercise</div>
+              <div className='text-sm font-semibold grid grid-cols-7 border-b-2'>
+                  <div className='p-2 col-span-3 ml-[10px]'>Exercise</div>
                   <div className='p-2'>Sets</div>
                   <div className='p-2'>Reps</div>
                   <div className='p-2'>Weight</div>
-                  <div className='p-2'>Info</div>
               </div>
-              { currentWorkout.exercises.map((item,id)=>
-                  <div className='text-sm grid grid-cols-6 lg:hover:cursor-pointer lg:hover:bg-slate-200 lg:hover:bg-opacity-40 transition duration-200' key={id} onClick={()=>setEditing(id)}>
-                      <div className='p-2 border-t-2 col-span-2'>{item.name}</div>
-                      <div className='p-2 border-t-2'>{item.target.sets.length}</div>
-                      <div className='p-2 border-t-2'>{item.target.sets[0][0]}</div>
-                      <div className='p-2 border-t-2'>{item.target.sets[0][1]}</div>
-                      <div className='p-2 text-gray-400 border-t-2'>{item.target.notes}</div>
-                  </div>
-              )}
+              <DragDropContext onDragEnd={onDragEnd}>
+                <Droppable droppableId={'drop'} key={0}>
+                  {(provided, snapshot)=>(
+                      <div
+                          ref={provided.innerRef}
+                          style={getListStyle(snapshot.isDraggingOver)}
+                          {...provided.droppableProps}
+                      >
+                        { currentWorkout.exercises.map((item,id)=>
+                          <Draggable key={item.name} draggableId={item.name} index={id}>
+                            {(provided, snapshot)=>(
+                                <div className='text-sm grid grid-cols-7 border border-t-0'
+                                    ref={provided.innerRef}
+                                    style={getItemStyle(snapshot.isDragging,
+                                        provided.draggableProps.style)}
+                                    {...provided.draggableProps}
+                                    
+                                >
+                                  <div className='p-2 col-span-3 flex items-center relative'
+                                  {...provided.dragHandleProps}
+                                  ><BsThreeDotsVertical size={16} className='absolute ml-[-10px] text-gray-500' /><span className='ml-[10px]'>{item.name}</span></div>
+                                  <div className='p-2' onClick={()=>setEditing(id)}>{item.target.sets.length}</div>
+                                  <div className='p-2' onClick={()=>setEditing(id)}>{item.target.sets[0][0]}</div>
+                                  <div className='p-2' onClick={()=>setEditing(id)}>{item.target.sets[0][1]}</div>
+                                  <div className='p-2 text-red-500 block ml-auto' onClick={()=>setDeleting(id)}><BsTrash size={15} /></div>
+                            </div>)
+                            }
+                          </Draggable>
+                        )}
+                        {provided.placeholder}
+                      </div>
+                  )}
+                </Droppable>
+              </DragDropContext>
               <div className='flex justify-between px-3 py-2 items-center'>
                 <p>Add Exercise</p>
                 <select className='border border-gray-400 rounded-md p-1'
@@ -217,6 +302,24 @@ export default function Home() {
           </Dialog>
           :
           <></>
+        }
+        { currentWorkout.exercises.length > 0 && deleting !== null ? 
+          <Dialog open={deleting !== null} onClose={()=>setDeleting(null)} maxWidth="sm" fullWidth>
+              <p className='font-semibold text-lg px-3 py-3'>Remove exercise</p>
+              <div className='grid grid-cols-2 px-3 py-3 gap-3'>
+                <p className='text-md'>Are you sure you want to remove {currentWorkout.exercises[deleting].name}?</p>
+              </div>
+              <div className='flex justify-end px-3 py-3 gap-3'>
+                  <button className='border border-gray-400 py-1 px-3 rounded-xl hover:bg-red-100 hover:border-red-200 hover:text-red-500 hover:scale-105 transition duration-200'
+                    onClick={()=>setDeleting(null)}
+                  >Cancel</button>
+                  <button className='block shadow-md py-1 px-3 rounded-xl bg-red-600 hover:bg-opacity-80 text-white hover:scale-105 transition duration-200'
+                    onClick={HandleDelete}
+                  >Remove</button>
+              </div>
+            </Dialog>
+          :
+           <></>
         }
     </main>
   )

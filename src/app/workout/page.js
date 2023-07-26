@@ -4,7 +4,6 @@ import { BsPause, BsPauseBtn, BsPlay } from 'react-icons/bs'
 import axios from 'axios'
 import { useRouter } from 'next/navigation';
 
-
 export default function Home() {
     const [profile, setProfile] = useState({})
     const [loading, setLoading] = useState(true)
@@ -126,11 +125,11 @@ export default function Home() {
                     onClick={Cancel}
                 >Cancel</button>
                 { pause ? 
-                    <button className='rounded-full shadow-md bg-gradient-to-l from-green-600 to-green-500 px-5 py-2'
+                    <button className='rounded-full shadow-md bg-gradient-to-r from-green-600 to-green-500 px-5 py-2'
                         onClick={()=>setPause(false)}
                     >Resume</button>
                 :
-                    <button className='rounded-full shadow-md bg-gradient-to-l from-green-600 to-green-500 px-5 py-2'
+                    <button className='rounded-full shadow-md bg-gradient-to-r from-green-600 to-green-500 px-5 py-2'
                         onClick={()=>setPause(true)}
                     >Pause</button>
                 }
