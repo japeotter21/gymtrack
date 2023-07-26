@@ -36,21 +36,23 @@ export default function Home() {
         <main className="flex min-h-screen flex-col items-center py-6 lg:pt-12 px-2 lg:p-12 gap-4">
             <p>Current Program: {currentProgram.name}</p>
             { workouts.map((item,id)=>
-            <div className='w-full lg:w-1/2 flex-col gap-2 items-center border border-gray-300 rounded-lg bg-stone-50 px-4 py-1'>
+            <div className='w-full lg:w-1/2 flex-col gap-2 items-center border border-gray-300 rounded-lg bg-stone-50 px-4 py-1'
+                key={item.name}
+            >
                 <p>{item.name}</p>
                 { item.exercises.map((ex,ind)=>
-                    <>
+                    <div key={ex.name}>
                         <p className='text-sm'>{ex.name}</p>
                         <div className='flex'>
                         { ex.target.sets.map((set,index)=>
-                            <p className='text-sm'>{set[0]}x{set[1]}</p>
+                            <p className='text-sm' key={`${ex.name}-${index}`}>{set[0]}x{set[1]}</p>
                         )}
                         </div>
-                    </>
+                    </div>
                 )}
                 <select>
                     {exercises.map((ex,id)=>
-                        <option value={ex.name}>{ex.name}</option>
+                        <option value={ex.name} key={id}>{ex.name}</option>
                     )}
                 </select>
             </div>

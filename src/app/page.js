@@ -171,7 +171,7 @@ export default function Home() {
                   onChange={(e)=>AddExercise(e)}
                 >
                   {exercises.map((ex,id)=>
-                      <option value={id}>{ex.name}</option>
+                      <option value={id} key={id}>{ex.name}</option>
                   )}
                 </select>
               </div>
