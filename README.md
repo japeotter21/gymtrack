@@ -7,7 +7,7 @@ Core Features:
 - Plan out gym days and rest days
 - Track progression on each exercise
 
-![Screenshot 2023-07-26 052821](https://github.com/japeotter21/gymtrack/assets/97000604/a330d6cc-9601-47d4-bdd8-e8061dbffe9f)
+![Screenshot 2023-07-27 164718](https://github.com/japeotter21/gymtrack/assets/97000604/c61e2ad7-afab-417d-a50a-4ebffb7a4c2d)
 
 To Do:
 - Progress tracking by exercise (chart)
