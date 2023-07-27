@@ -5,9 +5,10 @@ Core Features:
 - Choose exercises to perform and select weight/rep range
 - Add additional info or reminders to exercises
 - Plan out gym days and rest days
-- Track progression on each exercise
+- Track progression on each exercise (projected 1-rep max based on NSCA load chart (https://www.nsca.com/contentassets/61d813865e264c6e852cadfe247eae52/nsca_training_load_chart.pdf)
 
 ![Screenshot 2023-07-27 164718](https://github.com/japeotter21/gymtrack/assets/97000604/c61e2ad7-afab-417d-a50a-4ebffb7a4c2d)
+![Screenshot 2023-07-27 164851](https://github.com/japeotter21/gymtrack/assets/97000604/5b419bee-4c04-4912-bc9d-b7e86daf2379)
 
 To Do:
 - Progress tracking by exercise (chart)
