@@ -1,93 +1,1849 @@
 
+{
+    "_id": "64c1941c6c9f5274c462d61b",
+    "key": "profile",
+    "profile": {
+        "name": "me",
+        "bio": "blank",
+        "goal": "target",
+        "gym": "location",
+        "streak": {
+            "current": 0,
+            "best": 12
+        },
+        "username": "me@whatever.com"
+    },
+    "exercises": [
         {
-            "key": "profile",
-            "profile": {
-                "name": "me",
-                "username": "me@gwhatever.com",
-                "bio": "blank",
-                "goal": "target",
-                "gym": "location",
-                "streak": {
-                    "current": 0,
-                    "best": 12
-                }
+            "name": "Flat bench",
+            "attributes": [
+                "chest",
+                "shoulder",
+                "primary"
+            ],
+            "target": {
+                "sets": [
+                    [
+                        0,
+                        0
+                    ],
+                    [
+                        0,
+                        0
+                    ],
+                    [
+                        0,
+                        0
+                    ]
+                ],
+                "notes": "",
+                "reminder": ""
             },
+            "results": [
+                {
+                    "sets": [
+                        [
+                            6,
+                            185
+                        ],
+                        [
+                            4,
+                            185
+                        ],
+                        [
+                            4,
+                            185
+                        ]
+                    ],
+                    "notes": "",
+                    "reminder": "",
+                    "date": 1690308275631
+                },
+                {
+                    "sets": [
+                        [
+                            6,
+                            185
+                        ],
+                        [
+                            4,
+                            185
+                        ],
+                        [
+                            4,
+                            185
+                        ]
+                    ],
+                    "notes": "",
+                    "reminder": "",
+                    "date": 1690408289917
+                },
+                {
+                    "sets": [
+                        [
+                            6,
+                            185
+                        ],
+                        [
+                            6,
+                            185
+                        ],
+                        [
+                            6,
+                            185
+                        ]
+                    ],
+                    "notes": "",
+                    "reminder": "",
+                    "date": 1690483300449
+                }
+            ]
+        },
+        {
+            "name": "Incline bench",
+            "attributes": [
+                "chest",
+                "shoulder",
+                "primary"
+            ],
+            "target": {
+                "sets": [
+                    [
+                        0,
+                        0
+                    ],
+                    [
+                        0,
+                        0
+                    ],
+                    [
+                        0,
+                        0
+                    ]
+                ],
+                "notes": "",
+                "reminder": ""
+            },
+            "results": [
+                {
+                    "sets": [
+                        [
+                            6,
+                            155
+                        ],
+                        [
+                            6,
+                            155
+                        ],
+                        [
+                            5,
+                            155
+                        ]
+                    ],
+                    "notes": "",
+                    "reminder": "",
+                    "date": 1690308315553
+                },
+                {
+                    "sets": [
+                        [
+                            6,
+                            155
+                        ],
+                        [
+                            6,
+                            155
+                        ],
+                        [
+                            6,
+                            155
+                        ]
+                    ],
+                    "notes": "",
+                    "reminder": "",
+                    "date": 1690409313513
+                },
+                {
+                    "sets": [
+                        [
+                            6,
+                            165
+                        ],
+                        [
+                            6,
+                            155
+                        ],
+                        [
+                            6,
+                            155
+                        ]
+                    ],
+                    "notes": "",
+                    "reminder": "",
+                    "date": 1690480257738
+                }
+            ]
+        },
+        {
+            "name": "Decline bench",
+            "attributes": [
+                "chest",
+                "shoulder",
+                "primary"
+            ],
+            "target": {
+                "sets": [
+                    [
+                        0,
+                        0
+                    ],
+                    [
+                        0,
+                        0
+                    ],
+                    [
+                        0,
+                        0
+                    ]
+                ],
+                "notes": "",
+                "reminder": ""
+            },
+            "results": []
+        },
+        {
+            "name": "Flat Dumbbell press",
+            "attributes": [
+                "chest",
+                "shoulder",
+                "primary"
+            ],
+            "target": {
+                "sets": [
+                    [
+                        0,
+                        0
+                    ],
+                    [
+                        0,
+                        0
+                    ],
+                    [
+                        0,
+                        0
+                    ]
+                ],
+                "notes": "",
+                "reminder": ""
+            },
+            "results": []
+        },
+        {
+            "name": "Incline Dumbbell press",
+            "attributes": [
+                "chest",
+                "shoulder",
+                "primary"
+            ],
+            "target": {
+                "sets": [
+                    [
+                        0,
+                        0
+                    ],
+                    [
+                        0,
+                        0
+                    ],
+                    [
+                        0,
+                        0
+                    ]
+                ],
+                "notes": "",
+                "reminder": ""
+            },
+            "results": []
+        },
+        {
+            "name": "Dumbbell fly",
+            "attributes": [
+                "chest",
+                "secondary"
+            ],
+            "target": {
+                "sets": [
+                    [
+                        0,
+                        0
+                    ],
+                    [
+                        0,
+                        0
+                    ],
+                    [
+                        0,
+                        0
+                    ]
+                ],
+                "notes": "",
+                "reminder": ""
+            },
+            "results": []
+        },
+        {
+            "name": "Cable fly",
+            "attributes": [
+                "chest",
+                "secondary"
+            ],
+            "target": {
+                "sets": [
+                    [
+                        0,
+                        0
+                    ],
+                    [
+                        0,
+                        0
+                    ],
+                    [
+                        0,
+                        0
+                    ]
+                ],
+                "notes": "",
+                "reminder": ""
+            },
+            "results": []
+        },
+        {
+            "name": "Dip",
+            "attributes": [
+                "chest",
+                "tricep",
+                "primary"
+            ],
+            "target": {
+                "sets": [
+                    [
+                        0,
+                        0
+                    ],
+                    [
+                        0,
+                        0
+                    ],
+                    [
+                        0,
+                        0
+                    ]
+                ],
+                "notes": "",
+                "reminder": ""
+            },
+            "results": []
+        },
+        {
+            "name": "Barbell overhead press",
+            "attributes": [
+                "shoulder",
+                "primary"
+            ],
+            "target": {
+                "sets": [
+                    [
+                        0,
+                        0
+                    ],
+                    [
+                        0,
+                        0
+                    ],
+                    [
+                        0,
+                        0
+                    ]
+                ],
+                "notes": "",
+                "reminder": ""
+            },
+            "results": []
+        },
+        {
+            "name": "Dumbbell overhead press",
+            "attributes": [
+                "shoulder",
+                "primary"
+            ],
+            "target": {
+                "sets": [
+                    [
+                        0,
+                        0
+                    ],
+                    [
+                        0,
+                        0
+                    ],
+                    [
+                        0,
+                        0
+                    ]
+                ],
+                "notes": "",
+                "reminder": ""
+            },
+            "results": []
+        },
+        {
+            "name": "Cable lateral raise",
+            "attributes": [
+                "side delt",
+                "secondary"
+            ],
+            "target": {
+                "sets": [
+                    [
+                        0,
+                        0
+                    ],
+                    [
+                        0,
+                        0
+                    ],
+                    [
+                        0,
+                        0
+                    ]
+                ],
+                "notes": "",
+                "reminder": ""
+            },
+            "results": []
+        },
+        {
+            "name": "Dumbbell lateral raise",
+            "attributes": [
+                "side delt",
+                "primary"
+            ],
+            "target": {
+                "sets": [
+                    [
+                        0,
+                        0
+                    ],
+                    [
+                        0,
+                        0
+                    ],
+                    [
+                        0,
+                        0
+                    ]
+                ],
+                "notes": "",
+                "reminder": ""
+            },
+            "results": []
+        },
+        {
+            "name": "Dumbbell front raise",
+            "attributes": [
+                "front delt",
+                "secondary"
+            ],
+            "target": {
+                "sets": [
+                    [
+                        0,
+                        0
+                    ],
+                    [
+                        0,
+                        0
+                    ],
+                    [
+                        0,
+                        0
+                    ]
+                ],
+                "notes": "",
+                "reminder": ""
+            },
+            "results": []
+        },
+        {
+            "name": "Rear delt raise",
+            "attributes": [
+                "rear delt",
+                "primary"
+            ],
+            "target": {
+                "sets": [
+                    [
+                        0,
+                        0
+                    ],
+                    [
+                        0,
+                        0
+                    ],
+                    [
+                        0,
+                        0
+                    ]
+                ],
+                "notes": "",
+                "reminder": ""
+            },
+            "results": []
+        },
+        {
+            "name": "Upright row",
+            "attributes": [
+                "front delt",
+                "side delt",
+                "secondary"
+            ],
+            "target": {
+                "sets": [
+                    [
+                        0,
+                        0
+                    ],
+                    [
+                        0,
+                        0
+                    ],
+                    [
+                        0,
+                        0
+                    ]
+                ],
+                "notes": "",
+                "reminder": ""
+            },
+            "results": []
+        },
+        {
+            "name": "Lat pulldown",
+            "attributes": [
+                "lat",
+                "secondary"
+            ],
+            "target": {
+                "sets": [
+                    [
+                        0,
+                        0
+                    ],
+                    [
+                        0,
+                        0
+                    ],
+                    [
+                        0,
+                        0
+                    ]
+                ],
+                "notes": "",
+                "reminder": ""
+            },
+            "results": []
+        },
+        {
+            "name": "Pullups",
+            "attributes": [
+                "lat",
+                "primary"
+            ],
+            "target": {
+                "sets": [
+                    [
+                        0,
+                        0
+                    ],
+                    [
+                        0,
+                        0
+                    ],
+                    [
+                        0,
+                        0
+                    ]
+                ],
+                "notes": "",
+                "reminder": ""
+            },
+            "results": []
+        },
+        {
+            "name": "Chinups",
+            "attributes": [
+                "lat",
+                "primary"
+            ],
+            "target": {
+                "sets": [
+                    [
+                        0,
+                        0
+                    ],
+                    [
+                        0,
+                        0
+                    ],
+                    [
+                        0,
+                        0
+                    ]
+                ],
+                "notes": "",
+                "reminder": ""
+            },
+            "results": []
+        },
+        {
+            "name": "Lat Cable pushdown",
+            "attributes": [
+                "lat",
+                "secondary"
+            ],
+            "target": {
+                "sets": [
+                    [
+                        0,
+                        0
+                    ],
+                    [
+                        0,
+                        0
+                    ],
+                    [
+                        0,
+                        0
+                    ]
+                ],
+                "notes": "",
+                "reminder": ""
+            },
+            "results": []
+        },
+        {
+            "name": "T-bar row",
+            "attributes": [
+                "rhomboid",
+                "primary"
+            ],
+            "target": {
+                "sets": [
+                    [
+                        0,
+                        0
+                    ],
+                    [
+                        0,
+                        0
+                    ],
+                    [
+                        0,
+                        0
+                    ]
+                ],
+                "notes": "",
+                "reminder": ""
+            },
+            "results": []
+        },
+        {
+            "name": "Row machine",
+            "attributes": [
+                "rhomboid",
+                "primary",
+                "secondary"
+            ],
+            "target": {
+                "sets": [
+                    [
+                        0,
+                        0
+                    ],
+                    [
+                        0,
+                        0
+                    ],
+                    [
+                        0,
+                        0
+                    ]
+                ],
+                "notes": "",
+                "reminder": ""
+            },
+            "results": []
+        },
+        {
+            "name": "Bent over row",
+            "attributes": [
+                "rhomboid",
+                "primary"
+            ],
+            "target": {
+                "sets": [
+                    [
+                        0,
+                        0
+                    ],
+                    [
+                        0,
+                        0
+                    ],
+                    [
+                        0,
+                        0
+                    ]
+                ],
+                "notes": "",
+                "reminder": ""
+            },
+            "results": []
+        },
+        {
+            "name": "Kneeling row",
+            "attributes": [
+                "rhomboid",
+                "secondary"
+            ],
+            "target": {
+                "sets": [
+                    [
+                        0,
+                        0
+                    ],
+                    [
+                        0,
+                        0
+                    ],
+                    [
+                        0,
+                        0
+                    ]
+                ],
+                "notes": "",
+                "reminder": ""
+            },
+            "results": []
+        },
+        {
+            "name": "Kroc row",
+            "attributes": [
+                "rhomboid",
+                "primary",
+                "secondary"
+            ],
+            "target": {
+                "sets": [
+                    [
+                        0,
+                        0
+                    ],
+                    [
+                        0,
+                        0
+                    ],
+                    [
+                        0,
+                        0
+                    ]
+                ],
+                "notes": "",
+                "reminder": ""
+            },
+            "results": []
+        },
+        {
+            "name": "Dumbbell shrug",
+            "attributes": [
+                "trap",
+                "primary"
+            ],
+            "target": {
+                "sets": [
+                    [
+                        0,
+                        0
+                    ],
+                    [
+                        0,
+                        0
+                    ],
+                    [
+                        0,
+                        0
+                    ]
+                ],
+                "notes": "",
+                "reminder": ""
+            },
+            "results": []
+        },
+        {
+            "name": "Barbell shrug",
+            "attributes": [
+                "trap",
+                "primary"
+            ],
+            "target": {
+                "sets": [
+                    [
+                        0,
+                        0
+                    ],
+                    [
+                        0,
+                        0
+                    ],
+                    [
+                        0,
+                        0
+                    ]
+                ],
+                "notes": "",
+                "reminder": ""
+            },
+            "results": []
+        },
+        {
+            "name": "Shrug machine",
+            "attributes": [
+                "trap",
+                "primary"
+            ],
+            "target": {
+                "sets": [
+                    [
+                        0,
+                        0
+                    ],
+                    [
+                        0,
+                        0
+                    ],
+                    [
+                        0,
+                        0
+                    ]
+                ],
+                "notes": "",
+                "reminder": ""
+            },
+            "results": []
+        },
+        {
+            "name": "Cable shrug",
+            "attributes": [
+                "trap",
+                "secondary"
+            ],
+            "target": {
+                "sets": [
+                    [
+                        0,
+                        0
+                    ],
+                    [
+                        0,
+                        0
+                    ],
+                    [
+                        0,
+                        0
+                    ]
+                ],
+                "notes": "",
+                "reminder": ""
+            },
+            "results": []
+        },
+        {
+            "name": "Trap fly",
+            "attributes": [
+                "trap",
+                "secondary"
+            ],
+            "target": {
+                "sets": [
+                    [
+                        0,
+                        0
+                    ],
+                    [
+                        0,
+                        0
+                    ],
+                    [
+                        0,
+                        0
+                    ]
+                ],
+                "notes": "",
+                "reminder": ""
+            },
+            "results": []
+        },
+        {
+            "name": "Hammer curl",
+            "attributes": [
+                "bicep",
+                "primary"
+            ],
+            "target": {
+                "sets": [
+                    [
+                        0,
+                        0
+                    ],
+                    [
+                        0,
+                        0
+                    ],
+                    [
+                        0,
+                        0
+                    ]
+                ],
+                "notes": "",
+                "reminder": ""
+            },
+            "results": []
+        },
+        {
+            "name": "Preacher curl",
+            "attributes": [
+                "bicep",
+                "primary",
+                "secondary"
+            ],
+            "target": {
+                "sets": [
+                    [
+                        0,
+                        0
+                    ],
+                    [
+                        0,
+                        0
+                    ],
+                    [
+                        0,
+                        0
+                    ]
+                ],
+                "notes": "",
+                "reminder": ""
+            },
+            "results": []
+        },
+        {
+            "name": "Dumbbell curl",
+            "attributes": [
+                "bicep",
+                "primary",
+                "secondary"
+            ],
+            "target": {
+                "sets": [
+                    [
+                        0,
+                        0
+                    ],
+                    [
+                        0,
+                        0
+                    ],
+                    [
+                        0,
+                        0
+                    ]
+                ],
+                "notes": "",
+                "reminder": ""
+            },
+            "results": []
+        },
+        {
+            "name": "Barbell curl",
+            "attributes": [
+                "bicep",
+                "primary"
+            ],
+            "target": {
+                "sets": [
+                    [
+                        0,
+                        0
+                    ],
+                    [
+                        0,
+                        0
+                    ],
+                    [
+                        0,
+                        0
+                    ]
+                ],
+                "notes": "",
+                "reminder": ""
+            },
+            "results": []
+        },
+        {
+            "name": "Incline dumbbell curl",
+            "attributes": [
+                "bicep",
+                "secondary"
+            ],
+            "target": {
+                "sets": [
+                    [
+                        0,
+                        0
+                    ],
+                    [
+                        0,
+                        0
+                    ],
+                    [
+                        0,
+                        0
+                    ]
+                ],
+                "notes": "",
+                "reminder": ""
+            },
+            "results": []
+        },
+        {
+            "name": "Concentration curl",
+            "attributes": [
+                "bicep",
+                "secondary"
+            ],
+            "target": {
+                "sets": [
+                    [
+                        0,
+                        0
+                    ],
+                    [
+                        0,
+                        0
+                    ],
+                    [
+                        0,
+                        0
+                    ]
+                ],
+                "notes": "",
+                "reminder": ""
+            },
+            "results": []
+        },
+        {
+            "name": "Drag curl",
+            "attributes": [
+                "bicep",
+                "secondary"
+            ],
+            "target": {
+                "sets": [
+                    [
+                        0,
+                        0
+                    ],
+                    [
+                        0,
+                        0
+                    ],
+                    [
+                        0,
+                        0
+                    ]
+                ],
+                "notes": "",
+                "reminder": ""
+            },
+            "results": []
+        },
+        {
+            "name": "Skull crusher",
+            "attributes": [
+                "tricep",
+                "primary",
+                "secondary"
+            ],
+            "target": {
+                "sets": [
+                    [
+                        0,
+                        0
+                    ],
+                    [
+                        0,
+                        0
+                    ],
+                    [
+                        0,
+                        0
+                    ]
+                ],
+                "notes": "",
+                "reminder": ""
+            },
+            "results": []
+        },
+        {
+            "name": "Close-grip bench",
+            "attributes": [
+                "tricep",
+                "primary"
+            ],
+            "target": {
+                "sets": [
+                    [
+                        0,
+                        0
+                    ],
+                    [
+                        0,
+                        0
+                    ],
+                    [
+                        0,
+                        0
+                    ]
+                ],
+                "notes": "",
+                "reminder": ""
+            },
+            "results": []
+        },
+        {
+            "name": "Overhead extension",
+            "attributes": [
+                "tricep",
+                "secondary"
+            ],
+            "target": {
+                "sets": [
+                    [
+                        0,
+                        0
+                    ],
+                    [
+                        0,
+                        0
+                    ],
+                    [
+                        0,
+                        0
+                    ]
+                ],
+                "notes": "",
+                "reminder": ""
+            },
+            "results": []
+        },
+        {
+            "name": "Rope pulldown",
+            "attributes": [
+                "tricep",
+                "secondary"
+            ],
+            "target": {
+                "sets": [
+                    [
+                        0,
+                        0
+                    ],
+                    [
+                        0,
+                        0
+                    ],
+                    [
+                        0,
+                        0
+                    ]
+                ],
+                "notes": "",
+                "reminder": ""
+            },
+            "results": []
+        },
+        {
+            "name": "Tricep Cable pushdown",
+            "attributes": [
+                "tricep",
+                "primary",
+                "secondary"
+            ],
+            "target": {
+                "sets": [
+                    [
+                        0,
+                        0
+                    ],
+                    [
+                        0,
+                        0
+                    ],
+                    [
+                        0,
+                        0
+                    ]
+                ],
+                "notes": "",
+                "reminder": ""
+            },
+            "results": []
+        },
+        {
+            "name": "Kickback",
+            "attributes": [
+                "tricep",
+                "secondary"
+            ],
+            "target": {
+                "sets": [
+                    [
+                        0,
+                        0
+                    ],
+                    [
+                        0,
+                        0
+                    ],
+                    [
+                        0,
+                        0
+                    ]
+                ],
+                "notes": "",
+                "reminder": ""
+            },
+            "results": []
+        },
+        {
+            "name": "Wrist curl",
+            "attributes": [
+                "grip",
+                "primary"
+            ],
+            "target": {
+                "sets": [
+                    [
+                        0,
+                        0
+                    ],
+                    [
+                        0,
+                        0
+                    ],
+                    [
+                        0,
+                        0
+                    ]
+                ],
+                "notes": "",
+                "reminder": ""
+            },
+            "results": []
+        },
+        {
+            "name": "Reverse Wrist Curl",
+            "attributes": [
+                "grip",
+                "secondary"
+            ],
+            "target": {
+                "sets": [
+                    [
+                        0,
+                        0
+                    ],
+                    [
+                        0,
+                        0
+                    ],
+                    [
+                        0,
+                        0
+                    ]
+                ],
+                "notes": "",
+                "reminder": ""
+            },
+            "results": []
+        },
+        {
+            "name": "Barbell hold",
+            "attributes": [
+                "grip",
+                "primary"
+            ],
+            "target": {
+                "sets": [
+                    [
+                        0,
+                        0
+                    ],
+                    [
+                        0,
+                        0
+                    ],
+                    [
+                        0,
+                        0
+                    ]
+                ],
+                "notes": "",
+                "reminder": ""
+            },
+            "results": []
+        },
+        {
+            "name": "Face pull",
+            "attributes": [
+                "mobility",
+                "primary"
+            ],
+            "target": {
+                "sets": [
+                    [
+                        0,
+                        0
+                    ],
+                    [
+                        0,
+                        0
+                    ],
+                    [
+                        0,
+                        0
+                    ]
+                ],
+                "notes": "",
+                "reminder": ""
+            },
+            "results": []
+        },
+        {
+            "name": "Rotator cuff",
+            "attributes": [
+                "mobility",
+                "primary"
+            ],
+            "target": {
+                "sets": [
+                    [
+                        0,
+                        0
+                    ],
+                    [
+                        0,
+                        0
+                    ],
+                    [
+                        0,
+                        0
+                    ]
+                ],
+                "notes": "",
+                "reminder": ""
+            },
+            "results": [
+                {
+                    "sets": [
+                        [
+                            12,
+                            15
+                        ],
+                        [
+                            12,
+                            15
+                        ]
+                    ],
+                    "notes": "",
+                    "reminder": "",
+                    "date": 1690408262633
+                }
+            ]
+        },
+        {
+            "name": "Y raise",
+            "attributes": [
+                "mobility",
+                "secondary"
+            ],
+            "target": {
+                "sets": [
+                    [
+                        0,
+                        0
+                    ],
+                    [
+                        0,
+                        0
+                    ],
+                    [
+                        0,
+                        0
+                    ]
+                ],
+                "notes": "",
+                "reminder": ""
+            },
+            "results": []
+        },
+        {
+            "name": "Reverse fly",
+            "attributes": [
+                "mobility",
+                "secondary"
+            ],
+            "target": {
+                "sets": [
+                    [
+                        0,
+                        0
+                    ],
+                    [
+                        0,
+                        0
+                    ],
+                    [
+                        0,
+                        0
+                    ]
+                ],
+                "notes": "",
+                "reminder": ""
+            },
+            "results": []
+        },
+        {
+            "name": "Squat",
+            "attributes": [
+                "legs",
+                "primary"
+            ],
+            "target": {
+                "sets": [
+                    [
+                        0,
+                        0
+                    ],
+                    [
+                        0,
+                        0
+                    ],
+                    [
+                        0,
+                        0
+                    ]
+                ],
+                "notes": "",
+                "reminder": ""
+            },
+            "results": []
+        },
+        {
+            "name": "Front Squat",
+            "attributes": [
+                "legs",
+                "primary"
+            ],
+            "target": {
+                "sets": [
+                    [
+                        0,
+                        0
+                    ],
+                    [
+                        0,
+                        0
+                    ],
+                    [
+                        0,
+                        0
+                    ]
+                ],
+                "notes": "",
+                "reminder": ""
+            },
+            "results": []
+        },
+        {
+            "name": "Leg press",
+            "attributes": [
+                "legs",
+                "secondary"
+            ],
+            "target": {
+                "sets": [
+                    [
+                        0,
+                        0
+                    ],
+                    [
+                        0,
+                        0
+                    ],
+                    [
+                        0,
+                        0
+                    ]
+                ],
+                "notes": "",
+                "reminder": ""
+            },
+            "results": []
+        },
+        {
+            "name": "Lunge",
+            "attributes": [
+                "legs",
+                "secondary"
+            ],
+            "target": {
+                "sets": [
+                    [
+                        0,
+                        0
+                    ],
+                    [
+                        0,
+                        0
+                    ],
+                    [
+                        0,
+                        0
+                    ]
+                ],
+                "notes": "",
+                "reminder": ""
+            },
+            "results": []
+        },
+        {
+            "name": "Leg extension",
+            "attributes": [
+                "quad",
+                "secondary"
+            ],
+            "target": {
+                "sets": [
+                    [
+                        0,
+                        0
+                    ],
+                    [
+                        0,
+                        0
+                    ],
+                    [
+                        0,
+                        0
+                    ]
+                ],
+                "notes": "",
+                "reminder": ""
+            },
+            "results": []
+        },
+        {
+            "name": "Hamstring curl",
+            "attributes": [
+                "hamstring",
+                "secondary"
+            ],
+            "target": {
+                "sets": [
+                    [
+                        0,
+                        0
+                    ],
+                    [
+                        0,
+                        0
+                    ],
+                    [
+                        0,
+                        0
+                    ]
+                ],
+                "notes": "",
+                "reminder": ""
+            },
+            "results": []
+        },
+        {
+            "name": "Hack squat",
+            "attributes": [
+                "quad",
+                "secondary"
+            ],
+            "target": {
+                "sets": [
+                    [
+                        0,
+                        0
+                    ],
+                    [
+                        0,
+                        0
+                    ],
+                    [
+                        0,
+                        0
+                    ]
+                ],
+                "notes": "",
+                "reminder": ""
+            },
+            "results": []
+        },
+        {
+            "name": "Good morning",
+            "attributes": [
+                "hamstring",
+                "secondary"
+            ],
+            "target": {
+                "sets": [
+                    [
+                        0,
+                        0
+                    ],
+                    [
+                        0,
+                        0
+                    ],
+                    [
+                        0,
+                        0
+                    ]
+                ],
+                "notes": "",
+                "reminder": ""
+            },
+            "results": []
+        },
+        {
+            "name": "RDL",
+            "attributes": [
+                "hamstring",
+                "secondary"
+            ],
+            "target": {
+                "sets": [
+                    [
+                        0,
+                        0
+                    ],
+                    [
+                        0,
+                        0
+                    ],
+                    [
+                        0,
+                        0
+                    ]
+                ],
+                "notes": "",
+                "reminder": ""
+            },
+            "results": []
+        }
+    ],
+    "programs": [
+        {
+            "name": "Push-Pull-Legs",
+            "description": "Chest/Shoulders/Tricep, Back/Bicep, Legs",
+            "schedule": [
+                1,
+                3,
+                4,
+                0
+            ],
+            "startDate": 0
+        },
+        {
+            "name": "Arnold Split",
+            "description": "Chest/Back, Arms, Legs",
+            "schedule": [
+                1,
+                1,
+                1,
+                0
+            ],
+            "startDate": 0
+        }
+    ],
+    "workouts": [
+        {
+            "name": "Rest",
+            "exercises": []
+        },
+        {
+            "name": "Push Day 1",
             "exercises": [
                 {
-                    "name": "Flat bench",
-                    "attributes": ["chest", "shoulder", "primary"],
+                    "name": "Rotator cuff",
+                    "attributes": [
+                        "mobility",
+                        "primary"
+                    ],
                     "target": {
-                        "sets": [[0,0],[0,0],[0,0]],
+                        "sets": [
+                            [
+                                12,
+                                15
+                            ],
+                            [
+                                12,
+                                15
+                            ]
+                        ],
                         "notes": "",
                         "reminder": ""
                     },
-                    "results": []
+                    "results": [
+                        {
+                            "sets": [
+                                [
+                                    12,
+                                    15
+                                ],
+                                [
+                                    12,
+                                    15
+                                ]
+                            ],
+                            "notes": "",
+                            "reminder": "",
+                            "date": 1690408262633
+                        }
+                    ]
                 },
                 {
                     "name": "Incline bench",
-                    "attributes": ["chest", "shoulder", "primary"],
+                    "attributes": [
+                        "chest",
+                        "shoulder",
+                        "primary"
+                    ],
                     "target": {
-                        "sets": [[0,0],[0,0],[0,0]],
+                        "sets": [
+                            [
+                                6,
+                                155
+                            ],
+                            [
+                                6,
+                                155
+                            ],
+                            [
+                                6,
+                                155
+                            ]
+                        ],
                         "notes": "",
                         "reminder": ""
                     },
-                    "results": []
-                },
-                {
-                    "name": "Decline bench",
-                    "attributes": ["chest", "shoulder", "primary"],
-                    "target": {
-                        "sets": [[0,0],[0,0],[0,0]],
-                        "notes": "",
-                        "reminder": ""
-                    },
-                    "results": []
-                },
-                {
-                    "name": "Flat Dumbbell press",
-                    "attributes": ["chest", "shoulder", "primary"],
-                    "target": {
-                        "sets": [[0,0],[0,0],[0,0]],
-                        "notes": "",
-                        "reminder": ""
-                    },
-                    "results": []
-                },
-                {
-                    "name": "Incline Dumbbell press",
-                    "attributes": ["chest", "shoulder", "primary"],
-                    "target": {
-                        "sets": [[0,0],[0,0],[0,0]],
-                        "notes": "",
-                        "reminder": ""
-                    },
-                    "results": []
-                },
-                {
-                    "name": "Dumbbell fly",
-                    "attributes": ["chest", "secondary"],
-                    "target": {
-                        "sets": [[0,0],[0,0],[0,0]],
-                        "notes": "",
-                        "reminder": ""
-                    },
-                    "results": []
+                    "results": [
+                        {
+                            "sets": [
+                                [
+                                    6,
+                                    155
+                                ],
+                                [
+                                    6,
+                                    155
+                                ],
+                                [
+                                    5,
+                                    155
+                                ]
+                            ],
+                            "notes": "",
+                            "reminder": "",
+                            "date": 1690308315553
+                        },
+                        {
+                            "sets": [
+                                [
+                                    6,
+                                    155
+                                ],
+                                [
+                                    6,
+                                    155
+                                ],
+                                [
+                                    6,
+                                    155
+                                ]
+                            ],
+                            "notes": "",
+                            "reminder": "",
+                            "date": 1690409313513
+                        },
+                        {
+                            "sets": [
+                                [
+                                    6,
+                                    165
+                                ],
+                                [
+                                    6,
+                                    155
+                                ],
+                                [
+                                    6,
+                                    155
+                                ]
+                            ],
+                            "notes": "",
+                            "reminder": "",
+                            "date": 1690480257738
+                        }
+                    ]
                 },
                 {
                     "name": "Cable fly",
-                    "attributes": ["chest", "secondary"],
+                    "attributes": [
+                        "chest",
+                        "secondary"
+                    ],
                     "target": {
-                        "sets": [[0,0],[0,0],[0,0]],
-                        "notes": "",
-                        "reminder": ""
-                    },
-                    "results": []
-                },
-                {
-                    "name": "Dip",
-                    "attributes": ["chest", "tricep", "primary"],
-                    "target": {
-                        "sets": [[0,0],[0,0],[0,0]],
+                        "sets": [
+                            [
+                                0,
+                                0
+                            ],
+                            [
+                                0,
+                                0
+                            ],
+                            [
+                                0,
+                                0
+                            ]
+                        ],
                         "notes": "",
                         "reminder": ""
                     },
@@ -95,29 +1851,25 @@
                 },
                 {
                     "name": "Barbell overhead press",
-                    "attributes": ["shoulder", "primary"],
+                    "attributes": [
+                        "shoulder",
+                        "primary"
+                    ],
                     "target": {
-                        "sets": [[0,0],[0,0],[0,0]],
-                        "notes": "",
-                        "reminder": ""
-                    },
-                    "results": []
-                },
-                {
-                    "name": "Dumbbell overhead press",
-                    "attributes": ["shoulder", "primary"],
-                    "target": {
-                        "sets": [[0,0],[0,0],[0,0]],
-                        "notes": "",
-                        "reminder": ""
-                    },
-                    "results": []
-                },
-                {
-                    "name": "Cable lateral raise",
-                    "attributes": ["side delt", "secondary"],
-                    "target": {
-                        "sets": [[0,0],[0,0],[0,0]],
+                        "sets": [
+                            [
+                                0,
+                                0
+                            ],
+                            [
+                                0,
+                                0
+                            ],
+                            [
+                                0,
+                                0
+                            ]
+                        ],
                         "notes": "",
                         "reminder": ""
                     },
@@ -125,39 +1877,166 @@
                 },
                 {
                     "name": "Dumbbell lateral raise",
-                    "attributes": ["side delt", "primary"],
+                    "attributes": [
+                        "side delt",
+                        "primary"
+                    ],
                     "target": {
-                        "sets": [[0,0],[0,0],[0,0]],
+                        "sets": [
+                            [
+                                0,
+                                0
+                            ],
+                            [
+                                0,
+                                0
+                            ],
+                            [
+                                0,
+                                0
+                            ]
+                        ],
+                        "notes": "",
+                        "reminder": ""
+                    },
+                    "results": []
+                }
+            ]
+        },
+        {
+            "name": "Push Day 2",
+            "exercises": [
+                {
+                    "name": "Incline bench",
+                    "attributes": [
+                        "chest",
+                        "shoulder",
+                        "primary"
+                    ],
+                    "target": {
+                        "sets": [
+                            [
+                                0,
+                                0
+                            ],
+                            [
+                                0,
+                                0
+                            ],
+                            [
+                                0,
+                                0
+                            ]
+                        ],
                         "notes": "",
                         "reminder": ""
                     },
                     "results": []
                 },
                 {
-                    "name": "Dumbbell front raise",
-                    "attributes": ["front delt", "secondary"],
+                    "name": "Cable fly",
+                    "attributes": [
+                        "chest",
+                        "secondary"
+                    ],
                     "target": {
-                        "sets": [[0,0],[0,0],[0,0]],
+                        "sets": [
+                            [
+                                0,
+                                0
+                            ],
+                            [
+                                0,
+                                0
+                            ],
+                            [
+                                0,
+                                0
+                            ]
+                        ],
                         "notes": "",
                         "reminder": ""
                     },
                     "results": []
                 },
                 {
-                    "name": "Rear delt raise",
-                    "attributes": ["rear delt", "primary"],
+                    "name": "Barbell overhead press",
+                    "attributes": [
+                        "shoulder",
+                        "primary"
+                    ],
                     "target": {
-                        "sets": [[0,0],[0,0],[0,0]],
+                        "sets": [
+                            [
+                                0,
+                                0
+                            ],
+                            [
+                                0,
+                                0
+                            ],
+                            [
+                                0,
+                                0
+                            ]
+                        ],
                         "notes": "",
                         "reminder": ""
                     },
                     "results": []
                 },
                 {
-                    "name": "Upright row",
-                    "attributes": ["front delt", "side delt", "secondary"],
+                    "name": "Dumbbell lateral raise",
+                    "attributes": [
+                        "side delt",
+                        "primary"
+                    ],
                     "target": {
-                        "sets": [[0,0],[0,0],[0,0]],
+                        "sets": [
+                            [
+                                0,
+                                0
+                            ],
+                            [
+                                0,
+                                0
+                            ],
+                            [
+                                0,
+                                0
+                            ]
+                        ],
+                        "notes": "",
+                        "reminder": ""
+                    },
+                    "results": []
+                }
+            ]
+        },
+        {
+            "name": "Pull Day 1",
+            "exercises": [
+                {
+                    "name": "Pullups",
+                    "attributes": [
+                        "lat",
+                        "primary"
+                    ],
+                    "target": {
+                        "sets": [
+                            [
+                                0,
+                                0
+                            ],
+                            [
+                                0,
+                                0
+                            ],
+                            [
+                                0,
+                                0
+                            ]
+                        ],
                         "notes": "",
                         "reminder": ""
                     },
@@ -165,59 +2044,25 @@
                 },
                 {
                     "name": "Lat pulldown",
-                    "attributes": ["lat", "secondary"],
+                    "attributes": [
+                        "lat",
+                        "secondary"
+                    ],
                     "target": {
-                        "sets": [[0,0],[0,0],[0,0]],
-                        "notes": "",
-                        "reminder": ""
-                    },
-                    "results": []
-                },
-                {
-                    "name": "Pullups",
-                    "attributes": ["lat", "primary"],
-                    "target": {
-                        "sets": [[0,0],[0,0],[0,0]],
-                        "notes": "",
-                        "reminder": ""
-                    },
-                    "results": []
-                },
-                {
-                    "name": "Chinups",
-                    "attributes": ["lat", "primary"],
-                    "target": {
-                        "sets": [[0,0],[0,0],[0,0]],
-                        "notes": "",
-                        "reminder": ""
-                    },
-                    "results": []
-                },
-                {
-                    "name": "Lat Cable pushdown",
-                    "attributes": ["lat", "secondary"],
-                    "target": {
-                        "sets": [[0,0],[0,0],[0,0]],
-                        "notes": "",
-                        "reminder": ""
-                    },
-                    "results": []
-                },
-                {
-                    "name": "T-bar row",
-                    "attributes": ["rhomboid", "primary"],
-                    "target": {
-                        "sets": [[0,0],[0,0],[0,0]],
-                        "notes": "",
-                        "reminder": ""
-                    },
-                    "results": []
-                },
-                {
-                    "name": "Row machine",
-                    "attributes": ["rhomboid", "primary", "secondary"],
-                    "target": {
-                        "sets": [[0,0],[0,0],[0,0]],
+                        "sets": [
+                            [
+                                0,
+                                0
+                            ],
+                            [
+                                0,
+                                0
+                            ],
+                            [
+                                0,
+                                0
+                            ]
+                        ],
                         "notes": "",
                         "reminder": ""
                     },
@@ -225,109 +2070,25 @@
                 },
                 {
                     "name": "Bent over row",
-                    "attributes": ["rhomboid", "primary"],
+                    "attributes": [
+                        "rhomboid",
+                        "primary"
+                    ],
                     "target": {
-                        "sets": [[0,0],[0,0],[0,0]],
-                        "notes": "",
-                        "reminder": ""
-                    },
-                    "results": []
-                },
-                {
-                    "name": "Kneeling row",
-                    "attributes": ["rhomboid", "secondary"],
-                    "target": {
-                        "sets": [[0,0],[0,0],[0,0]],
-                        "notes": "",
-                        "reminder": ""
-                    },
-                    "results": []
-                },
-                {
-                    "name": "Kroc row",
-                    "attributes": ["rhomboid", "primary", "secondary"],
-                    "target": {
-                        "sets": [[0,0],[0,0],[0,0]],
-                        "notes": "",
-                        "reminder": ""
-                    },
-                    "results": []
-                },
-                {
-                    "name": "Dumbbell shrug",
-                    "attributes": ["trap", "primary"],
-                    "target": {
-                        "sets": [[0,0],[0,0],[0,0]],
-                        "notes": "",
-                        "reminder": ""
-                    },
-                    "results": []
-                },
-                {
-                    "name": "Barbell shrug",
-                    "attributes": ["trap", "primary"],
-                    "target": {
-                        "sets": [[0,0],[0,0],[0,0]],
-                        "notes": "",
-                        "reminder": ""
-                    },
-                    "results": []
-                },
-                {
-                    "name": "Shrug machine",
-                    "attributes": ["trap", "primary"],
-                    "target": {
-                        "sets": [[0,0],[0,0],[0,0]],
-                        "notes": "",
-                        "reminder": ""
-                    },
-                    "results": []
-                },
-                {
-                    "name": "Cable shrug",
-                    "attributes": ["trap", "secondary"],
-                    "target": {
-                        "sets": [[0,0],[0,0],[0,0]],
-                        "notes": "",
-                        "reminder": ""
-                    },
-                    "results": []
-                },
-                {
-                    "name": "Trap fly",
-                    "attributes": ["trap", "secondary"],
-                    "target": {
-                        "sets": [[0,0],[0,0],[0,0]],
-                        "notes": "",
-                        "reminder": ""
-                    },
-                    "results": []
-                },
-                {
-                    "name": "Hammer curl",
-                    "attributes": ["bicep", "primary"],
-                    "target": {
-                        "sets": [[0,0],[0,0],[0,0]],
-                        "notes": "",
-                        "reminder": ""
-                    },
-                    "results": []
-                },
-                {
-                    "name": "Preacher curl",
-                    "attributes": ["bicep", "primary", "secondary"],
-                    "target": {
-                        "sets": [[0,0],[0,0],[0,0]],
-                        "notes": "",
-                        "reminder": ""
-                    },
-                    "results": []
-                },
-                {
-                    "name": "Dumbbell curl",
-                    "attributes": ["bicep", "primary", "secondary"],
-                    "target": {
-                        "sets": [[0,0],[0,0],[0,0]],
+                        "sets": [
+                            [
+                                0,
+                                0
+                            ],
+                            [
+                                0,
+                                0
+                            ],
+                            [
+                                0,
+                                0
+                            ]
+                        ],
                         "notes": "",
                         "reminder": ""
                     },
@@ -335,189 +2096,56 @@
                 },
                 {
                     "name": "Barbell curl",
-                    "attributes": ["bicep", "primary"],
+                    "attributes": [
+                        "bicep",
+                        "primary"
+                    ],
                     "target": {
-                        "sets": [[0,0],[0,0],[0,0]],
+                        "sets": [
+                            [
+                                0,
+                                0
+                            ],
+                            [
+                                0,
+                                0
+                            ],
+                            [
+                                0,
+                                0
+                            ]
+                        ],
                         "notes": "",
                         "reminder": ""
                     },
                     "results": []
-                },
-                {
-                    "name": "Incline dumbbell curl",
-                    "attributes": ["bicep", "secondary"],
-                    "target": {
-                        "sets": [[0,0],[0,0],[0,0]],
-                        "notes": "",
-                        "reminder": ""
-                    },
-                    "results": []
-                },
-                {
-                    "name": "Concentration curl",
-                    "attributes": ["bicep", "secondary"],
-                    "target": {
-                        "sets": [[0,0],[0,0],[0,0]],
-                        "notes": "",
-                        "reminder": ""
-                    },
-                    "results": []
-                },
-                {
-                    "name": "Drag curl",
-                    "attributes": ["bicep", "secondary"],
-                    "target": {
-                        "sets": [[0,0],[0,0],[0,0]],
-                        "notes": "",
-                        "reminder": ""
-                    },
-                    "results": []
-                },
-                {
-                    "name": "Skull crusher",
-                    "attributes": ["tricep", "primary", "secondary"],
-                    "target": {
-                        "sets": [[0,0],[0,0],[0,0]],
-                        "notes": "",
-                        "reminder": ""
-                    },
-                    "results": []
-                },
-                {
-                    "name": "Close-grip bench",
-                    "attributes": ["tricep", "primary"],
-                    "target": {
-                        "sets": [[0,0],[0,0],[0,0]],
-                        "notes": "",
-                        "reminder": ""
-                    },
-                    "results": []
-                },
-                {
-                    "name": "Overhead extension",
-                    "attributes": ["tricep", "secondary"],
-                    "target": {
-                        "sets": [[0,0],[0,0],[0,0]],
-                        "notes": "",
-                        "reminder": ""
-                    },
-                    "results": []
-                },
-                {
-                    "name": "Rope pulldown",
-                    "attributes": ["tricep", "secondary"],
-                    "target": {
-                        "sets": [[0,0],[0,0],[0,0]],
-                        "notes": "",
-                        "reminder": ""
-                    },
-                    "results": []
-                },
-                {
-                    "name": "Tricep Cable pushdown",
-                    "attributes": ["tricep", "primary", "secondary"],
-                    "target": {
-                        "sets": [[0,0],[0,0],[0,0]],
-                        "notes": "",
-                        "reminder": ""
-                    },
-                    "results": []
-                },
-                {
-                    "name": "Kickback",
-                    "attributes": ["tricep", "secondary"],
-                    "target": {
-                        "sets": [[0,0],[0,0],[0,0]],
-                        "notes": "",
-                        "reminder": ""
-                    },
-                    "results": []
-                },
-                {
-                    "name": "Wrist curl",
-                    "attributes": ["grip", "primary"],
-                    "target": {
-                        "sets": [[0,0],[0,0],[0,0]],
-                        "notes": "",
-                        "reminder": ""
-                    },
-                    "results": []
-                },
-                {
-                    "name": "Reverse Wrist Curl",
-                    "attributes": ["grip", "secondary"],
-                    "target": {
-                        "sets": [[0,0],[0,0],[0,0]],
-                        "notes": "",
-                        "reminder": ""
-                    },
-                    "results": []
-                },
-                {
-                    "name": "Barbell hold",
-                    "attributes": ["grip", "primary"],
-                    "target": {
-                        "sets": [[0,0],[0,0],[0,0]],
-                        "notes": "",
-                        "reminder": ""
-                    },
-                    "results": []
-                },
-                {
-                    "name": "Face pull",
-                    "attributes": ["mobility", "primary"],
-                    "target": {
-                        "sets": [[0,0],[0,0],[0,0]],
-                        "notes": "",
-                        "reminder": ""
-                    },
-                    "results": []
-                },
-                {
-                    "name": "Rotator cuff",
-                    "attributes": ["mobility", "primary"],
-                    "target": {
-                        "sets": [[0,0],[0,0],[0,0]],
-                        "notes": "",
-                        "reminder": ""
-                    },
-                    "results": []
-                },
-                {
-                    "name": "Y raise",
-                    "attributes": ["mobility", "secondary"],
-                    "target": {
-                        "sets": [[0,0],[0,0],[0,0]],
-                        "notes": "",
-                        "reminder": ""
-                    },
-                    "results": []
-                },
-                {
-                    "name": "Reverse fly",
-                    "attributes": ["mobility", "secondary"],
-                    "target": {
-                        "sets": [[0,0],[0,0],[0,0]],
-                        "notes": "",
-                        "reminder": ""
-                    },
-                    "results": []
-                },
-                {
-                    "name": "Squat",
-                    "attributes": ["legs", "primary"],
-                    "target": {
-                        "sets": [[0,0],[0,0],[0,0]],
-                        "notes": "",
-                        "reminder": ""
-                    },
-                    "results": []
-                },
+                }
+            ]
+        },
+        {
+            "name": "Leg Day 1",
+            "exercises": [
                 {
                     "name": "Front Squat",
-                    "attributes": ["legs", "primary"],
+                    "attributes": [
+                        "legs",
+                        "primary"
+                    ],
                     "target": {
-                        "sets": [[0,0],[0,0],[0,0]],
+                        "sets": [
+                            [
+                                0,
+                                0
+                            ],
+                            [
+                                0,
+                                0
+                            ],
+                            [
+                                0,
+                                0
+                            ]
+                        ],
                         "notes": "",
                         "reminder": ""
                     },
@@ -525,19 +2153,25 @@
                 },
                 {
                     "name": "Leg press",
-                    "attributes": ["legs", "secondary"],
+                    "attributes": [
+                        "legs",
+                        "secondary"
+                    ],
                     "target": {
-                        "sets": [[0,0],[0,0],[0,0]],
-                        "notes": "",
-                        "reminder": ""
-                    },
-                    "results": []
-                },
-                {
-                    "name": "Lunge",
-                    "attributes": ["legs", "secondary"],
-                    "target": {
-                        "sets": [[0,0],[0,0],[0,0]],
+                        "sets": [
+                            [
+                                0,
+                                0
+                            ],
+                            [
+                                0,
+                                0
+                            ],
+                            [
+                                0,
+                                0
+                            ]
+                        ],
                         "notes": "",
                         "reminder": ""
                     },
@@ -545,9 +2179,25 @@
                 },
                 {
                     "name": "Leg extension",
-                    "attributes": ["quad", "secondary"],
+                    "attributes": [
+                        "quad",
+                        "secondary"
+                    ],
                     "target": {
-                        "sets": [[0,0],[0,0],[0,0]],
+                        "sets": [
+                            [
+                                0,
+                                0
+                            ],
+                            [
+                                0,
+                                0
+                            ],
+                            [
+                                0,
+                                0
+                            ]
+                        ],
                         "notes": "",
                         "reminder": ""
                     },
@@ -555,390 +2205,361 @@
                 },
                 {
                     "name": "Hamstring curl",
-                    "attributes": ["hamstring", "secondary"],
-                    "target": {
-                        "sets": [[0,0],[0,0],[0,0]],
-                        "notes": "",
-                        "reminder": ""
-                    },
-                    "results": []
-                },
-                {
-                    "name": "Hack squat",
-                    "attributes": ["quad", "secondary"],
-                    "target": {
-                        "sets": [[0,0],[0,0],[0,0]],
-                        "notes": "",
-                        "reminder": ""
-                    },
-                    "results": []
-                },
-                {
-                    "name": "Good morning",
-                    "attributes": ["hamstring", "secondary"],
-                    "target": {
-                        "sets": [[0,0],[0,0],[0,0]],
-                        "notes": "",
-                        "reminder": ""
-                    },
-                    "results": []
-                },
-                {
-                    "name": "RDL",
-                    "attributes": ["hamstring", "secondary"],
-                    "target": {
-                        "sets": [[0,0],[0,0],[0,0]],
-                        "notes": "",
-                        "reminder": ""
-                    },
-                    "results": []
-                }
-        ],
-            "programs": [
-                {
-                    "name": "Push-Pull-Legs",
-                    "description": "Chest/Shoulders/Tricep, Back/Bicep, Legs",
-                    "schedule": [
-                        1,
-                        3,
-                        4,
-                        0
+                    "attributes": [
+                        "hamstring",
+                        "secondary"
                     ],
-                    "startDate": 0
-                },
+                    "target": {
+                        "sets": [
+                            [
+                                0,
+                                0
+                            ],
+                            [
+                                0,
+                                0
+                            ],
+                            [
+                                0,
+                                0
+                            ]
+                        ],
+                        "notes": "",
+                        "reminder": ""
+                    },
+                    "results": []
+                }
+            ]
+        },
+        {
+            "name": "Arnold Day 1",
+            "exercises": [
                 {
-                    "name": "Arnold Split",
-                    "description": "Chest/Back, Arms, Legs",
-                    "schedule": [
-                        1,
-                        1,
-                        1,
-                        0
+                    "name": "Incline bench",
+                    "attributes": [
+                        "chest",
+                        "shoulder",
+                        "primary"
                     ],
-                    "startDate": 0
+                    "target": {
+                        "sets": [
+                            [
+                                0,
+                                0
+                            ],
+                            [
+                                0,
+                                0
+                            ],
+                            [
+                                0,
+                                0
+                            ]
+                        ],
+                        "notes": "",
+                        "reminder": ""
+                    },
+                    "results": []
+                },
+                {
+                    "name": "Cable fly",
+                    "attributes": [
+                        "chest",
+                        "secondary"
+                    ],
+                    "target": {
+                        "sets": [
+                            [
+                                0,
+                                0
+                            ],
+                            [
+                                0,
+                                0
+                            ],
+                            [
+                                0,
+                                0
+                            ]
+                        ],
+                        "notes": "",
+                        "reminder": ""
+                    },
+                    "results": []
+                },
+                {
+                    "name": "Barbell overhead press",
+                    "attributes": [
+                        "shoulder",
+                        "primary"
+                    ],
+                    "target": {
+                        "sets": [
+                            [
+                                0,
+                                0
+                            ],
+                            [
+                                0,
+                                0
+                            ],
+                            [
+                                0,
+                                0
+                            ]
+                        ],
+                        "notes": "",
+                        "reminder": ""
+                    },
+                    "results": []
+                },
+                {
+                    "name": "Dumbbell lateral raise",
+                    "attributes": [
+                        "side delt",
+                        "primary"
+                    ],
+                    "target": {
+                        "sets": [
+                            [
+                                0,
+                                0
+                            ],
+                            [
+                                0,
+                                0
+                            ],
+                            [
+                                0,
+                                0
+                            ]
+                        ],
+                        "notes": "",
+                        "reminder": ""
+                    },
+                    "results": []
                 }
-            ],
-            "workouts": [
+            ]
+        },
+        {
+            "name": "Arnold Day 2",
+            "exercises": [
                 {
-                    "name": "Rest",
-                    "exercises": []
+                    "name": "Pullups",
+                    "attributes": [
+                        "lat",
+                        "primary"
+                    ],
+                    "target": {
+                        "sets": [
+                            [
+                                0,
+                                0
+                            ],
+                            [
+                                0,
+                                0
+                            ],
+                            [
+                                0,
+                                0
+                            ]
+                        ],
+                        "notes": "",
+                        "reminder": ""
+                    },
+                    "results": []
                 },
                 {
-                    "name": "Push Day 1",
-                    "exercises": [
-                        {
-                            "name": "Incline bench",
-                            "attributes": ["chest", "shoulder", "primary"],
-                            "target": {
-                                "sets": [[0,0],[0,0],[0,0]],
-                                "notes": "",
-                                "reminder": ""
-                            },
-                            "results": []
-                        },
-                        {
-                            "name": "Cable fly",
-                            "attributes": ["chest", "secondary"],
-                            "target": {
-                                "sets": [[0,0],[0,0],[0,0]],
-                                "notes": "",
-                                "reminder": ""
-                            },
-                            "results": []
-                        },
-                        {
-                            "name": "Barbell overhead press",
-                            "attributes": ["shoulder", "primary"],
-                            "target": {
-                                "sets": [[0,0],[0,0],[0,0]],
-                                "notes": "",
-                                "reminder": ""
-                            },
-                            "results": []
-                        },
-                        {
-                            "name": "Dumbbell lateral raise",
-                            "attributes": ["side delt", "primary"],
-                            "target": {
-                                "sets": [[0,0],[0,0],[0,0]],
-                                "notes": "",
-                                "reminder": ""
-                            },
-                            "results": []
-                        }
-                    ]
+                    "name": "Lat pulldown",
+                    "attributes": [
+                        "lat",
+                        "secondary"
+                    ],
+                    "target": {
+                        "sets": [
+                            [
+                                0,
+                                0
+                            ],
+                            [
+                                0,
+                                0
+                            ],
+                            [
+                                0,
+                                0
+                            ]
+                        ],
+                        "notes": "",
+                        "reminder": ""
+                    },
+                    "results": []
                 },
                 {
-                    "name": "Push Day 2",
-                    "exercises": [
-                        {
-                            "name": "Incline bench",
-                            "attributes": ["chest", "shoulder", "primary"],
-                            "target": {
-                                "sets": [[0,0],[0,0],[0,0]],
-                                "notes": "",
-                                "reminder": ""
-                            },
-                            "results": []
-                        },
-                        {
-                            "name": "Cable fly",
-                            "attributes": ["chest", "secondary"],
-                            "target": {
-                                "sets": [[0,0],[0,0],[0,0]],
-                                "notes": "",
-                                "reminder": ""
-                            },
-                            "results": []
-                        },
-                        {
-                            "name": "Barbell overhead press",
-                            "attributes": ["shoulder", "primary"],
-                            "target": {
-                                "sets": [[0,0],[0,0],[0,0]],
-                                "notes": "",
-                                "reminder": ""
-                            },
-                            "results": []
-                        },
-                        {
-                            "name": "Dumbbell lateral raise",
-                            "attributes": ["side delt", "primary"],
-                            "target": {
-                                "sets": [[0,0],[0,0],[0,0]],
-                                "notes": "",
-                                "reminder": ""
-                            },
-                            "results": []
-                        }
-                    ]
+                    "name": "Bent over row",
+                    "attributes": [
+                        "rhomboid",
+                        "primary"
+                    ],
+                    "target": {
+                        "sets": [
+                            [
+                                0,
+                                0
+                            ],
+                            [
+                                0,
+                                0
+                            ],
+                            [
+                                0,
+                                0
+                            ]
+                        ],
+                        "notes": "",
+                        "reminder": ""
+                    },
+                    "results": []
                 },
                 {
-                    "name": "Pull Day 1",
-                    "exercises": [
-                        {
-                            "name": "Pullups",
-                            "attributes": ["lat", "primary"],
-                            "target": {
-                                "sets": [[0,0],[0,0],[0,0]],
-                                "notes": "",
-                                "reminder": ""
-                            },
-                            "results": []
-                        },
-                        {
-                            "name": "Lat pulldown",
-                            "attributes": ["lat", "secondary"],
-                            "target": {
-                                "sets": [[0,0],[0,0],[0,0]],
-                                "notes": "",
-                                "reminder": ""
-                            },
-                            "results": []
-                        },
-                        {
-                            "name": "Bent over row",
-                            "attributes": ["rhomboid", "primary"],
-                            "target": {
-                                "sets": [[0,0],[0,0],[0,0]],
-                                "notes": "",
-                                "reminder": ""
-                            },
-                            "results": []
-                        },
-                        {
-                            "name": "Barbell curl",
-                            "attributes": ["bicep", "primary"],
-                            "target": {
-                                "sets": [[0,0],[0,0],[0,0]],
-                                "notes": "",
-                                "reminder": ""
-                            },
-                            "results": []
-                        }
-                    ]
-                },
-                {
-                    "name": "Leg Day 1",
-                    "exercises": [
-                        {
-                            "name": "Front Squat",
-                            "attributes": ["legs", "primary"],
-                            "target": {
-                                "sets": [[0,0],[0,0],[0,0]],
-                                "notes": "",
-                                "reminder": ""
-                            },
-                            "results": []
-                        },
-                        {
-                            "name": "Leg press",
-                            "attributes": ["legs", "secondary"],
-                            "target": {
-                                "sets": [[0,0],[0,0],[0,0]],
-                                "notes": "",
-                                "reminder": ""
-                            },
-                            "results": []
-                        },
-                        {
-                            "name": "Leg extension",
-                            "attributes": ["quad", "secondary"],
-                            "target": {
-                                "sets": [[0,0],[0,0],[0,0]],
-                                "notes": "",
-                                "reminder": ""
-                            },
-                            "results": []
-                        },
-                        {
-                            "name": "Hamstring curl",
-                            "attributes": ["hamstring", "secondary"],
-                            "target": {
-                                "sets": [[0,0],[0,0],[0,0]],
-                                "notes": "",
-                                "reminder": ""
-                            },
-                            "results": []
-                        }
-                    ]
-                },
-                {
-                    "name": "Arnold Day 1",
-                    "exercises": [
-                        {
-                            "name": "Incline bench",
-                            "attributes": ["chest", "shoulder", "primary"],
-                            "target": {
-                                "sets": [[0,0],[0,0],[0,0]],
-                                "notes": "",
-                                "reminder": ""
-                            },
-                            "results": []
-                        },
-                        {
-                            "name": "Cable fly",
-                            "attributes": ["chest", "secondary"],
-                            "target": {
-                                "sets": [[0,0],[0,0],[0,0]],
-                                "notes": "",
-                                "reminder": ""
-                            },
-                            "results": []
-                        },
-                        {
-                            "name": "Barbell overhead press",
-                            "attributes": ["shoulder", "primary"],
-                            "target": {
-                                "sets": [[0,0],[0,0],[0,0]],
-                                "notes": "",
-                                "reminder": ""
-                            },
-                            "results": []
-                        },
-                        {
-                            "name": "Dumbbell lateral raise",
-                            "attributes": ["side delt", "primary"],
-                            "target": {
-                                "sets": [[0,0],[0,0],[0,0]],
-                                "notes": "",
-                                "reminder": ""
-                            },
-                            "results": []
-                        }
-                    ]
-                },
-                {
-                    "name": "Arnold Day 2",
-                    "exercises": [
-                        {
-                            "name": "Pullups",
-                            "attributes": ["lat", "primary"],
-                            "target": {
-                                "sets": [[0,0],[0,0],[0,0]],
-                                "notes": "",
-                                "reminder": ""
-                            },
-                            "results": []
-                        },
-                        {
-                            "name": "Lat pulldown",
-                            "attributes": ["lat", "secondary"],
-                            "target": {
-                                "sets": [[0,0],[0,0],[0,0]],
-                                "notes": "",
-                                "reminder": ""
-                            },
-                            "results": []
-                        },
-                        {
-                            "name": "Bent over row",
-                            "attributes": ["rhomboid", "primary"],
-                            "target": {
-                                "sets": [[0,0],[0,0],[0,0]],
-                                "notes": "",
-                                "reminder": ""
-                            },
-                            "results": []
-                        },
-                        {
-                            "name": "Barbell curl",
-                            "attributes": ["bicep", "primary"],
-                            "target": {
-                                "sets": [[0,0],[0,0],[0,0]],
-                                "notes": "",
-                                "reminder": ""
-                            },
-                            "results": []
-                        }
-                    ]
-                },
-                {
-                    "name": "Arnold Day 3",
-                    "exercises": [
-                        {
-                            "name": "Front Squat",
-                            "attributes": ["legs", "primary"],
-                            "target": {
-                                "sets": [[0,0],[0,0],[0,0]],
-                                "notes": "",
-                                "reminder": ""
-                            },
-                            "results": []
-                        },
-                        {
-                            "name": "Leg press",
-                            "attributes": ["legs", "secondary"],
-                            "target": {
-                                "sets": [[0,0],[0,0],[0,0]],
-                                "notes": "",
-                                "reminder": ""
-                            },
-                            "results": []
-                        },
-                        {
-                            "name": "Leg extension",
-                            "attributes": ["quad", "secondary"],
-                            "target": {
-                                "sets": [[0,0],[0,0],[0,0]],
-                                "notes": "",
-                                "reminder": ""
-                            },
-                            "results": []
-                        },
-                        {
-                            "name": "Hamstring curl",
-                            "attributes": ["hamstring", "secondary"],
-                            "target": {
-                                "sets": [[0,0],[0,0],[0,0]],
-                                "notes": "",
-                                "reminder": ""
-                            },
-                            "results": []
-                        }
-                    ]
+                    "name": "Barbell curl",
+                    "attributes": [
+                        "bicep",
+                        "primary"
+                    ],
+                    "target": {
+                        "sets": [
+                            [
+                                0,
+                                0
+                            ],
+                            [
+                                0,
+                                0
+                            ],
+                            [
+                                0,
+                                0
+                            ]
+                        ],
+                        "notes": "",
+                        "reminder": ""
+                    },
+                    "results": []
                 }
-            ],
-            "currentProgram": 0,
-            "currentDay": 0
+            ]
+        },
+        {
+            "name": "Arnold Day 3",
+            "exercises": [
+                {
+                    "name": "Front Squat",
+                    "attributes": [
+                        "legs",
+                        "primary"
+                    ],
+                    "target": {
+                        "sets": [
+                            [
+                                0,
+                                0
+                            ],
+                            [
+                                0,
+                                0
+                            ],
+                            [
+                                0,
+                                0
+                            ]
+                        ],
+                        "notes": "",
+                        "reminder": ""
+                    },
+                    "results": []
+                },
+                {
+                    "name": "Leg press",
+                    "attributes": [
+                        "legs",
+                        "secondary"
+                    ],
+                    "target": {
+                        "sets": [
+                            [
+                                0,
+                                0
+                            ],
+                            [
+                                0,
+                                0
+                            ],
+                            [
+                                0,
+                                0
+                            ]
+                        ],
+                        "notes": "",
+                        "reminder": ""
+                    },
+                    "results": []
+                },
+                {
+                    "name": "Leg extension",
+                    "attributes": [
+                        "quad",
+                        "secondary"
+                    ],
+                    "target": {
+                        "sets": [
+                            [
+                                0,
+                                0
+                            ],
+                            [
+                                0,
+                                0
+                            ],
+                            [
+                                0,
+                                0
+                            ]
+                        ],
+                        "notes": "",
+                        "reminder": ""
+                    },
+                    "results": []
+                },
+                {
+                    "name": "Hamstring curl",
+                    "attributes": [
+                        "hamstring",
+                        "secondary"
+                    ],
+                    "target": {
+                        "sets": [
+                            [
+                                0,
+                                0
+                            ],
+                            [
+                                0,
+                                0
+                            ],
+                            [
+                                0,
+                                0
+                            ]
+                        ],
+                        "notes": "",
+                        "reminder": ""
+                    },
+                    "results": []
+                }
+            ]
         }
+    ],
+    "currentProgram": 0,
+    "currentDay": 0
+}

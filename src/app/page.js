@@ -209,7 +209,7 @@ export default function Home() {
             <p className='font-semibold text-lg my-2'>{currentWorkout.name}</p>
           </div>
           <p className='text-sm text-gray-600'>from {currentProgram.name}</p>
-          <div className='border border-gray-300 rounded-md pt-1 mt-4 bg-stone-50'>
+          <div className='border border-gray-300 rounded-md pt-1 mt-4 mb-4 bg-stone-50 shadow-lg'>
               <div className='text-sm font-semibold grid grid-cols-7 border-b-2'>
                   <div className='p-2 col-span-3 ml-[10px]'>Exercise</div>
                   <div className='p-2'>Sets</div>
@@ -240,7 +240,7 @@ export default function Home() {
                                   <div className='p-2' onClick={()=>setEditing(id)}>{item.target.sets.length}</div>
                                   <div className='p-2' onClick={()=>setEditing(id)}>{item.target.sets[0][0]}</div>
                                   <div className='p-2' onClick={()=>setEditing(id)}>{item.target.sets[0][1]}</div>
-                                  <div className='p-2 text-red-500 block ml-auto' onClick={()=>setDeleting(id)}><BsTrash size={15} /></div>
+                                  <div className='p-2 text-red-500 block ml-auto cursor-pointer' onClick={()=>setDeleting(id)}><BsTrash size={15} /></div>
                             </div>)
                             }
                           </Draggable>
@@ -250,11 +250,12 @@ export default function Home() {
                   )}
                 </Droppable>
               </DragDropContext>
-              <div className='flex justify-between px-3 py-2 items-center'>
+              <div className='flex justify-between px-3 py-2 items-center bg-neutral-200 bg-opacity-80'>
                 <p>Add Exercise</p>
-                <select className='border border-gray-400 rounded-md p-1'
-                  onChange={(e)=>AddExercise(e)}
+                <select className='border border-gray-400 rounded-md p-1 bg-stone-50'
+                  onChange={(e)=>AddExercise(e)} defaultValue=''
                 >
+                  <option value='' disabled>Select Exercise</option>
                   {exercises.map((ex,id)=>
                       <option value={id} key={id}>{ex.name}</option>
                   )}
@@ -306,7 +307,7 @@ export default function Home() {
         { currentWorkout.exercises.length > 0 && deleting !== null ? 
           <Dialog open={deleting !== null} onClose={()=>setDeleting(null)} maxWidth="sm" fullWidth>
               <p className='font-semibold text-lg px-3 py-3'>Remove exercise</p>
-              <div className='grid grid-cols-2 px-3 py-3 gap-3'>
+              <div className='px-3 py-3'>
                 <p className='text-md'>Are you sure you want to remove {currentWorkout.exercises[deleting].name}?</p>
               </div>
               <div className='flex justify-end px-3 py-3 gap-3'>
