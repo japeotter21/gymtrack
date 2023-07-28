@@ -105,11 +105,11 @@ export default function Stats() {
             { current !== null ?
                 <>
                     <div className='h-[50vh] w-full lg:w-3/4 mb-2 overflow-x-auto overflow-y-hidden'>
-                        <p className='mx-auto w-max'>Projected 1-Rep Max</p>
+                        <p className='mx-auto w-max'>Projected 1-Rep Max (lbs)</p>
                         <div className={`w-${chartData.length > 10 ? '[1000px]': 'w-full lg:w-3/4'} h-[50vh] block mx-auto`}>
                                 <ResponsiveLine
                                     data={data}
-                                    margin={{ top: 20, right: 50, bottom: 50, left: 50 }}
+                                    margin={{ top: 20, right: 50, bottom: 50, left: 40 }}
                                     xScale={{ type: 'point' }}
                                     yScale={{
                                         type: 'linear',
@@ -131,12 +131,8 @@ export default function Stats() {
                                     }}
                                     colors={{ scheme: 'category10' }}
                                     axisLeft={{
-                                        tickSize: 5,
-                                        tickPadding: 5,
-                                        tickRotation: 0,
-                                        legend: 'Weight',
-                                        legendOffset: -40,
-                                        legendPosition: 'middle'
+                                        tickSize: 0,
+                                        tickPadding: 20,
                                     }}
                                     isInteractive={false}
                                     pointSize={3}
@@ -154,8 +150,8 @@ export default function Stats() {
                         <p>{current.name}</p>
                         <div className='divide-y py-1'>
                             <div className='grid grid-cols-5'>
-                                <p className='col-span-1 text-gray-400'>Date</p>
-                                <p className='col-span-4 text-gray-400'>Results</p>
+                                <p className='col-span-1 text-gray-400 text-sm'>Date</p>
+                                <p className='col-span-4 text-gray-400 text-sm'>Results</p>
                             </div>
                             { current.results.slice(0).reverse().map((item,id)=>
                                 <div key={id} className='grid grid-cols-5 items-center'>

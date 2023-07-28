@@ -1,12 +1,15 @@
 "use client"
 import React, { useState, useEffect } from 'react'
 import Image from 'next/image'
-import { Avatar, Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material'
+import { Avatar, Dialog } from '@mui/material'
 import { BsPencil, BsThreeDotsVertical, BsTrash } from 'react-icons/bs'
 import axios from 'axios'
 import Pagenav from './components/Pagenav'
 import Link from 'next/link'
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd'
+import PostExercise from './components/EditWorkout'
+import { DeleteExercise } from './components/EditWorkout'
+import { RiDraggable } from 'react-icons/ri'
 
 export default function Home() {
   const [day, setDay] = useState(0)
@@ -19,7 +22,6 @@ export default function Home() {
   const [currentDay, setCurrentDay] = useState(0)
   const [programs, setPrograms] = useState([])
   const [exercises, setExercises] = useState([])
-  const [deleting, setDeleting] = useState(null)
   const [editing, setEditing] = useState(null)
   const [editSets, setEditSets] = useState(0)
   const [editReps, setEditReps] = useState(0)
@@ -99,42 +101,6 @@ export default function Home() {
     })
     console.log(postObj)
   }
-
-  function HandleDelete() {
-    const postObj = [...currentWorkout.exercises]
-    postObj.splice(deleting, 1)
-    axios.post('/api/workouts',postObj, {params:{workout: currentWorkoutIndex, user:profile.username}})
-    .then(res=>{
-      axios.get('/api/user')
-      .then(r=>{
-          const currentIndex = r.data.documents[0].currentProgram
-          const dayIndex = r.data.documents[0].currentDay
-          const workoutIndex = r.data.documents[0].programs[currentIndex].schedule[dayIndex]
-          setCurrentWorkoutIndex(workoutIndex)
-          setCurrentWorkout(r.data.documents[0].workouts[workoutIndex])
-          setDeleting(null)
-      })
-    })
-  }
-
-  function AddExercise(e) {
-    const newExercise = exercises[e.target.value]
-    const newWorkout = currentWorkout.exercises
-    newWorkout.push(newExercise)
-    const postObj = newWorkout
-    axios.post('/api/workouts',postObj, {params:{workout: currentWorkoutIndex, user:profile.username}})
-    .then(res=>{
-      axios.get('/api/user')
-      .then(r=>{
-          const currentIndex = r.data.documents[0].currentProgram
-          const dayIndex = r.data.documents[0].currentDay
-          const workoutIndex = r.data.documents[0].programs[currentIndex].schedule[dayIndex]
-          setCurrentWorkoutIndex(workoutIndex)
-          setCurrentWorkout(r.data.documents[0].workouts[workoutIndex])
-          HandleClose()
-      })
-    })
-  } 
   
   const reorder = (list, startIndex, endIndex) => {
     const result = list
@@ -142,6 +108,7 @@ export default function Home() {
     result.splice(endIndex, 0, removed);
     return result;
   };
+
   function onDragEnd(result) {
       const { source, destination } = result;
       // dropped outside the list
@@ -236,13 +203,15 @@ export default function Home() {
                                 >
                                   <div className='p-2 col-span-3 flex items-center relative'
                                   {...provided.dragHandleProps}
-                                  ><BsThreeDotsVertical size={16} className='absolute ml-[-10px] text-gray-500' /><span className='ml-[10px]'>{item.name}</span></div>
+                                  ><RiDraggable size={16} className='absolute ml-[-10px] text-gray-500' /><span className='ml-[10px]'>{item.name}</span></div>
                                   <div className='p-2' onClick={()=>setEditing(id)}>{item.target.sets.length}</div>
                                   <div className='p-2' onClick={()=>setEditing(id)}>{item.target.sets[0][0]}</div>
                                   <div className='p-2' onClick={()=>setEditing(id)}>{item.target.sets[0][1]}</div>
-                                  <div className='p-2 text-red-500 block ml-auto cursor-pointer' onClick={()=>setDeleting(id)}><BsTrash size={15} /></div>
-                            </div>)
-                            }
+                                  <DeleteExercise currentWorkout={currentWorkout} currentWorkoutIndex={currentWorkoutIndex} setCurrentWorkout={setCurrentWorkout}
+                                    username={profile.username} id={id} homepage={true}
+                                  />
+                            </div>
+                            )}
                           </Draggable>
                         )}
                         {provided.placeholder}
@@ -250,17 +219,9 @@ export default function Home() {
                   )}
                 </Droppable>
               </DragDropContext>
-              <div className='flex justify-between px-3 py-2 items-center bg-neutral-200 bg-opacity-80'>
-                <p>Add Exercise</p>
-                <select className='border border-gray-400 rounded-md p-1 bg-stone-50'
-                  onChange={(e)=>AddExercise(e)} defaultValue=''
-                >
-                  <option value='' disabled>Select Exercise</option>
-                  {exercises.map((ex,id)=>
-                      <option value={id} key={id}>{ex.name}</option>
-                  )}
-                </select>
-              </div>
+              <PostExercise currentWorkout={currentWorkout} currentWorkoutIndex={currentWorkoutIndex} setCurrentWorkout={setCurrentWorkout}
+                username={profile.username} exercises={exercises}
+              />
           </div>
           <Link href="/workout">
             <button
@@ -303,24 +264,6 @@ export default function Home() {
           </Dialog>
           :
           <></>
-        }
-        { currentWorkout.exercises.length > 0 && deleting !== null ? 
-          <Dialog open={deleting !== null} onClose={()=>setDeleting(null)} maxWidth="sm" fullWidth>
-              <p className='font-semibold text-lg px-3 py-3'>Remove exercise</p>
-              <div className='px-3 py-3'>
-                <p className='text-md'>Are you sure you want to remove {currentWorkout.exercises[deleting].name}?</p>
-              </div>
-              <div className='flex justify-end px-3 py-3 gap-3'>
-                  <button className='border border-gray-400 py-1 px-3 rounded-xl hover:bg-red-100 hover:border-red-200 hover:text-red-500 hover:scale-105 transition duration-200'
-                    onClick={()=>setDeleting(null)}
-                  >Cancel</button>
-                  <button className='block shadow-md py-1 px-3 rounded-xl bg-red-600 hover:bg-opacity-80 text-white hover:scale-105 transition duration-200'
-                    onClick={HandleDelete}
-                  >Remove</button>
-              </div>
-            </Dialog>
-          :
-           <></>
         }
     </main>
   )
