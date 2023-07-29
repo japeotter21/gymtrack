@@ -42,7 +42,23 @@ export default function Workouts() {
     }
 
     function AddWorkout() {
-        
+        const postObj = {
+            name: workoutName,
+            exercises: []
+        }
+        const newWorkoutIndex = workouts.length
+        axios.post('/api/routine', postObj, {params:{workout: newWorkoutIndex, user:profile.username, program: programIndex }})
+        .then(res=>{
+            axios.get('/api/user')
+            .then(r=>{
+                const currentIndex = r.data.documents[0].currentProgram
+                const dayIndex = r.data.documents[0].currentDay
+                const workoutIndex = r.data.documents[0].programs[currentIndex].schedule[dayIndex]
+                setPrograms(r.data.documents[0].programs)
+                setWorkouts(r.data.documents[0].workouts)
+                HandleClose()
+            })
+        })
     }
 
     function ChangeProgram() {

@@ -36,7 +36,7 @@ export default async function handler(req, res) {
     // {
         if (req.method === 'POST')
         {
-            const index = req.query.id
+            const index = req.query.id ? req.query.id : null
             const user = req.query.user
             const workout = req.query.workout
             const loggingWorkout = req.query.log
@@ -47,10 +47,16 @@ export default async function handler(req, res) {
                     [`exercises.${exercise}.results`]: req.body
                 }
             }
-            :
+            : index !== null ?
             {
                 "$set": {
                     [`workouts.${workout}.exercises.${index}.target`]: req.body
+                }
+            }
+            :
+            {
+                "$set": {
+                    [`workouts.${workout}.exercises`]: req.body
                 }
             }
             const data = JSON.stringify({

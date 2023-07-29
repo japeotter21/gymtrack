@@ -99,7 +99,6 @@ export default function Home() {
           HandleClose()
       })
     })
-    console.log(postObj)
   }
   
   const reorder = (list, startIndex, endIndex) => {
