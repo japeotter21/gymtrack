@@ -5,6 +5,7 @@ import axios from 'axios';
 import { BsChevronDown, BsChevronExpand, BsChevronUp, BsThreeDotsVertical } from 'react-icons/bs';
 import { RiDraggable, RiPencilLine } from 'react-icons/ri'
 import PostExercise from '../components/EditWorkout'
+import { repConstant, setConstant } from '@/globals';
 
 export default function WorkoutList({exercises, currentWorkout, setCurrentWorkout, day, i, profile, workouts, setPrograms, setCurrentProgram, setWorkouts}) {
     const [loading, setLoading] = useState(0)
@@ -154,7 +155,7 @@ export default function WorkoutList({exercises, currentWorkout, setCurrentWorkou
                                                                 onChange={()=>setEdited(true)}
                                                                 name={`set-${ind}`} id={`set-${ind}`}
                                                             >
-                                                                {[1,2,3,4,5,6,7,8,9,10].map((num,setNum)=>
+                                                                {setConstant.map((num,setNum)=>
                                                                     <option value={num} key={setNum}>{num}</option>
                                                                 )}
                                                             </select>
@@ -162,7 +163,7 @@ export default function WorkoutList({exercises, currentWorkout, setCurrentWorkou
                                                                 onChange={()=>setEdited(true)}
                                                                 name={`rep-${ind}`} id={`rep-${ind}`}
                                                             >
-                                                                {[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20].map((num,setNum)=>
+                                                                {repConstant.map((num,setNum)=>
                                                                     <option value={num} key={setNum}>{num}</option>
                                                                 )}
                                                             </select>

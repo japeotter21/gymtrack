@@ -10,6 +10,7 @@ import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd'
 import PostExercise from './components/EditWorkout'
 import { DeleteExercise } from './components/EditWorkout'
 import { RiDraggable } from 'react-icons/ri'
+import { repConstant, setConstant } from '@/globals'
 
 export default function Home() {
   const [day, setDay] = useState(0)
@@ -27,6 +28,7 @@ export default function Home() {
   const [editReps, setEditReps] = useState(0)
   const [editWeight, setEditWeight] = useState(0)
   const [editNotes, setEditNotes] = useState('')
+  const [updating, setUpdating] = useState(false)
 
   useEffect(()=>{
     setDay(new Date().getDay())
@@ -87,6 +89,7 @@ export default function Home() {
         notes: editNotes,
         reminder: ""
     }
+    setUpdating(true)
     axios.post('/api/exercise',postObj,{ params: {id: editing, user:profile.username, workout:currentWorkoutIndex}})
     .then(res=>{
       axios.get('/api/user')
@@ -97,6 +100,7 @@ export default function Home() {
           setCurrentWorkoutIndex(workoutIndex)
           setCurrentWorkout(r.data.documents[0].workouts[workoutIndex])
           HandleClose()
+          setUpdating(false)
       })
     })
   }
@@ -127,7 +131,6 @@ export default function Home() {
             const workoutIndex = r.data.documents[0].programs[currentIndex].schedule[dayIndex]
             setCurrentWorkoutIndex(workoutIndex)
             setCurrentWorkout(r.data.documents[0].workouts[workoutIndex])
-            HandleClose()
         })
       })
   }
@@ -219,7 +222,7 @@ export default function Home() {
                 </Droppable>
               </DragDropContext>
               <PostExercise currentWorkout={currentWorkout} currentWorkoutIndex={currentWorkoutIndex} setCurrentWorkout={setCurrentWorkout}
-                username={profile.username} exercises={exercises}
+                username={profile.username} exercises={exercises} homepage={true} setCurrentWorkoutIndex={setCurrentWorkoutIndex}
               />
           </div>
           <Link href="/workout">
@@ -236,13 +239,21 @@ export default function Home() {
             <p className='font-semibold text-lg px-3 py-3'>{currentWorkout.exercises[editing].name}</p>
             <div className='grid grid-cols-2 px-3 py-3 gap-3'>
               <p className='text-md'>Sets</p>
-              <input className='text-md border rounded-lg w-full py-1 px-2' value={editSets}
+              <select className='text-md border rounded-lg w-full py-1 px-2' value={editSets}
                 onChange={(e)=>setEditSets(e.target.value)}
-              />
+              >
+                {setConstant.map((num,setNum)=>
+                    <option value={num} key={setNum}>{num}</option>
+                )}
+              </select>
               <p className='text-md'>Reps</p>
-              <input className='text-md border rounded-lg w-full py-1 px-2' value={editReps}
+              <select className='text-md border rounded-lg w-full py-1 px-2' value={editReps}
                 onChange={(e)=>setEditReps(e.target.value)}
-              />
+              >
+                {repConstant.map((num,setNum)=>
+                    <option value={num} key={setNum}>{num}</option>
+                )}
+              </select>
               <p className='text-md'>Weight (lbs)</p>
               <input className='text-md border rounded-lg w-full py-1 px-2' value={editWeight}
                 onChange={(e)=>setEditWeight(e.target.value)}
@@ -256,9 +267,16 @@ export default function Home() {
                 <button className='border border-gray-400 py-1 px-3 rounded-xl hover:bg-red-100 hover:border-red-200 hover:text-red-500 hover:scale-105 transition duration-200'
                   onClick={HandleClose}
                 >Cancel</button>
-                <button className='block shadow-md py-1 px-3 rounded-xl bg-green-700 hover:bg-opacity-80 text-white hover:scale-105 transition duration-200'
-                  onClick={HandleEdit}
-                >Update</button>
+                { updating ? 
+                  <button className='block shadow-md py-1 px-3 rounded-xl bg-green-700 bg-opacity-60 text-gray-200 hover:scale-105 transition duration-200'
+                    disabled
+                  >Updating...</button>
+                :
+                  <button className='block shadow-md py-1 px-3 rounded-xl bg-green-700 hover:bg-opacity-80 text-white hover:scale-105 transition duration-200'
+                    onClick={HandleEdit}
+                  >Update</button>
+                }
+                
             </div>
           </Dialog>
           :
