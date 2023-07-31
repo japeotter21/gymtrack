@@ -5,7 +5,6 @@ import Pagenav from '../components/Pagenav'
 import { BsTrash, BsCheck2Circle, BsChevronLeft, BsChevronRight, BsCircle } from 'react-icons/bs'
 import { Checkbox, Dialog } from '@mui/material'
 import WorkoutList from '../components/WorkoutList'
-import { DragDropContext } from 'react-beautiful-dnd'
 
 
 export default function Workouts() {
@@ -66,37 +65,6 @@ export default function Workouts() {
     }
 
 
-    const reorder = (list, startIndex, endIndex) => {
-        const result = list
-        const [removed] = result.splice(startIndex, 1);
-        result.splice(endIndex, 0, removed);
-        return result;
-    };
-
-    function onDragEnd(result) {
-        const { source, destination } = result;
-        // dropped outside the list
-        if (!destination) {
-        return;
-        }
-        //sInd: index of source group
-        const sInd = source.droppableId
-
-        const postObj = reorder(currentWorkout.exercises, source.index, destination.index);
-        axios.post('/api/workouts',postObj, {params:{workout: day, user:profile.username}})
-        .then(res=>{
-            axios.get('/api/user')
-            .then(r=>{
-                const currentIndex = r.data.documents[0].currentProgram
-                const dayIndex = r.data.documents[0].currentDay
-                const workoutIndex = r.data.documents[0].programs[currentIndex].schedule[dayIndex]
-                setPrograms(r.data.documents[0].programs)
-                setCurrentProgram(r.data.documents[0].programs[currentIndex])
-                setWorkouts(r.data.documents[0].workouts)
-            })
-        })
-    }
-
     if(loading)
     {
         return (
@@ -105,7 +73,7 @@ export default function Workouts() {
     }
     
     return (
-        <main className="flex min-h-screen flex-col items-center py-6 lg:pt-12 px-2 lg:p-12 gap-4">
+        <main className="flex min-h-screen flex-col items-center lg:pt-12 px-2 gap-4">
             <div className='w-full lg:w-1/2 flex flex-col gap-2 items-center'>
                 <div className='flex justify-between items-center w-full lg:w-1/2'>
                     <div className='flex flex-col gap-2 items-center'>
@@ -150,7 +118,6 @@ export default function Workouts() {
                     <p className='text-sm break-words'>{programs[programIndex].description}</p>
                 </div>
                 <div className='flex flex-col gap-4 w-full'>
-                    <DragDropContext onDragEnd={onDragEnd}>
                     {programs[programIndex].schedule.map((day,i)=>
                         <div key={`${i}-${day}`} className='border border-gray-400 bg-stone-50 rounded-md shadow-sm'> 
                             <WorkoutList currentWorkout={workouts[day]} exercises={exercises}
@@ -159,7 +126,6 @@ export default function Workouts() {
                             />
                         </div>
                     )}
-                    </DragDropContext>
                     <button className='border border-gray-400 bg-gradient-to-r from-green-500 to-green-600 py-2 rounded-md shadow-lg'
                         onClick={()=>setAddingWorkout(true)}
                     > 
