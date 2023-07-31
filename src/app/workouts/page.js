@@ -6,7 +6,6 @@ import { BsTrash, BsCheck2Circle, BsChevronLeft, BsChevronRight, BsCircle } from
 import { Checkbox, Dialog } from '@mui/material'
 import WorkoutList from '../components/WorkoutList'
 
-
 export default function Workouts() {
     const [profile, setProfile] = useState(null)
     const [loading, setLoading] = useState(true)
@@ -61,9 +60,18 @@ export default function Workouts() {
     }
 
     function ChangeProgram() {
-        
+        const postObj = {newProgram: parseInt(programIndex)}
+        axios.put('/api/user', postObj, {params:{user:profile.username}})
+        .then(res=>{
+            axios.get('/api/user')
+            .then(r=>{
+                const currentIndex = r.data.documents[0].currentProgram
+                setCurrentProgram(r.data.documents[0].programs[currentIndex])
+                setWorkouts(r.data.documents[0].workouts)
+            })
+            
+        })
     }
-
 
     if(loading)
     {
@@ -73,45 +81,34 @@ export default function Workouts() {
     }
     
     return (
-        <main className="flex min-h-screen flex-col items-center lg:pt-12 px-2 gap-4">
+        <main className="flex min-h-screen flex-col items-center py-8 lg:pt-16 px-2 lg:px-12 gap-4">
             <div className='w-full lg:w-1/2 flex flex-col gap-2 items-center'>
-                <div className='flex justify-between items-center w-full lg:w-1/2'>
-                    <div className='flex flex-col gap-2 items-center'>
-                        { programs[programIndex].name === currentProgram.name ?
+                <div className='flex justify-center items-center gap-4 w-full'>
+                    <div className='flex flex-col gap-2 items-center justify-start'>
+                        <select className='border rounded-md border-gray-400 px-2 h-max' value={programIndex} onChange={(e)=>setProgramIndex(e.target.value)}>
+                            {programs.map((prog,index)=>
+                                <option key={index} value={index}>{prog.name}</option>
+                            )}
+                        </select>
+                        <p className='text-xs'>Select Program</p>
+                    </div>
+                    { programs[programIndex].name === currentProgram.name ?
+                        <div className='flex flex-col gap-1 items-center justify-start'>
                             <button className='px-3 py-1 rounded-full'>
                                 <BsCheck2Circle size={20} style={{color:'#15803d'}} />
                             </button>
-                            :
+                            <p className='text-xs'>Current Program</p>
+                        </div>
+                        :
+                        <div className='flex flex-col gap-1 items-center justify-start'>
                             <button className='px-3 py-1 rounded-full'
                                 onClick={ChangeProgram}
                             >
                                 <BsCircle size={20} style={{color:'#6b7280'}} />
                             </button>
-                        }
-                        <p className='text-sm'>Use this program</p>
-                    </div>
-                    <div className='flex gap-4'>
-                    { programIndex > 0 ?
-                        <div className='flex flex-col gap-2 items-center'>
-                            <button className='shadow-md bg-blue-500 px-3 py-1 text-blue-100 rounded-lg'
-                                onClick={()=>setProgramIndex(programIndex-1)}
-                            ><BsChevronLeft size={20} /></button>
-                            <p className='text-sm'>{programs[programIndex-1].name}</p>
+                            <p className='text-xs'>Select Program</p>
                         </div>
-                        :
-                        <></>
                     }
-                    { programIndex < programs.length - 1 ?
-                        <div className='flex flex-col gap-2 items-center'>
-                            <button className='shadow-md bg-blue-500 px-3 py-1 text-blue-100 rounded-lg'
-                                onClick={()=>setProgramIndex(programIndex+1)}
-                            ><BsChevronRight size={20} /></button>
-                            <p className='text-sm'>{programs[programIndex+1].name}</p>
-                        </div>
-                        :
-                        <></>
-                    }
-                    </div>
                 </div>
                 <div className='w-full text-center'>
                     <p className='font-semibold'>{programs[programIndex].name}</p>

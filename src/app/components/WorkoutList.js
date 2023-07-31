@@ -110,12 +110,14 @@ export default function WorkoutList({exercises, currentWorkout, setCurrentWorkou
                             <RiPencilLine />
                         </button>
                     </div>
-                    { !loading && !edited ?
+                    { !loading && !edited && show ?
                         <button className='bg-gray-300 text-white shadow-md px-3 py-1 rounded-md' type="button">Save</button>
-                    : !loading ?
+                    : !loading && show ?
                         <button className='bg-green-600 text-white shadow-md px-3 py-1 rounded-md' type="submit">Save</button>
-                    :
+                    : show ?
                         <button className='bg-green-600 text-white shadow-md px-3 py-1 rounded-md' disabled>Saving...</button>
+                    :
+                    <></>
                     }
                 </div>
                     <div className={`transition duration-100 ease-in ${!show ? 'h-[0px] opacity-0 invisible' : 'h-max opacity-1'}`}>
