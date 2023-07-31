@@ -1,42 +1,16 @@
 import React, { useState } from 'react'
 import { DeleteExercise } from '../components/EditWorkout'
-import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd'
+import { Droppable, Draggable } from 'react-beautiful-dnd'
 import axios from 'axios';
-import { BsThreeDotsVertical } from 'react-icons/bs';
+import { BsChevronDown, BsChevronExpand, BsChevronUp, BsThreeDotsVertical } from 'react-icons/bs';
 import { RiDraggable, RiPencilLine } from 'react-icons/ri'
+import PostExercise from '../components/EditWorkout'
+
 export default function WorkoutList({exercises, currentWorkout, setCurrentWorkout, day, i, profile, workouts, setPrograms, setCurrentProgram, setWorkouts}) {
     const [loading, setLoading] = useState(0)
     const [edited, setEdited] = useState(false)
-    const reorder = (list, startIndex, endIndex) => {
-        const result = list
-        const [removed] = result.splice(startIndex, 1);
-        result.splice(endIndex, 0, removed);
-        return result;
-    };
+    const [show, setShow] = useState(false)
 
-    function onDragEnd(result) {
-        const { source, destination } = result;
-        // dropped outside the list
-        if (!destination) {
-        return;
-        }
-        //sInd: index of source group
-        const sInd = source.droppableId
-
-        const postObj = reorder(currentWorkout.exercises, source.index, destination.index);
-        axios.post('/api/workouts',postObj, {params:{workout: day, user:profile.username}})
-        .then(res=>{
-            axios.get('/api/user')
-            .then(r=>{
-                const currentIndex = r.data.documents[0].currentProgram
-                const dayIndex = r.data.documents[0].currentDay
-                const workoutIndex = r.data.documents[0].programs[currentIndex].schedule[dayIndex]
-                setPrograms(r.data.documents[0].programs)
-                setCurrentProgram(r.data.documents[0].programs[currentIndex])
-                setWorkouts(r.data.documents[0].workouts)
-            })
-        })
-    }
 
     const getListStyle = isDraggingOver => ({
         // background: isDraggingOver && mode === 'light' ? 'linear-gradient(#2997ff55, white)' : isDraggingOver && mode === 'dark' ? 'linear-gradient(#010304, #2997ff55)' : 'none',
@@ -90,10 +64,14 @@ export default function WorkoutList({exercises, currentWorkout, setCurrentWorkou
     }
 
     return (
-        <DragDropContext onDragEnd={onDragEnd}>
             <form id={`${i}`} onSubmit={(e)=>PostExercises(e)}>
-                <div className='flex items-center justify-between border-b-2 p-2'>
+                <div className={`flex items-center justify-between ${show ? 'border-b-2' : ''} p-2`} onClick={()=>setShow(!show)}>
                     <div className='flex items-center gap-2'>
+                        { !show ? 
+                            <BsChevronDown />
+                        :
+                            <BsChevronUp />
+                        }
                         <p>{workouts[day].name}</p>
                         <button className='text-gray-500' type="button">
                             <RiPencilLine />
@@ -107,7 +85,7 @@ export default function WorkoutList({exercises, currentWorkout, setCurrentWorkou
                         <button className='bg-green-600 text-white shadow-md px-3 py-1 rounded-md' disabled>Saving...</button>
                     }
                 </div>
-                <div>
+                    <div className={`transition duration-100 ease-in ${!show ? 'h-0 opacity-0' : 'h-max opacity-1'}`}>
                     <Droppable droppableId={`${i}`} key={0}>
                         {(provided, snapshot)=>(
                             <div className='divide-y flex flex-col'
@@ -141,7 +119,7 @@ export default function WorkoutList({exercises, currentWorkout, setCurrentWorkou
                                                                 onChange={()=>setEdited(true)}
                                                                 name={`set-${ind}`} id={`set-${ind}`}
                                                             >
-                                                                {[1,2,3,4,5,6].map((num,setNum)=>
+                                                                {[1,2,3,4,5,6,7,8,9,10].map((num,setNum)=>
                                                                     <option value={num} key={setNum}>{num}</option>
                                                                 )}
                                                             </select>
@@ -149,7 +127,7 @@ export default function WorkoutList({exercises, currentWorkout, setCurrentWorkou
                                                                 onChange={()=>setEdited(true)}
                                                                 name={`rep-${ind}`} id={`rep-${ind}`}
                                                             >
-                                                                {[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15].map((num,setNum)=>
+                                                                {[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20].map((num,setNum)=>
                                                                     <option value={num} key={setNum}>{num}</option>
                                                                 )}
                                                             </select>
@@ -166,9 +144,11 @@ export default function WorkoutList({exercises, currentWorkout, setCurrentWorkou
                                 {provided.placeholder}
                             </div>
                         )}
-                    </Droppable>
-                </div>
+                        </Droppable>
+                        <PostExercise currentWorkout={workouts[day]} currentWorkoutIndex={day} setCurrentWorkout={setCurrentWorkout} setCurrentProgram={setCurrentProgram}
+                            username={profile.username} exercises={exercises} setPrograms={setPrograms} setWorkouts={setWorkouts} homepage={false}
+                        />
+                    </div>
             </form>
-        </DragDropContext>
     )
 }

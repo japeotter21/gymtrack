@@ -3,7 +3,7 @@ import axios from 'axios'
 import { BsTrash } from 'react-icons/bs'
 import { Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material'
 
-export default function PostExercise({username, currentWorkoutIndex, currentWorkout, setCurrentWorkout, exercises}) {
+export default function PostExercise({username, currentWorkoutIndex, currentWorkout, setCurrentWorkout, exercises, homepage, setWorkouts, setPrograms, setCurrentProgram}) {
     const [loading, setLoading] = useState(false)
 
     function AddExercise(e) {
@@ -19,8 +19,17 @@ export default function PostExercise({username, currentWorkoutIndex, currentWork
                 const currentIndex = r.data.documents[0].currentProgram
                 const dayIndex = r.data.documents[0].currentDay
                 const workoutIndex = r.data.documents[0].programs[currentIndex].schedule[dayIndex]
-                setCurrentWorkout(r.data.documents[0].workouts[workoutIndex])
                 setLoading(false)
+                if(homepage)
+                {
+                    setCurrentWorkout(r.data.documents[0].workouts[workoutIndex])
+                }
+                else
+                {
+                    setPrograms(r.data.documents[0].programs)
+                    const currentIndex = r.data.documents[0].currentProgram
+                    setWorkouts(r.data.documents[0].workouts)
+                }
             })
             .catch(err=>{
                 setLoading(false)
