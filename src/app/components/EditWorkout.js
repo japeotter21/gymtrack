@@ -1,10 +1,67 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import { BsTrash } from 'react-icons/bs'
 import { Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material'
 
 export default function PostExercise({username, currentWorkoutIndex, currentWorkout, setCurrentWorkout, exercises, homepage, setWorkouts, setPrograms, setCurrentProgram, setCurrentWorkoutIndex}) {
     const [loading, setLoading] = useState(false)
+    const [groupedEx, setGroupedEx] = useState([])
+    const muscleGroups = ['Chest', 'Shoulders', 'Triceps', 'Back', 'Biceps', 'Legs', 'Accessory']
+
+    useEffect(()=>{
+        if(exercises.length > 0)
+        {
+            const grouped = Array.from({length: muscleGroups.length},i=>[])
+            const filteredTemp = [...exercises]
+            filteredTemp.forEach((item,id)=>{
+                const key = item.attributes[0]
+                switch(key) {
+                    case ('chest'):
+                        grouped[0].push({name:item.name, id: id})
+                        break
+                    case ('shoulder'):
+                        grouped[1].push({name:item.name, id: id})
+                        break
+                    case ('front delt'):
+                        grouped[1].push({name:item.name, id: id})
+                        break
+                    case ('side delt'):
+                        grouped[1].push({name:item.name, id: id})
+                        break
+                    case ('rear delt'):
+                        grouped[1].push({name:item.name, id: id})
+                        break
+                    case ('tricep'):
+                        grouped[2].push({name:item.name, id: id})
+                        break
+                    case ('lat'):
+                        grouped[3].push({name:item.name, id: id})
+                        break
+                    case ('trap'):
+                        grouped[3].push({name:item.name, id: id})
+                        break
+                    case ('rhomboid'):
+                        grouped[3].push({name:item.name, id: id})
+                        break
+                    case ('bicep'):
+                        grouped[4].push({name:item.name, id: id})
+                        break
+                    case ('legs'):
+                        grouped[5].push({name:item.name, id: id})
+                        break
+                    case ('quad'):
+                        grouped[5].push({name:item.name, id: id})
+                        break
+                    case ('hamstring'):
+                        grouped[5].push({name:item.name, id: id})
+                        break
+                    default:
+                        grouped[6].push({name:item.name, id: id})
+                }
+            })
+            setGroupedEx(grouped)
+        }
+    },[exercises])
 
     function AddExercise(e) {
         const newExercise = parseInt(e.target.value)
@@ -48,8 +105,14 @@ export default function PostExercise({username, currentWorkoutIndex, currentWork
                     onChange={(e)=>AddExercise(e)} defaultValue=''
                 >
                     <option value='' disabled>Select Exercise</option>
-                    {exercises.map((ex,id)=>
-                        <option value={id} key={id}>{ex.name}</option>
+                    {groupedEx.map((group,id)=>
+                        <>
+                            <optgroup label={muscleGroups[id]}>
+                            { group.map((ex,ind)=>
+                                <option value={ex.id} key={ex.id}>{ex.name}</option>
+                            )}
+                            </optgroup>
+                        </>
                     )}
                 </select>
             </>
