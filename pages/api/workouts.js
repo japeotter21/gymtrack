@@ -39,7 +39,6 @@ export default async function handler(req, res) {
     // {
         else if (req.method === 'PUT')
         {
-            const user = req.query.user
             const data = JSON.stringify({
                 "collection": "user0",
                 "database": "gymtrack",
@@ -73,7 +72,6 @@ export default async function handler(req, res) {
         }
         else if (req.method === 'POST')
         {
-            const user = req.query.user
             const workout = req.query.workout
             
             const data = JSON.stringify({

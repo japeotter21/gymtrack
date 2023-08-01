@@ -29,7 +29,7 @@ export default function LiveExerciseLog({complete, lift, id, setComplete, curren
             date: new Date().getTime(),
             rpe: radioVal
         }
-        axios.post('/api/exercise',postObj,{ params: {user:profile.username, workout:currentWorkoutIndex, log:1, exercise: exerciseIndex}})
+        axios.post('/api/exercise',postObj,{ params: { workout:currentWorkoutIndex, log:1, exercise: exerciseIndex}})
         .then(res=>{
             const storeComplete = [...complete]
             storeComplete.push(exerciseIndex)

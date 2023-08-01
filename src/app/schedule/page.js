@@ -1,28 +1,38 @@
 "use client"
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import Image from 'next/image'
 import { Avatar, Paper } from '@mui/material'
 import { BsCalendar, BsGraphUp, BsPencil } from 'react-icons/bs'
 import { BiDumbbell} from 'react-icons/bi'
 import axios from 'axios'
 import Pagenav from '../components/Pagenav'
+import AppContext from '../AppContext'
+import { redirect } from 'next/navigation'
 
 export default function Schedule() {
     const [loading, setLoading] = useState(true)
     const [current, setCurrent] = useState(null)
     const [programs, setPrograms] = useState([])
+    const {activeUser} = useContext(AppContext)
 
     useEffect(()=>{
-        axios.get('/api/workouts')
-        .then(res=>{
-          setLoading(false)
-          setPrograms(res.data.programs)
-          const currentIndex = res.data.currentProgram
-          setCurrent(res.data.programs[currentIndex])
-        })
-        .catch(err=>{
-          console.error(err.message)
-        })
+        if (activeUser)
+        {
+            axios.get('/api/workouts')
+            .then(res=>{
+            setLoading(false)
+            setPrograms(res.data.programs)
+            const currentIndex = res.data.currentProgram
+            setCurrent(res.data.programs[currentIndex])
+            })
+            .catch(err=>{
+            console.error(err.message)
+            })
+        }
+        else
+        {
+            redirect('/login')
+        }
     },[])
 
     if(loading)

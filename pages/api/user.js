@@ -9,7 +9,6 @@ export default function handler(req, res) {
     // }
         if (req.method === 'GET')
         {
-            const user = req.query.user
             const data = JSON.stringify({
                 "collection": "user0",
                 "database": "gymtrack",
@@ -40,7 +39,6 @@ export default function handler(req, res) {
     // {
         else if (req.method === 'POST')
         {
-            const user = req.query.user
             const data = JSON.stringify({
                 "collection": "user0",
                 "database": "gymtrack",

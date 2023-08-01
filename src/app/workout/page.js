@@ -1,9 +1,11 @@
 "use client"
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { BsPause, BsPauseBtn, BsPlay } from 'react-icons/bs'
 import axios from 'axios'
 import { useRouter } from 'next/navigation';
 import LiveExerciseLog from '../components/LiveExerciseLog';
+import AppContext from '../AppContext'
+import { redirect } from 'next/navigation'
 
 export default function Workout() {
     const [profile, setProfile] = useState({})
@@ -17,26 +19,34 @@ export default function Workout() {
     const [workoutComplete, setWorkoutComplete] = useState(false)
     const [pause, setPause] = useState(false)
     const router = useRouter()
+    const {activeUser} = useContext(AppContext)
 
     useEffect(()=>{
-        const endpoints = ['/api/user', '/api/exercise', '/api/workouts']
-        axios.all(endpoints.map((endpoint) => axios.get(endpoint))).then(
-        axios.spread((user, exercise, workout) => {
-            setProfile(user.data.profile)
-            setExercises(exercise.data.exercises)
-            const currentIndex = workout.data.currentProgram
-            setCurrentProgram(workout.data.programs[currentIndex])
-            const dayIndex = workout.data.currentDay
-            const workoutIndex = workout.data.programs[currentIndex].schedule[dayIndex]
-            setCurrentWorkoutIndex(workoutIndex)
-            setCurrentWorkout(workout.data.workouts[workoutIndex])
-            setCurrentDay(dayIndex)
-            setLoading(false)
-        })
-        )
-        if(sessionStorage.getItem('completed'))
+        if(activeUser)
         {
-            setComplete(JSON.parse(sessionStorage.getItem('completed')))
+            const endpoints = ['/api/user', '/api/exercise', '/api/workouts']
+            axios.all(endpoints.map((endpoint) => axios.get(endpoint))).then(
+            axios.spread((user, exercise, workout) => {
+                setProfile(user.data.profile)
+                setExercises(exercise.data.exercises)
+                const currentIndex = workout.data.currentProgram
+                setCurrentProgram(workout.data.programs[currentIndex])
+                const dayIndex = workout.data.currentDay
+                const workoutIndex = workout.data.programs[currentIndex].schedule[dayIndex]
+                setCurrentWorkoutIndex(workoutIndex)
+                setCurrentWorkout(workout.data.workouts[workoutIndex])
+                setCurrentDay(dayIndex)
+                setLoading(false)
+            })
+            )
+            if(sessionStorage.getItem('completed'))
+            {
+                setComplete(JSON.parse(sessionStorage.getItem('completed')))
+            }
+        }
+        else
+        {
+            redirect('/login')
         }
     },[])
 

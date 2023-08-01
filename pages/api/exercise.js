@@ -39,7 +39,6 @@ export default async function handler(req, res) {
     // {
         else if (req.method === 'POST')
         {
-            const user = req.query.user
             const workout = req.query.workout
             const batch = req.query.batch
             const loggingWorkout = req.query.log

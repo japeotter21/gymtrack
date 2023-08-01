@@ -41,7 +41,7 @@ export default function WorkoutList({exercises, currentWorkout, setCurrentWorkou
         })
         const postObj = exercisesTemp
         setLoading(true)
-        axios.post('/api/exercise',postObj,{ params: { user:profile.username, batch:true }})
+        axios.post('/api/exercise',postObj,{ params: { batch:true }})
         .then(res=>{
             axios.get('/api/workouts')
             .then(r=>{
@@ -82,7 +82,7 @@ export default function WorkoutList({exercises, currentWorkout, setCurrentWorkou
         //sInd: index of source group
         const sInd = source.droppableId
         const postObj = reorder(currentWorkout.exercises, source.index, destination.index);
-        axios.post('/api/workouts',postObj, {params:{workout: day, user:profile.username}})
+        axios.post('/api/workouts',postObj, {params:{workout: day}})
         .then(res=>{
           axios.get('/api/workouts')
           .then(r=>{

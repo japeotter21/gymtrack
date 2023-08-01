@@ -1,5 +1,5 @@
 "use client"
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import Image from 'next/image'
 import { Avatar, Paper } from '@mui/material'
 import { BsCalendar, BsGraphUp, BsPencil } from 'react-icons/bs'
@@ -7,6 +7,8 @@ import { BiDumbbell} from 'react-icons/bi'
 import axios from 'axios'
 import Pagenav from '../components/Pagenav'
 import { ResponsiveLine } from '@nivo/line'
+import AppContext from '../AppContext'
+import { redirect } from 'next/navigation'
 
 export default function Stats() {
     const [loading, setLoading] = useState(true)
@@ -17,17 +19,24 @@ export default function Stats() {
     const [results, setResults] = useState([])
     const [yMax, setYMax] = useState(200)
     const maxPercent = [0, 1, 0.95, 0.93, 0.9, 0.87, 0.85, 0.83, 0.8, 0.77, 0.75, 0.7, 0.67, 0.65]
+    const {activeUser} = useContext(AppContext)
 
     useEffect(()=>{
-        axios.get('/api/exercise')
-        .then(res=>{
-          setLoading(false)
-          setResults(res.data.exercises)
-        })
-        .catch(err=>{
-          console.error(err.message)
-        })
-        
+        if(activeUser)
+        {
+            axios.get('/api/exercise')
+            .then(res=>{
+              setLoading(false)
+              setResults(res.data.exercises)
+            })
+            .catch(err=>{
+              console.error(err.message)
+            })
+        }
+        else
+        {
+            redirect('/login')
+        }
     },[])
 
     useEffect(()=>{

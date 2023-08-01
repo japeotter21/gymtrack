@@ -1,10 +1,12 @@
 "use client"
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import axios from 'axios'
 import Pagenav from '../components/Pagenav'
 import { BsTrash, BsCheck2Circle, BsChevronLeft, BsChevronRight, BsCircle } from 'react-icons/bs'
 import { Checkbox, Dialog } from '@mui/material'
 import WorkoutList from '../components/WorkoutList'
+import AppContext from '../AppContext'
+import { redirect } from 'next/navigation'
 
 export default function Workouts() {
     const [profile, setProfile] = useState(null)
@@ -17,21 +19,28 @@ export default function Workouts() {
     const [exercises, setExercises] = useState([])
     const [addingWorkout, setAddingWorkout] = useState(false)
     const [workoutName, setWorkoutName] = useState('')
+    const {activeUser} = useContext(AppContext)
 
     useEffect(()=>{
-        const endpoints = ['/api/user', '/api/exercise', '/api/workouts']
-        axios.all(endpoints.map((endpoint) => axios.get(endpoint))).then(
-        axios.spread((user, exercise, workout) => {
-            setLoading(false)
-            setPrograms(workout.data.programs)
-            const currentIndex = workout.data.currentProgram
-            setProgramIndex(currentIndex)
-            setCurrentProgram(workout.data.programs[currentIndex])
-            setWorkouts(workout.data.workouts)
-            setExercises(exercise.data.exercises)
-            setProfile(user.data.profile)
-        })
-        )
+        if(activeUser)
+        {
+            const endpoints = ['/api/user', '/api/exercise', '/api/workouts']
+            axios.all(endpoints.map((endpoint) => axios.get(endpoint))).then(
+            axios.spread((user, exercise, workout) => {
+                setLoading(false)
+                setPrograms(workout.data.programs)
+                const currentIndex = workout.data.currentProgram
+                setProgramIndex(currentIndex)
+                setCurrentProgram(workout.data.programs[currentIndex])
+                setWorkouts(workout.data.workouts)
+                setExercises(exercise.data.exercises)
+                setProfile(user.data.profile)
+            }))
+        }
+        else
+        {
+            redirect('/login')
+        }
     },[])
 
     function HandleClose() {

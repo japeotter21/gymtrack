@@ -11,7 +11,6 @@ export default async function handler(req, res) {
     // {
         if (req.method === 'POST')
         {
-            const user = req.query.user
             const workout = parseInt(req.query.workout)
             const program = req.query.program
             const data = JSON.stringify({

@@ -69,7 +69,7 @@ export default function PostExercise({username, currentWorkoutIndex, currentWork
         newWorkout.push(newExercise)
         const postObj = newWorkout
         setLoading(true)
-        axios.post('/api/workouts',postObj, {params:{workout: currentWorkoutIndex, user:username}})
+        axios.post('/api/workouts',postObj, {params:{workout: currentWorkoutIndex}})
         .then(res=>{
             axios.get('/api/workouts')
             .then(r=>{
@@ -141,7 +141,7 @@ export function DeleteExercise ({item, id, currentWorkout, setCurrentWorkout, cu
             postObj = []
         }
         setLoading(true)
-        axios.post('/api/workouts',postObj, {params:{workout: currentWorkoutIndex, user:username}})
+        axios.post('/api/workouts',postObj, {params:{workout: currentWorkoutIndex}})
         .then(res=>{
             axios.get('/api/workouts')
             .then(r=>{

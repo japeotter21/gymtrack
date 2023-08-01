@@ -1,5 +1,5 @@
 "use client"
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import Image from 'next/image'
 import { Avatar, Dialog } from '@mui/material'
 import { BsPencil, BsThreeDotsVertical, BsTrash } from 'react-icons/bs'
@@ -11,6 +11,8 @@ import PostExercise from './components/EditWorkout'
 import { DeleteExercise } from './components/EditWorkout'
 import { RiDraggable } from 'react-icons/ri'
 import { repConstant, setConstant } from '@/globals'
+import AppContext from './AppContext'
+import { redirect } from 'next/navigation'
 
 export default function Home() {
   const [day, setDay] = useState(0)
@@ -29,25 +31,33 @@ export default function Home() {
   const [editWeight, setEditWeight] = useState(0)
   const [editNotes, setEditNotes] = useState('')
   const [updating, setUpdating] = useState(false)
+  const {activeUser} = useContext(AppContext)
 
   useEffect(()=>{
-    setDay(new Date().getDay())
-    const endpoints = ['/api/user', '/api/exercise', '/api/workouts']
-    axios.all(endpoints.map((endpoint) => axios.get(endpoint))).then(
-      axios.spread((user, exercise, workout) => {
-        setProfile(user.data.profile)
-        setExercises(exercise.data.exercises)
-        setPrograms(workout.data.programs)
-        const currentIndex = workout.data.currentProgram
-        setCurrentProgram(workout.data.programs[currentIndex])
-        const dayIndex = workout.data.currentDay
-        const workoutIndex = workout.data.programs[currentIndex].schedule[dayIndex]
-        setCurrentWorkoutIndex(workoutIndex)
-        setCurrentWorkout(workout.data.workouts[workoutIndex])
-        setCurrentDay(dayIndex)
-        setLoading(false)
-      })
-    )
+    if (activeUser)
+    {
+      setDay(new Date().getDay())
+      const endpoints = ['/api/user', '/api/exercise', '/api/workouts']
+      axios.all(endpoints.map((endpoint) => axios.get(endpoint))).then(
+        axios.spread((user, exercise, workout) => {
+          setProfile(user.data.profile)
+          setExercises(exercise.data.exercises)
+          setPrograms(workout.data.programs)
+          const currentIndex = workout.data.currentProgram
+          setCurrentProgram(workout.data.programs[currentIndex])
+          const dayIndex = workout.data.currentDay
+          const workoutIndex = workout.data.programs[currentIndex].schedule[dayIndex]
+          setCurrentWorkoutIndex(workoutIndex)
+          setCurrentWorkout(workout.data.workouts[workoutIndex])
+          setCurrentDay(dayIndex)
+          setLoading(false)
+        })
+      )
+    }
+    else
+    {
+        redirect( '/login')
+    }
   },[])
   
   useEffect(()=>{
