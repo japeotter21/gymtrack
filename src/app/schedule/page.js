@@ -13,12 +13,12 @@ export default function Schedule() {
     const [programs, setPrograms] = useState([])
 
     useEffect(()=>{
-        axios.get('/api/user')
+        axios.get('/api/workouts')
         .then(res=>{
           setLoading(false)
-          setPrograms(res.data.documents[0].programs)
-          const currentIndex = res.data.documents[0].currentProgram
-          setCurrent(res.data.documents[0].programs[currentIndex])
+          setPrograms(res.data.programs)
+          const currentIndex = res.data.currentProgram
+          setCurrent(res.data.programs[currentIndex])
         })
         .catch(err=>{
           console.error(err.message)

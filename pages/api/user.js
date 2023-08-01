@@ -15,7 +15,7 @@ export default function handler(req, res) {
                 "database": "gymtrack",
                 "dataSource": "link0",
                 "filter": {
-                    [`profile.username`]: user
+                    [`key`]: 'profile'
                 }
             });
             const config = {
@@ -30,7 +30,7 @@ export default function handler(req, res) {
             }; 
             axios(config)
             .then(function (response) {
-                res.status(200).json(response.data);
+                res.status(200).json(response.data.documents[0]);
             })
             .catch(function (error) {
                 res.status(400).json({data: 'request failed'})
@@ -50,40 +50,6 @@ export default function handler(req, res) {
             const config = {
                 method: 'post',
                 url: 'https://us-east-2.aws.data.mongodb-api.com/app/data-hdjhg/endpoint/data/v1/action/insertOne',
-                headers: {
-                'Content-Type': 'application/json',
-                'Access-Control-Request-Headers': '*',
-                'api-key': process.env.API_KEY,
-                },
-                data: data
-            }; 
-            axios(config)
-            .then(function (response) {
-                res.status(200).json(response.data);
-            })
-            .catch(function (error) {
-                res.status(400).json({data: 'request failed'})
-            });
-        }
-        else if (req.method === 'PUT')
-        {
-            const user = req.query.user
-            const data = JSON.stringify({
-                "collection": "user0",
-                "database": "gymtrack",
-                "dataSource": "link0",
-                "filter": {
-                    [`profile.username`]: user
-                },
-                "update": {
-                    "$set": {
-                        [`currentProgram`]: req.body.newProgram
-                    }
-                }
-            });
-            const config = {
-                method: 'post',
-                url: 'https://us-east-2.aws.data.mongodb-api.com/app/data-hdjhg/endpoint/data/v1/action/updateOne',
                 headers: {
                 'Content-Type': 'application/json',
                 'Access-Control-Request-Headers': '*',

@@ -34,22 +34,23 @@ export default function WorkoutList({exercises, currentWorkout, setCurrentWorkou
         {
             targetObj.push(Array.from({length:e.target[index].value}, i => [parseInt(e.target[index+1].value),0] ))
         }
+        let exercisesTemp = [...exercises]
         let workoutObj = currentWorkout
         workoutObj.exercises.forEach((w,id)=>{
-            w.target.sets = targetObj[id]
+            exercisesTemp[w].target.sets = targetObj[id]
         })
-        const postObj = workoutObj.exercises
+        const postObj = exercisesTemp
         setLoading(true)
-        axios.post('/api/exercise',postObj,{ params: { user:profile.username, workout:day }})
+        axios.post('/api/exercise',postObj,{ params: { user:profile.username, batch:true }})
         .then(res=>{
-            axios.get('/api/user')
+            axios.get('/api/workouts')
             .then(r=>{
-                const currentIndex = r.data.documents[0].currentProgram
-                const dayIndex = r.data.documents[0].currentDay
-                const workoutIndex = r.data.documents[0].programs[currentIndex].schedule[dayIndex]
-                setPrograms(r.data.documents[0].programs)
-                setCurrentProgram(r.data.documents[0].programs[currentIndex])
-                setWorkouts(r.data.documents[0].workouts)
+                const currentIndex = r.data.currentProgram
+                const dayIndex = r.data.currentDay
+                const workoutIndex = r.data.programs[currentIndex].schedule[dayIndex]
+                setPrograms(r.data.programs)
+                setCurrentProgram(r.data.programs[currentIndex])
+                setWorkouts(r.data.workouts)
                 setLoading(false)
                 setEdited(false)
             })
@@ -68,7 +69,7 @@ export default function WorkoutList({exercises, currentWorkout, setCurrentWorkou
     const reorder = (list, startIndex, endIndex) => {
         const result = list
         const [removed] = result.splice(startIndex, 1);
-        result.splice(endIndex, 0, removed);
+        result.splice(endIndex, 0, parseInt(removed));
         return result;
     };
 
@@ -76,31 +77,28 @@ export default function WorkoutList({exercises, currentWorkout, setCurrentWorkou
         const { source, destination } = result;
         // dropped outside the list
         if (!destination) {
-        return;
+          return;
         }
         //sInd: index of source group
         const sInd = source.droppableId
-
         const postObj = reorder(currentWorkout.exercises, source.index, destination.index);
         axios.post('/api/workouts',postObj, {params:{workout: day, user:profile.username}})
         .then(res=>{
-            axios.get('/api/user')
-            .then(r=>{
-                const currentIndex = r.data.documents[0].currentProgram
-                const dayIndex = r.data.documents[0].currentDay
-                const workoutIndex = r.data.documents[0].programs[currentIndex].schedule[dayIndex]
-                setPrograms(r.data.documents[0].programs)
-                setCurrentProgram(r.data.documents[0].programs[currentIndex])
-                setWorkouts(r.data.documents[0].workouts)
-            })
+          axios.get('/api/workouts')
+          .then(r=>{
+              const currentIndex = r.data.currentProgram
+              const dayIndex = r.data.currentDay
+              const workoutIndex = r.data.programs[currentIndex].schedule[dayIndex]
+              setCurrentWorkout(r.data.workouts[workoutIndex])
+          })
         })
     }
 
     return (
         <DragDropContext onDragEnd={onDragEnd}>
             <form id={`${i}`} onSubmit={(e)=>PostExercises(e)}>
-                <div className={`flex items-center justify-between ${show ? 'border-b-2' : ''} p-2 cursor-pointer`} onClick={()=>setShow(!show)}>
-                    <div className='flex items-center gap-2'>
+                <div className={`flex items-center justify-between ${show ? 'border-b-2' : ''} p-2 cursor-pointer`}>
+                    <div className='flex items-center gap-2 w-full' onClick={()=>setShow(!show)}>
                         { !show ? 
                             <BsChevronDown />
                         :
@@ -130,7 +128,7 @@ export default function WorkoutList({exercises, currentWorkout, setCurrentWorkou
                                 {...provided.droppableProps}
                             >
                                 { workouts[day].exercises.map((ex,ind)=>
-                                    <Draggable key={ex.name} draggableId={ex.name} index={ind}>
+                                    <Draggable key={exercises[ex].name} draggableId={exercises[ex].name} index={ind}>
                                         {(provided, snapshot)=>(
                                             <div className={`text-sm flex items-stretch  ${!show ? 'h-[0px]' : 'h-max'}`}
                                                 ref={provided.innerRef}
@@ -141,17 +139,17 @@ export default function WorkoutList({exercises, currentWorkout, setCurrentWorkou
                                             >
                                                 <div className='w-full border-l-2 p-2'>
                                                     <div className='flex items-center justify-between'>
-                                                        <p>{ex.name}</p>
+                                                        <p>{exercises[ex].name}</p>
                                                         <DeleteExercise currentWorkout={workouts[day]} currentWorkoutIndex={day}
                                                             setPrograms={setPrograms} setCurrentProgram={setCurrentProgram} homepage={false}
-                                                            username={profile.username} id={ind} setWorkouts={setWorkouts}
+                                                            username={profile.username} item={ex} id={ind} setWorkouts={setWorkouts} exercises={exercises}
                                                         />
                                                     </div>
                                                     <div className='flex flex-col gap-1 text-sm text-gray-500'>
                                                         <div className='grid grid-cols-2 gap-x-6 mb-2'>
                                                             <p>Sets</p>
                                                             <p>Reps</p>
-                                                            <select defaultValue={ex.target.sets.length} className='border border-gray-400 rounded-md'
+                                                            <select defaultValue={exercises[ex].target.sets.length} className='border border-gray-400 rounded-md'
                                                                 onChange={()=>setEdited(true)}
                                                                 name={`set-${ind}`} id={`set-${ind}`}
                                                             >
@@ -159,7 +157,7 @@ export default function WorkoutList({exercises, currentWorkout, setCurrentWorkou
                                                                     <option value={num} key={setNum}>{num}</option>
                                                                 )}
                                                             </select>
-                                                            <select defaultValue={ex.target.sets[0][0]} className='border border-gray-400 rounded-md'
+                                                            <select defaultValue={exercises[ex].target.sets[0][0]} className='border border-gray-400 rounded-md'
                                                                 onChange={()=>setEdited(true)}
                                                                 name={`rep-${ind}`} id={`rep-${ind}`}
                                                             >

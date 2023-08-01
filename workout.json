@@ -1,0 +1,136 @@
+{
+    "user": "me@whatever.com",
+    "programs": [
+        {
+            "name": "Push-Pull-Legs",
+            "description": "Chest/Shoulders/Tricep, Back/Bicep, Legs",
+            "schedule": [
+                1,
+                3,
+                4,
+                0,
+                8,
+                9
+            ],
+            "startDate": 0
+        },
+        {
+            "name": "Arnold Split",
+            "description": "Chest/Back, Arms, Legs",
+            "schedule": [
+                5,
+                6,
+                7,
+                0
+            ],
+            "startDate": 0
+        }
+    ],
+    "workouts": [
+        {
+            "name": "Rest",
+            "exercises": []
+        },
+        {
+            "name": "Push Day 1",
+            "exercises": [
+                1,
+                8,
+                6,
+                11,
+                36,
+                40
+            ]
+        },
+        {
+            "name": "Push Day 2",
+            "exercises": [
+                1,
+                8,
+                6,
+                11,
+                36,
+                40
+            ]
+        },
+        {
+            "name": "Pull Day 1",
+            "exercises": [
+                1,
+                8,
+                6,
+                11,
+                36,
+                40
+            ]
+        },
+        {
+            "name": "Leg Day 1",
+            "exercises": [
+                1,
+                8,
+                6,
+                11,
+                36,
+                40
+            ]
+        },
+        {
+            "name": "Arnold Day 1",
+            "exercises": [
+                1,
+                8,
+                6,
+                11,
+                36,
+                40
+            ]
+        },
+        {
+            "name": "Arnold Day 2",
+            "exercises": [
+                1,
+                8,
+                6,
+                11,
+                36,
+                40
+            ]
+        },
+        {
+            "name": "Arnold Day 3",
+            "exercises": [
+                1,
+                8,
+                6,
+                11,
+                36,
+                40
+            ]
+        },
+        {
+            "name": "Push Day (light)",
+            "exercises": [
+                1,
+                8,
+                6,
+                11,
+                36,
+                40
+            ]
+        },
+        {
+            "name": "Pull Day (light)",
+            "exercises": [
+                1,
+                8,
+                6,
+                11,
+                36,
+                40
+            ]
+        }
+    ],
+    "currentProgram": 0,
+    "currentDay": 0
+}

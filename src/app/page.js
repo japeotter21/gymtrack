@@ -32,32 +32,31 @@ export default function Home() {
 
   useEffect(()=>{
     setDay(new Date().getDay())
-    axios.get('/api/user')
-    .then(res=>{
-      setProfile(res.data.documents[0].profile)
-      setLoading(false)
-      setPrograms(res.data.documents[0].programs)
-      const currentIndex = res.data.documents[0].currentProgram
-      setCurrentProgram(res.data.documents[0].programs[currentIndex])
-      const dayIndex = res.data.documents[0].currentDay
-      const workoutIndex = res.data.documents[0].programs[currentIndex].schedule[dayIndex]
-      setCurrentWorkoutIndex(workoutIndex)
-      setCurrentWorkout(res.data.documents[0].workouts[workoutIndex])
-      setCurrentDay(dayIndex)
-      setExercises(res.data.documents[0].exercises)
-    })
-    .catch(err=>{
-      console.error(err.message)
-    })
+    const endpoints = ['/api/user', '/api/exercise', '/api/workouts']
+    axios.all(endpoints.map((endpoint) => axios.get(endpoint))).then(
+      axios.spread((user, exercise, workout) => {
+        setProfile(user.data.profile)
+        setExercises(exercise.data.exercises)
+        setPrograms(workout.data.programs)
+        const currentIndex = workout.data.currentProgram
+        setCurrentProgram(workout.data.programs[currentIndex])
+        const dayIndex = workout.data.currentDay
+        const workoutIndex = workout.data.programs[currentIndex].schedule[dayIndex]
+        setCurrentWorkoutIndex(workoutIndex)
+        setCurrentWorkout(workout.data.workouts[workoutIndex])
+        setCurrentDay(dayIndex)
+        setLoading(false)
+      })
+    )
   },[])
   
   useEffect(()=>{
     if(editing !== null)
     {
-        setEditSets(currentWorkout.exercises[editing].target.sets.length)
-        setEditReps(currentWorkout.exercises[editing].target.sets[0][0])
-        setEditWeight(currentWorkout.exercises[editing].target.sets[0][1])
-        setEditNotes(currentWorkout.exercises[editing].target.notes)
+        setEditSets(exercises[editing].target.sets.length)
+        setEditReps(exercises[editing].target.sets[0][0])
+        setEditWeight(exercises[editing].target.sets[0][1])
+        setEditNotes(exercises[editing].target.notes)
     }
   },[editing])
 
@@ -90,15 +89,11 @@ export default function Home() {
         reminder: ""
     }
     setUpdating(true)
-    axios.post('/api/exercise',postObj,{ params: {id: editing, user:profile.username, workout:currentWorkoutIndex}})
+    axios.post('/api/exercise',postObj,{ params: {exercise: editing, user:profile.username, workout:currentWorkoutIndex}})
     .then(res=>{
-      axios.get('/api/user')
+      axios.get('/api/exercise')
       .then(r=>{
-          const currentIndex = r.data.documents[0].currentProgram
-          const dayIndex = r.data.documents[0].currentDay
-          const workoutIndex = r.data.documents[0].programs[currentIndex].schedule[dayIndex]
-          setCurrentWorkoutIndex(workoutIndex)
-          setCurrentWorkout(r.data.documents[0].workouts[workoutIndex])
+          setExercises(r.data.exercises)
           HandleClose()
           setUpdating(false)
       })
@@ -108,7 +103,7 @@ export default function Home() {
   const reorder = (list, startIndex, endIndex) => {
     const result = list
     const [removed] = result.splice(startIndex, 1);
-    result.splice(endIndex, 0, removed);
+    result.splice(endIndex, 0, parseInt(removed));
     return result;
   };
 
@@ -120,17 +115,15 @@ export default function Home() {
       }
       //sInd: index of source group
       const sInd = source.droppableId
-
       const postObj = reorder(currentWorkout.exercises, source.index, destination.index);
       axios.post('/api/workouts',postObj, {params:{workout: currentWorkoutIndex, user:profile.username}})
       .then(res=>{
-        axios.get('/api/user')
+        axios.get('/api/workouts')
         .then(r=>{
-            const currentIndex = r.data.documents[0].currentProgram
-            const dayIndex = r.data.documents[0].currentDay
-            const workoutIndex = r.data.documents[0].programs[currentIndex].schedule[dayIndex]
-            setCurrentWorkoutIndex(workoutIndex)
-            setCurrentWorkout(r.data.documents[0].workouts[workoutIndex])
+            const currentIndex = r.data.currentProgram
+            const dayIndex = r.data.currentDay
+            const workoutIndex = r.data.programs[currentIndex].schedule[dayIndex]
+            setCurrentWorkout(r.data.workouts[workoutIndex])
         })
       })
   }
@@ -194,7 +187,7 @@ export default function Home() {
                           {...provided.droppableProps}
                       >
                         { currentWorkout.exercises.map((item,id)=>
-                          <Draggable key={item.name} draggableId={item.name} index={id}>
+                          <Draggable key={exercises[item].name} draggableId={exercises[item].name} index={id}>
                             {(provided, snapshot)=>(
                                 <div className='text-sm grid grid-cols-7 border border-t-0'
                                     ref={provided.innerRef}
@@ -205,12 +198,12 @@ export default function Home() {
                                 >
                                   <div className='p-2 col-span-3 flex items-center relative'
                                   {...provided.dragHandleProps}
-                                  ><RiDraggable size={16} className='absolute ml-[-10px] text-gray-500' /><span className='ml-[10px]'>{item.name}</span></div>
-                                  <div className='p-2' onClick={()=>setEditing(id)}>{item.target.sets.length}</div>
-                                  <div className='p-2' onClick={()=>setEditing(id)}>{item.target.sets[0][0]}</div>
-                                  <div className='p-2' onClick={()=>setEditing(id)}>{item.target.sets[0][1]}</div>
+                                  ><RiDraggable size={16} className='absolute ml-[-10px] text-gray-500' /><span className='ml-[10px]'>{exercises[item].name}</span></div>
+                                  <div className='p-2' onClick={()=>setEditing(item)}>{exercises[item].target.sets.length}</div>
+                                  <div className='p-2' onClick={()=>setEditing(item)}>{exercises[item].target.sets[0][0]}</div>
+                                  <div className='p-2' onClick={()=>setEditing(item)}>{exercises[item].target.sets[0][1]}</div>
                                   <DeleteExercise currentWorkout={currentWorkout} currentWorkoutIndex={currentWorkoutIndex} setCurrentWorkout={setCurrentWorkout}
-                                    username={profile.username} id={id} homepage={true}
+                                    username={profile.username} item={item} id={id} homepage={true} exercises={exercises}
                                   />
                             </div>
                             )}

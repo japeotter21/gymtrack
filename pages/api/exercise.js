@@ -7,56 +7,58 @@ export default async function handler(req, res) {
     // {
     //     auth = req.headers.authorization.split(' ')[1] === btoa(process.env.EDIT_USE+':'+process.env.EDIT_PW)
     // }
-        // if (req.method === 'GET')
-        // {
-        //     const data = JSON.stringify({
-        //         "collection": "user0",
-        //         "database": "gymtrack",
-        //         "dataSource": "link0"
-        //     });
-        //     const config = {
-        //         method: 'post',
-        //         url: 'https://us-east-2.aws.data.mongodb-api.com/app/data-hdjhg/endpoint/data/v1/action/find',
-        //         headers: {
-        //         'Content-Type': 'application/json',
-        //         'Access-Control-Request-Headers': '*',
-        //         'api-key': process.env.API_KEY,
-        //         },
-        //         data: data
-        //     }; 
-        //     axios(config)
-        //     .then(function (response) {
-        //         res.status(200).json(response.data);
-        //     })
-        //     .catch(function (error) {
-        //         res.status(400).json({data: 'request failed'})
-        //     });
-        // }
+        if (req.method === 'GET')
+        {
+            const data = JSON.stringify({
+                "collection": "user0",
+                "database": "gymtrack",
+                "dataSource": "link0",
+                "filter": {
+                    [`key`]: 'exercises'
+                }
+            });
+            const config = {
+                method: 'post',
+                url: 'https://us-east-2.aws.data.mongodb-api.com/app/data-hdjhg/endpoint/data/v1/action/find',
+                headers: {
+                'Content-Type': 'application/json',
+                'Access-Control-Request-Headers': '*',
+                'api-key': process.env.API_KEY,
+                },
+                data: data
+            }; 
+            axios(config)
+            .then(function (response) {
+                res.status(200).json(response.data.documents[0]);
+            })
+            .catch(function (error) {
+                res.status(400).json({data: 'request failed'})
+            });
+        }
     // else if(auth)
     // {
-        if (req.method === 'POST')
+        else if (req.method === 'POST')
         {
-            const index = req.query.id ? req.query.id : null
             const user = req.query.user
             const workout = req.query.workout
+            const batch = req.query.batch
             const loggingWorkout = req.query.log
             const exercise = req.query.exercise
             const updateData = loggingWorkout == 1 ? {
                 "$push": {
-                    [`workouts.${workout}.exercises.${index}.results`]: req.body,
                     [`exercises.${exercise}.results`]: req.body
                 }
             }
-            : index !== null ?
+            : batch ? 
             {
                 "$set": {
-                    [`workouts.${workout}.exercises.${index}.target`]: req.body
+                    [`exercises`]: req.body
                 }
             }
             :
             {
                 "$set": {
-                    [`workouts.${workout}.exercises`]: req.body
+                    [`exercises.${exercise}.target`]: req.body
                 }
             }
             const data = JSON.stringify({
@@ -64,7 +66,7 @@ export default async function handler(req, res) {
                 "database": "gymtrack",
                 "dataSource": "link0",
                 "filter": {
-                    [`profile.username`]: user
+                    [`key`]: 'exercises'
                 },
                 "update": updateData
             });

@@ -19,20 +19,19 @@ export default function Workouts() {
     const [workoutName, setWorkoutName] = useState('')
 
     useEffect(()=>{
-        axios.get('/api/user')
-        .then(res=>{
-          setLoading(false)
-          setPrograms(res.data.documents[0].programs)
-          const currentIndex = res.data.documents[0].currentProgram
-          setProgramIndex(currentIndex)
-          setCurrentProgram(res.data.documents[0].programs[currentIndex])
-          setWorkouts(res.data.documents[0].workouts)
-          setExercises(res.data.documents[0].exercises)
-          setProfile(res.data.documents[0].profile)
+        const endpoints = ['/api/user', '/api/exercise', '/api/workouts']
+        axios.all(endpoints.map((endpoint) => axios.get(endpoint))).then(
+        axios.spread((user, exercise, workout) => {
+            setLoading(false)
+            setPrograms(workout.data.programs)
+            const currentIndex = workout.data.currentProgram
+            setProgramIndex(currentIndex)
+            setCurrentProgram(workout.data.programs[currentIndex])
+            setWorkouts(workout.data.workouts)
+            setExercises(exercise.data.exercises)
+            setProfile(user.data.profile)
         })
-        .catch(err=>{
-          console.error(err.message)
-        })
+        )
     },[])
 
     function HandleClose() {
@@ -47,13 +46,13 @@ export default function Workouts() {
         const newWorkoutIndex = workouts.length
         axios.post('/api/routine', postObj, {params:{workout: newWorkoutIndex, user:profile.username, program: programIndex }})
         .then(res=>{
-            axios.get('/api/user')
+            axios.get('/api/workouts')
             .then(r=>{
-                const currentIndex = r.data.documents[0].currentProgram
-                const dayIndex = r.data.documents[0].currentDay
-                const workoutIndex = r.data.documents[0].programs[currentIndex].schedule[dayIndex]
-                setPrograms(r.data.documents[0].programs)
-                setWorkouts(r.data.documents[0].workouts)
+                const currentIndex = r.data.currentProgram
+                const dayIndex = r.data.currentDay
+                const workoutIndex = r.data.programs[currentIndex].schedule[dayIndex]
+                setPrograms(r.data.programs)
+                setWorkouts(r.data.workouts)
                 HandleClose()
             })
         })
@@ -61,13 +60,13 @@ export default function Workouts() {
 
     function ChangeProgram() {
         const postObj = {newProgram: parseInt(programIndex)}
-        axios.put('/api/user', postObj, {params:{user:profile.username}})
+        axios.put('/api/workouts', postObj, {params:{user:profile.username}})
         .then(res=>{
-            axios.get('/api/user')
+            axios.get('/api/workouts')
             .then(r=>{
-                const currentIndex = r.data.documents[0].currentProgram
-                setCurrentProgram(r.data.documents[0].programs[currentIndex])
-                setWorkouts(r.data.documents[0].workouts)
+                const currentIndex = r.data.currentProgram
+                setCurrentProgram(r.data.programs[currentIndex])
+                setWorkouts(r.data.workouts)
             })
             
         })
@@ -117,7 +116,7 @@ export default function Workouts() {
                 <div className='flex flex-col gap-4 w-full'>
                     {programs[programIndex].schedule.map((day,i)=>
                         <div key={`${i}-${day}`} className='border border-gray-400 bg-stone-50 rounded-md shadow-sm'> 
-                            <WorkoutList currentWorkout={workouts[day]} exercises={exercises}
+                            <WorkoutList currentWorkout={workouts[day]} exercises={exercises} setCurrentWorkout={setCurrentWorkout}
                                 setPrograms={setPrograms} setCurrentProgram={setCurrentProgram} workouts={workouts}
                                 profile={profile} setWorkouts={setWorkouts} day={day} i={i}
                             />

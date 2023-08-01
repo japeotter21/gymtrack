@@ -19,7 +19,7 @@ export default async function handler(req, res) {
                 "database": "gymtrack",
                 "dataSource": "link0",
                 "filter": {
-                    [`profile.username`]: user
+                    [`key`]: 'workouts'
                 },
                 "update": {
                     "$push": {

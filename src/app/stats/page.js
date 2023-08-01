@@ -19,14 +19,15 @@ export default function Stats() {
     const maxPercent = [0, 1, 0.95, 0.93, 0.9, 0.87, 0.85, 0.83, 0.8, 0.77, 0.75, 0.7, 0.67, 0.65]
 
     useEffect(()=>{
-        axios.get('/api/user')
+        axios.get('/api/exercise')
         .then(res=>{
           setLoading(false)
-          setResults(res.data.documents[0].exercises)
+          setResults(res.data.exercises)
         })
         .catch(err=>{
           console.error(err.message)
         })
+        
     },[])
 
     useEffect(()=>{

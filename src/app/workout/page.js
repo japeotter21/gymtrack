@@ -19,22 +19,21 @@ export default function Workout() {
     const router = useRouter()
 
     useEffect(()=>{
-        axios.get('/api/user')
-        .then(res=>{
-        setProfile(res.data.documents[0].profile)
-        setLoading(false)
-        const currentIndex = res.data.documents[0].currentProgram
-        setCurrentProgram(res.data.documents[0].programs[currentIndex])
-        const dayIndex = res.data.documents[0].currentDay
-        const workoutIndex = res.data.documents[0].programs[currentIndex].schedule[dayIndex]
-        setCurrentWorkout(res.data.documents[0].workouts[workoutIndex])
-        setCurrentWorkoutIndex(workoutIndex)
-        setCurrentDay(dayIndex)
-        setExercises(res.data.documents[0].exercises)
+        const endpoints = ['/api/user', '/api/exercise', '/api/workouts']
+        axios.all(endpoints.map((endpoint) => axios.get(endpoint))).then(
+        axios.spread((user, exercise, workout) => {
+            setProfile(user.data.profile)
+            setExercises(exercise.data.exercises)
+            const currentIndex = workout.data.currentProgram
+            setCurrentProgram(workout.data.programs[currentIndex])
+            const dayIndex = workout.data.currentDay
+            const workoutIndex = workout.data.programs[currentIndex].schedule[dayIndex]
+            setCurrentWorkoutIndex(workoutIndex)
+            setCurrentWorkout(workout.data.workouts[workoutIndex])
+            setCurrentDay(dayIndex)
+            setLoading(false)
         })
-        .catch(err=>{
-        console.error(err.message)
-        })
+        )
         if(sessionStorage.getItem('completed'))
         {
             setComplete(JSON.parse(sessionStorage.getItem('completed')))
