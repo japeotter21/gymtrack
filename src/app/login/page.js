@@ -4,7 +4,7 @@ import Image from 'next/image'
 import axios from 'axios'
 import AppContext from '../AppContext'
 import { useRouter } from 'next/navigation'
-import { Alert, Snackbar } from '@mui/material'
+import { Alert, CircularProgress, Snackbar } from '@mui/material'
 
 export default function Schedule() {
     const [username, setUsername] = useState('')
@@ -108,11 +108,20 @@ export default function Schedule() {
                             onChange={(e)=>setPassword(e.target.value)}
                         />
                     }
-                    <button
-                        className='w-full bg-gradient-to-r from-neutral-700 to-neutral-300 shadow-lg text-white py-2 rounded-full grayscale'
+                    { loggingIn ? 
+                    <button type="button"
+                        className='animate-pulse w-full bg-gradient-to-r from-neutral-700 to-neutral-300 shadow-lg text-white py-2 rounded-full flex items-center justify-center gap-4'
+                    >
+                        <p className='invisible'>Logging In</p>
+                    </button>
+                    :
+                    <button type='submit'
+                        className='w-full bg-gradient-to-r from-neutral-700 to-neutral-300 shadow-lg text-white py-2 rounded-full'
                     >
                         {newUser ? <>Create Account</> : <>Log In</>}
                     </button>
+                    }
+                    
                 </form>
                 <button onClick={()=>setNewUser(!newUser)} className='text-gray-500'>
                     {newUser ? <p>Already have an Account? <span className='underline'>Sign In</span></p> : <p>New User? <span className='underline'>Sign Up</span></p>}
