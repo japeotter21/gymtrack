@@ -227,9 +227,9 @@ export default function Home() {
           </Link>
         </div>
         <Pagenav page='home' />
-        { currentWorkout.exercises.length > 0 && editing !== null ? 
+        { exercises.length > 0 && editing !== null ? 
           <Dialog open={editing !== null} onClose={HandleClose} maxWidth="sm" fullWidth>
-            <p className='font-semibold text-lg px-3 py-3'>{currentWorkout.exercises[editing].name}</p>
+            <p className='font-semibold text-lg px-3 py-3'>{exercises[editing].name}</p>
             <div className='grid grid-cols-2 px-3 py-3 gap-3'>
               <p className='text-md'>Sets</p>
               <select className='text-md border rounded-lg w-full py-1 px-2' value={editSets}
