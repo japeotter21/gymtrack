@@ -9,14 +9,13 @@ import Link from 'next/link'
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd'
 import PostExercise from './components/EditWorkout'
 import { DeleteExercise } from './components/EditWorkout'
-import { RiDraggable } from 'react-icons/ri'
+import { RiDraggable, RiPencilLine } from 'react-icons/ri'
 import { repConstant, setConstant } from '@/globals'
 import AppContext from './AppContext'
 import { redirect } from 'next/navigation'
 
 export default function Home() {
   const [day, setDay] = useState(0)
-  const [week, setWeek] = useState(['S', 'M', 'T', 'W', 'R', 'F', 'S'])
   const [profile, setProfile] = useState({})
   const [loading, setLoading] = useState(true)
   const [currentProgram, setCurrentProgram] = useState(null)
@@ -31,6 +30,10 @@ export default function Home() {
   const [editWeight, setEditWeight] = useState(0)
   const [editNotes, setEditNotes] = useState('')
   const [updating, setUpdating] = useState(false)
+  const [newName, setNewName] = useState('')
+  const [newBio, setNewBio] = useState('')
+  const [newGoal, setNewGoal] = useState('')
+  const [editProfile, setEditProfile] = useState(false)
   const {activeUser} = useContext(AppContext)
 
   useEffect(()=>{
@@ -70,6 +73,15 @@ export default function Home() {
     }
   },[editing])
 
+  useEffect(()=>{
+    if(editProfile)
+    {
+        setNewBio(profile.bio)
+        setNewGoal(profile.goal)
+        setNewName(profile.name)
+    }
+  },[editProfile])
+
   // useEffect(()=>{
   //   if(day > 0)
   //   {
@@ -107,6 +119,24 @@ export default function Home() {
           HandleClose()
           setUpdating(false)
       })
+    })
+  }
+
+  function UpdateProfile() {
+    const postObj = {
+        name: newName,
+        bio: newBio,
+        goal: newGoal
+    }
+    setUpdating(true)
+    axios.put('/api/user', postObj, { params: {user:profile.username}})
+    .then(res=>{
+        axios.get('/api/user')
+        .then(r=>{
+            setProfile(r.data.profile)
+            setUpdating(false)
+            setEditProfile(false)
+        })
     })
   }
   
@@ -165,9 +195,15 @@ export default function Home() {
             <Avatar sx={{height:60, width:60}}>{ profile.name.charAt(0)}</Avatar>
           </div>
           <div className='w-full border border-gray-300 rounded-lg bg-stone-50 px-4 py-2'>
-            <div className='text-sm'>{profile.name}</div>
+            <div className='text-sm flex justify-between'>
+              <strong>{profile.name}</strong>
+              <button className='text-gray-500'
+                onClick={()=>setEditProfile(true)}
+              ><RiPencilLine size={18}/></button>
+            </div>
+            <p className='text-sm'>{profile.bio}</p>
             <hr className='my-2'/>
-            <div className='text-sm'>Goal: {profile.goal}</div>
+            <p className='text-sm'>Goal: {profile.goal}</p>
           </div>
         </div>
       </div>
@@ -285,6 +321,41 @@ export default function Home() {
           :
           <></>
         }
+        <Dialog open={editProfile} onClose={()=>setEditProfile(false)}>
+          <div className='px-4 py-2'>
+            <p className='font-semibold text-lg py-2'>Edit Profile</p>
+            <div className='grid grid-cols-4 gap-1'>
+                <p>Name</p>
+                <input type="text" defaultValue={profile.name} placeholder='Name' className='border border-gray-400 rounded-md p-1 col-span-4'
+                  onChange={(e)=>setNewName(e.target.value)}
+                />
+                <p>Bio</p>
+                <textarea type="text" defaultValue={profile.bio} placeholder='Bio' className='border border-gray-400 rounded-md p-1 col-span-4'
+                  onChange={(e)=>setNewBio(e.target.value)}
+                />
+                <p>Goal</p>
+                <textarea type="text" defaultValue={profile.goal} placeholder='Goal' className='border border-gray-400 rounded-md p-1 col-span-4'
+                  onChange={(e)=>setNewGoal(e.target.value)}
+                />
+            </div>
+            <div className='flex justify-between mt-4'>
+              <button className='shadow-sm border border-neutral-500 rounded-md py-1 px-3'
+                onClick={()=>setEditProfile(false)}
+              >Cancel</button>
+              { updating ?
+                <button disabled className='shadow-sm border border-green-800 bg-green-600 text-white rounded-md py-1 px-4'
+                >Saving...
+                </button>
+              :
+                <button className='shadow-sm border border-green-800 bg-green-600 text-white rounded-md py-1 px-4'
+                  onClick={UpdateProfile}
+                >Save
+                </button>
+              }
+              
+            </div>
+          </div>
+        </Dialog>
     </main>
   )
 }

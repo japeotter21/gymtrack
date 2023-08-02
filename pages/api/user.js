@@ -37,6 +37,41 @@ export default function handler(req, res) {
         }
     // else if(auth)
     // {
+        else if (req.method === 'PUT')
+        {
+            const data = JSON.stringify({
+                "collection": "user0",
+                "database": "gymtrack",
+                "dataSource": "link0",
+                "filter": {
+                    [`key`]: 'profile'
+                },
+                "update": {
+                    "$set": {
+                        [`profile.bio`]: req.body.bio,
+                        [`profile.goal`]: req.body.goal,
+                        [`profile.name`]: req.body.name
+                    }
+                }
+            });
+            const config = {
+                method: 'post',
+                url: 'https://us-east-2.aws.data.mongodb-api.com/app/data-hdjhg/endpoint/data/v1/action/updateOne',
+                headers: {
+                'Content-Type': 'application/json',
+                'Access-Control-Request-Headers': '*',
+                'api-key': process.env.API_KEY,
+                },
+                data: data
+            }; 
+            axios(config)
+            .then(function (response) {
+                res.status(200).json(response.data);
+            })
+            .catch(function (error) {
+                res.status(400).json({data: 'request failed'})
+            });
+        }
         else if (req.method === 'POST')
         {
             const data = JSON.stringify({

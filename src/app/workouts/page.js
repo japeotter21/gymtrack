@@ -114,7 +114,7 @@ export default function Workouts() {
                             >
                                 <BsCircle size={20} style={{color:'#6b7280'}} />
                             </button>
-                            <p className='text-xs'>Select Program</p>
+                            <p className='text-xs'>Use This Program</p>
                         </div>
                     }
                 </div>

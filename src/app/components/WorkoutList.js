@@ -145,7 +145,7 @@ export default function WorkoutList({exercises, currentWorkout, setCurrentWorkou
                                                             username={profile.username} item={ex} id={ind} setWorkouts={setWorkouts} exercises={exercises}
                                                         />
                                                     </div>
-                                                    <div className='flex flex-col gap-1 text-sm text-gray-500'>
+                                                    <div className='flex flex-col gap-1 text-sm'>
                                                         <div className='grid grid-cols-2 gap-x-6 mb-2'>
                                                             <p>Sets</p>
                                                             <p>Reps</p>

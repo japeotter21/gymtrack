@@ -110,7 +110,7 @@ export default function Schedule() {
 
     return (
         <main className="min-h-screen grid place-items-center">
-            <div className='bg-stone-50 border border-gray-300 rounded-lg px-6 py-4 lg:py-12 flex flex-col gap-4 h-2/3 shadow-xl w-3/4 lg:w-1/4'>
+            <div className='bg-stone-50 border border-gray-300 rounded-lg px-6 py-4 lg:py-12 flex flex-col gap-4 shadow-xl w-3/4 lg:w-1/4 row-span-6'>
                 <p className='text-center text-xl font-semibold text-zinc-600'>{newUser ? <>Sign Up</> : <>Log In</>}</p>
                 <form onSubmit={(e)=>TryLogin(e)} className=' flex flex-col gap-4'>
                     <input type='text' placeholder='Username' required className='border border-gray-200 rounded-lg py-2 px-3'
@@ -147,7 +147,7 @@ export default function Schedule() {
                     }
                     
                 </form>
-                {warning !== null ? <div className='text-red-600 text-xs break-words text-center'>{warning}</div> : <></>}
+                <div className={`text-red-600 text-xs break-words text-center ${warning === null ? 'invisible' : ''}`}>{warning}.</div>
                 <button onClick={()=>setNewUser(!newUser)} className='text-gray-500'>
                     {newUser ? <p>Already have an Account? <span className='underline'>Sign In</span></p> : <p>New User? <span className='underline'>Sign Up</span></p>}
                 </button>
