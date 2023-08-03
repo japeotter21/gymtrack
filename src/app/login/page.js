@@ -33,7 +33,7 @@ export default function Schedule() {
         {
             if(password.length < 8)
             {
-                setWarning('Password must be at least 8 characters.')
+                setWarning('Password must be at least 8 characters')
             }
             else
             {
