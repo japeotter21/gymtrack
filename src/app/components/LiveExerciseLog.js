@@ -13,15 +13,24 @@ export default function LiveExerciseLog({complete, lift, id, setComplete, curren
         e.preventDefault()
         const exerciseIndex = e.target.id.split('-')[1]
         const currentExercise = exercises[exerciseIndex]
-        const postLength = currentExercise.target.sets.length + addSet.length
-        const formLengthTemp = currentExercise.target.sets.flat()
-        const formLength = formLengthTemp.concat(addSet.flat())
-        let postArr = Array.from({length: postLength},(x)=>0)
+        const postLength = currentExercise.target.sets.length
+        const formLength = currentExercise.target.sets.flat()
+        const extraLength = addSet.length
+        const extraFormLength = addSet.flat()
+        let postArr = []
         formLength.forEach((item,id)=>{
             if(id % 2 === 1)
             {
                 const newResult = [parseInt(e.target[id-1].value),parseInt(e.target[id].value)]
-                postArr[Math.floor(id/2)] = newResult
+                postArr.push(newResult)
+            }
+        })
+        console.log(extraFormLength)
+        extraFormLength.forEach((item,id)=>{
+            if(id % 2 === 1)
+            {
+                const newResult = [parseInt(extraFormLength[id-1]),parseInt(item)]
+                postArr.push(newResult)
             }
         })
         const postObj = {
@@ -48,6 +57,19 @@ export default function LiveExerciseLog({complete, lift, id, setComplete, curren
         const setTemp = [...addSet]
         setTemp.pop()
         setAddSet(setTemp)
+    }
+
+    function UpdateAddSet(e, index, target) {
+        let addTemp = [...addSet]
+        if (target==="rep")
+        {
+            addTemp[index][0] = parseInt(e.target.value)
+        }
+        else if (target==="weight")
+        {
+            addTemp[index][1] = parseInt(e.target.value)
+        }
+        setAddSet(addTemp)
     }
 
     return (
@@ -85,19 +107,21 @@ export default function LiveExerciseLog({complete, lift, id, setComplete, curren
                         </div>
                         <select type="number" id={`extraset${index+1}`} name={`extraset${index+1}`} defaultValue={0}
                             className='border border-gray-400 rounded-md px-2'
+                            onChange={(e)=>UpdateAddSet(e, index, 'rep')}
                         >
                             {repConstant.map((rep,number)=>
                                 <option value={rep} key={number}>{rep}</option>
                             )}
                         </select>
-                        <input type="number" id={`extraset${index+1}`} name={`extraset${index+1}`} defaultValue={''}
+                        <input type="number" id={`extraset${index+1}`} name={`extraset${index+1}`} defaultValue={0}
                             className='border border-gray-400 rounded-md px-2'
+                            onChange={(e)=>UpdateAddSet(e, index, 'weight')}
                         />
                     </div>
                 )}
                 <div className='grid grid-cols-3 my-2 gap-2 items-center'>
                     <button onClick={()=>setAddSet([...addSet,[0,0]])} type="button"
-                        className='text-sm bg-green-600 text-white shadow-sm rounded-md px-1 py-0.5 lg:w-1/6'
+                        className='text-sm bg-green-600 text-white shadow-sm rounded-md px-1 py-0.5'
                     >
                         Add Set
                     </button>
