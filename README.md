@@ -18,7 +18,7 @@ To Do:
 <p>⬜ Create and ✅ edit programs</p>
 <p>⬜ Configure progression to set target weights</p>
 <p>✅ User flow and auth
-  - User associated data
+  ✅ User associated data
 </p>
 <p>⬜ Add exercises and assign attributes (back/pull/etc.)</p>
 <p>⬜ AI workout progressions, plans and exercise recommendations</p>
