@@ -11,12 +11,14 @@ export default function handler(req, res) {
     // {
         if (req.method === 'POST')
         {
+            const user = req.query.user
             const data = JSON.stringify({
                 "collection": "user0",
                 "database": "gymtrack",
                 "dataSource": "link0",
                 "filter": {
-                    [`profile.username`]: user
+                    [`key`]: 'workouts',
+                    [`user`]: user
                 },
                 "update": {
                     "$set": {

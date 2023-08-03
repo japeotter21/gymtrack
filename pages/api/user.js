@@ -9,12 +9,14 @@ export default function handler(req, res) {
     // }
         if (req.method === 'GET')
         {
+            const user = req.query.user
             const data = JSON.stringify({
                 "collection": "user0",
                 "database": "gymtrack",
                 "dataSource": "link0",
                 "filter": {
-                    [`key`]: 'profile'
+                    [`key`]: 'profile',
+                    ['user']: user
                 }
             });
             const config = {
@@ -39,12 +41,14 @@ export default function handler(req, res) {
     // {
         else if (req.method === 'PUT')
         {
+            const user = req.query.user
             const data = JSON.stringify({
                 "collection": "user0",
                 "database": "gymtrack",
                 "dataSource": "link0",
                 "filter": {
-                    [`key`]: 'profile'
+                    [`key`]: 'profile',
+                    ['user']: user
                 },
                 "update": {
                     "$set": {
@@ -74,10 +78,14 @@ export default function handler(req, res) {
         }
         else if (req.method === 'POST')
         {
+            const user = req.query.user
             const data = JSON.stringify({
                 "collection": "user0",
                 "database": "gymtrack",
                 "dataSource": "link0",
+                "filter": {
+                    ['user']: user
+                },
                 "document": req.body
             });
             const config = {

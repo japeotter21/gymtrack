@@ -41,7 +41,7 @@ export default function Home() {
     {
       setDay(new Date().getDay())
       const endpoints = ['/api/user', '/api/exercise', '/api/workouts']
-      axios.all(endpoints.map((endpoint) => axios.get(endpoint))).then(
+      axios.all(endpoints.map((endpoint) => axios.get(endpoint, { params: {user:activeUser}}))).then(
         axios.spread((user, exercise, workout) => {
           setProfile(user.data.profile)
           setExercises(exercise.data.exercises)
@@ -111,9 +111,9 @@ export default function Home() {
         reminder: ""
     }
     setUpdating(true)
-    axios.post('/api/exercise',postObj,{ params: {exercise: editing, user:profile.username, workout:currentWorkoutIndex}})
+    axios.post('/api/exercise',postObj,{ params: {exercise: editing, user:activeUser, workout:currentWorkoutIndex}})
     .then(res=>{
-      axios.get('/api/exercise')
+      axios.get('/api/exercise',{ params: { user:activeUser }})
       .then(r=>{
           setExercises(r.data.exercises)
           HandleClose()
@@ -125,13 +125,13 @@ export default function Home() {
   function UpdateProfile() {
     const postObj = {
         name: newName,
-        bio: newBio,
-        goal: newGoal
+        bio: newBio
+        // goal: newGoal
     }
     setUpdating(true)
-    axios.put('/api/user', postObj, { params: {user:profile.username}})
+    axios.put('/api/user', postObj, { params: {user:activeUser}})
     .then(res=>{
-        axios.get('/api/user')
+        axios.get('/api/user', { params: {user:activeUser}})
         .then(r=>{
             setProfile(r.data.profile)
             setUpdating(false)
@@ -156,9 +156,9 @@ export default function Home() {
       //sInd: index of source group
       const sInd = source.droppableId
       const postObj = reorder(currentWorkout.exercises, source.index, destination.index);
-      axios.post('/api/workouts',postObj, {params:{workout: currentWorkoutIndex, user:profile.username}})
+      axios.post('/api/workouts',postObj, {params:{workout: currentWorkoutIndex, user:activeUser}})
       .then(res=>{
-        axios.get('/api/workouts')
+        axios.get('/api/workouts', { params: {user:activeUser}})
         .then(r=>{
             const currentIndex = r.data.currentProgram
             const dayIndex = r.data.currentDay
@@ -192,170 +192,170 @@ export default function Home() {
       <div className='w-full gap-3 lg:w-1/2'>
         <div className='flex w-full items-center gap-2 lg:gap-6'>
           <div>
-            <Avatar sx={{height:60, width:60}}>{ profile.name.charAt(0)}</Avatar>
+            <Avatar sx={{height:60, width:60}}>{profile.name ? profile.name.charAt(0) : activeUser.charAt(0)}</Avatar>
           </div>
           <div className='w-full border border-gray-300 rounded-lg bg-stone-50 px-4 py-2'>
             <div className='text-sm flex justify-between'>
-              <strong>{profile.name}</strong>
+              <strong>{profile.name ? profile.name : activeUser}</strong>
               <button className='text-gray-500'
                 onClick={()=>setEditProfile(true)}
               ><RiPencilLine size={18}/></button>
             </div>
-            <p className='text-sm'>{profile.bio}</p>
+            <p className='text-sm mt-0.5'>{profile.bio ? profile.bio : <>Add a Bio!</>}</p>
             <hr className='my-2'/>
-            <p className='text-sm'>Goal: {profile.goal}</p>
+            <div className='flex gap-2 items-center justify-start'>
+              <p className={profile.streak.current > 0 ? 'text-red-500' : 'text-neutral-400'}>🔥&nbsp;{profile.streak.current}</p>
+              <p className='text-sm'>Best: {profile.streak.best}</p>
+            </div>
+            {/* <p className='text-sm'>Goal: {profile.goal}</p> */}
           </div>
         </div>
       </div>
-      <div className='w-full lg:w-1/2 flex gap-2 items-baseline justify-start mt-1'>
-        <div className={profile.streak.current > 0 ? 'text-green-500' : 'text-red-500'}>🔥&nbsp;{profile.streak.current}</div>
-        <div className='text-sm'>Best: {profile.streak.best}</div>
-      </div>
-        <div className='w-full lg:w-1/2 flex-col gap-2 items-center'>
-          <div className='flex items-baseline'>
-            <p className='text-gray-600 text-lg my-2'>Today's Workout:&nbsp;</p>
-            <p className='font-semibold text-lg my-2'>{currentWorkout.name}</p>
-          </div>
-          <p className='text-sm text-gray-600'>from {currentProgram.name}</p>
-          <div className='border border-gray-300 rounded-md pt-1 mt-4 mb-4 bg-stone-50 shadow-lg'>
-              <div className='text-sm font-semibold grid grid-cols-7 border-b-2'>
-                  <div className='p-2 col-span-3 ml-[10px]'>Exercise</div>
-                  <div className='p-2'>Sets</div>
-                  <div className='p-2'>Reps</div>
-                  <div className='p-2'>Weight</div>
-              </div>
-              <DragDropContext onDragEnd={onDragEnd}>
-                <Droppable droppableId={'drop'} key={0}>
-                  {(provided, snapshot)=>(
-                      <div
-                          ref={provided.innerRef}
-                          style={getListStyle(snapshot.isDraggingOver)}
-                          {...provided.droppableProps}
-                      >
-                        { currentWorkout.exercises.map((item,id)=>
-                          <Draggable key={exercises[item].name} draggableId={exercises[item].name} index={id}>
-                            {(provided, snapshot)=>(
-                                <div className='text-sm grid grid-cols-7 border border-t-0'
-                                    ref={provided.innerRef}
-                                    style={getItemStyle(snapshot.isDragging,
-                                        provided.draggableProps.style)}
-                                    {...provided.draggableProps}
-                                    
-                                >
-                                  <div className='p-2 col-span-3 flex items-center relative'
-                                  {...provided.dragHandleProps}
-                                  ><RiDraggable size={16} className='absolute ml-[-10px] text-gray-500' /><span className='ml-[10px]'>{exercises[item].name}</span></div>
-                                  <div className='p-2' onClick={()=>setEditing(item)}>{exercises[item].target.sets.length}</div>
-                                  <div className='p-2' onClick={()=>setEditing(item)}>{exercises[item].target.sets[0][0]}</div>
-                                  <div className='p-2' onClick={()=>setEditing(item)}>{exercises[item].target.sets[0][1]}</div>
-                                  <DeleteExercise currentWorkout={currentWorkout} currentWorkoutIndex={currentWorkoutIndex} setCurrentWorkout={setCurrentWorkout}
-                                    username={profile.username} item={item} id={id} homepage={true} exercises={exercises}
-                                  />
-                            </div>
-                            )}
-                          </Draggable>
-                        )}
-                        {provided.placeholder}
-                      </div>
-                  )}
-                </Droppable>
-              </DragDropContext>
-              <PostExercise currentWorkout={currentWorkout} currentWorkoutIndex={currentWorkoutIndex} setCurrentWorkout={setCurrentWorkout}
-                username={profile.username} exercises={exercises} homepage={true} setCurrentWorkoutIndex={setCurrentWorkoutIndex}
-              />
-          </div>
-          <Link href="/workout">
-            <button
-              className='w-11/12 lg:w-[10vw] shadow-md py-3 my-4 lg:my-2 mx-auto lg:ml-auto lg:mr-0 block px-5 rounded-full bg-green-700 hover:bg-opacity-80
-                text-white hover:scale-105 transition duration-300'
-              
-            >Start Workout</button>    
-          </Link>
+      <div className='w-full lg:w-1/2 flex-col gap-2 items-center'>
+        <div className='flex items-baseline'>
+          <p className='text-gray-600 text-lg my-2'>Today's Workout:&nbsp;</p>
+          <p className='font-semibold text-lg my-2'>{currentWorkout.name}</p>
         </div>
-        <Pagenav page='home' />
-        { exercises.length > 0 && editing !== null ? 
-          <Dialog open={editing !== null} onClose={HandleClose} maxWidth="sm" fullWidth>
-            <p className='font-semibold text-lg px-3 py-3'>{exercises[editing].name}</p>
-            <div className='grid grid-cols-2 px-3 py-3 gap-3'>
-              <p className='text-md'>Sets</p>
-              <select className='text-md border rounded-lg w-full py-1 px-2' value={editSets}
-                onChange={(e)=>setEditSets(e.target.value)}
-              >
-                {setConstant.map((num,setNum)=>
-                    <option value={num} key={setNum}>{num}</option>
+        <p className='text-sm text-gray-600'>from {currentProgram.name}</p>
+        <div className='border border-gray-300 rounded-md pt-1 mt-4 mb-4 bg-stone-50 shadow-lg'>
+            <div className='text-sm font-semibold grid grid-cols-7 border-b-2'>
+                <div className='p-2 col-span-3 ml-[10px]'>Exercise</div>
+                <div className='p-2'>Sets</div>
+                <div className='p-2'>Reps</div>
+                <div className='p-2'>Weight</div>
+            </div>
+            <DragDropContext onDragEnd={onDragEnd}>
+              <Droppable droppableId={'drop'} key={0}>
+                {(provided, snapshot)=>(
+                    <div
+                        ref={provided.innerRef}
+                        style={getListStyle(snapshot.isDraggingOver)}
+                        {...provided.droppableProps}
+                    >
+                      { currentWorkout.exercises.map((item,id)=>
+                        <Draggable key={exercises[item].name} draggableId={exercises[item].name} index={id}>
+                          {(provided, snapshot)=>(
+                              <div className='text-sm grid grid-cols-7 border border-t-0'
+                                  ref={provided.innerRef}
+                                  style={getItemStyle(snapshot.isDragging,
+                                      provided.draggableProps.style)}
+                                  {...provided.draggableProps}
+                                  
+                              >
+                                <div className='p-2 col-span-3 flex items-center relative'
+                                {...provided.dragHandleProps}
+                                ><RiDraggable size={16} className='absolute ml-[-10px] text-gray-500' /><span className='ml-[10px]'>{exercises[item].name}</span></div>
+                                <div className='p-2' onClick={()=>setEditing(item)}>{exercises[item].target.sets.length}</div>
+                                <div className='p-2' onClick={()=>setEditing(item)}>{exercises[item].target.sets[0][0]}</div>
+                                <div className='p-2' onClick={()=>setEditing(item)}>{exercises[item].target.sets[0][1]}</div>
+                                <DeleteExercise currentWorkout={currentWorkout} currentWorkoutIndex={currentWorkoutIndex} setCurrentWorkout={setCurrentWorkout}
+                                  username={activeUser} item={item} id={id} homepage={true} exercises={exercises}
+                                />
+                          </div>
+                          )}
+                        </Draggable>
+                      )}
+                      {provided.placeholder}
+                    </div>
                 )}
-              </select>
-              <p className='text-md'>Reps</p>
-              <select className='text-md border rounded-lg w-full py-1 px-2' value={editReps}
-                onChange={(e)=>setEditReps(e.target.value)}
-              >
-                {repConstant.map((num,setNum)=>
-                    <option value={num} key={setNum}>{num}</option>
-                )}
-              </select>
-              <p className='text-md'>Weight (lbs)</p>
-              <input className='text-md border rounded-lg w-full py-1 px-2' value={editWeight}
-                onChange={(e)=>setEditWeight(e.target.value)}
-              />
-              <p className='text-md'>Notes</p>
-              <input className='text-md border rounded-lg w-full py-1 px-2' value={editNotes}
-                onChange={(e)=>setEditNotes(e.target.value)}
-              />
-            </div>
-            <div className='flex justify-end px-3 py-3 gap-3'>
-                <button className='border border-gray-400 py-1 px-3 rounded-xl hover:bg-red-100 hover:border-red-200 hover:text-red-500 hover:scale-105 transition duration-200'
-                  onClick={HandleClose}
-                >Cancel</button>
-                { updating ? 
-                  <button className='block shadow-md py-1 px-3 rounded-xl bg-green-700 bg-opacity-60 text-gray-200 hover:scale-105 transition duration-200'
-                    disabled
-                  >Updating...</button>
-                :
-                  <button className='block shadow-md py-1 px-3 rounded-xl bg-green-700 hover:bg-opacity-80 text-white hover:scale-105 transition duration-200'
-                    onClick={HandleEdit}
-                  >Update</button>
-                }
-                
-            </div>
-          </Dialog>
-          :
-          <></>
-        }
-        <Dialog open={editProfile} onClose={()=>setEditProfile(false)}>
-          <div className='px-4 py-2'>
-            <p className='font-semibold text-lg py-2'>Edit Profile</p>
-            <div className='grid grid-cols-4 gap-1'>
-                <p>Name</p>
-                <input type="text" defaultValue={profile.name} placeholder='Name' className='border border-gray-400 rounded-md p-1 col-span-4'
-                  onChange={(e)=>setNewName(e.target.value)}
-                />
-                <p>Bio</p>
-                <textarea type="text" defaultValue={profile.bio} placeholder='Bio' className='border border-gray-400 rounded-md p-1 col-span-4'
-                  onChange={(e)=>setNewBio(e.target.value)}
-                />
-                <p>Goal</p>
-                <textarea type="text" defaultValue={profile.goal} placeholder='Goal' className='border border-gray-400 rounded-md p-1 col-span-4'
-                  onChange={(e)=>setNewGoal(e.target.value)}
-                />
-            </div>
-            <div className='flex justify-between mt-4'>
-              <button className='shadow-sm border border-neutral-500 rounded-md py-1 px-3'
-                onClick={()=>setEditProfile(false)}
+              </Droppable>
+            </DragDropContext>
+            <PostExercise currentWorkout={currentWorkout} currentWorkoutIndex={currentWorkoutIndex} setCurrentWorkout={setCurrentWorkout}
+              username={activeUser} exercises={exercises} homepage={true} setCurrentWorkoutIndex={setCurrentWorkoutIndex}
+            />
+        </div>
+        <Link href="/workout">
+          <button
+            className='w-11/12 lg:w-[10vw] shadow-md py-3 my-4 lg:my-2 mx-auto lg:ml-auto lg:mr-0 block px-5 rounded-full bg-green-700 hover:bg-opacity-80
+              text-white hover:scale-105 transition duration-300'
+            
+          >Start Workout</button>    
+        </Link>
+      </div>
+      <Pagenav page='home' />
+      { exercises.length > 0 && editing !== null ? 
+        <Dialog open={editing !== null} onClose={HandleClose} maxWidth="sm" fullWidth>
+          <p className='font-semibold text-lg px-3 py-3'>{exercises[editing].name}</p>
+          <div className='grid grid-cols-2 px-3 py-3 gap-3'>
+            <p className='text-md'>Sets</p>
+            <select className='text-md border rounded-lg w-full py-1 px-2' value={editSets}
+              onChange={(e)=>setEditSets(e.target.value)}
+            >
+              {setConstant.map((num,setNum)=>
+                  <option value={num} key={setNum}>{num}</option>
+              )}
+            </select>
+            <p className='text-md'>Reps</p>
+            <select className='text-md border rounded-lg w-full py-1 px-2' value={editReps}
+              onChange={(e)=>setEditReps(e.target.value)}
+            >
+              {repConstant.map((num,setNum)=>
+                  <option value={num} key={setNum}>{num}</option>
+              )}
+            </select>
+            <p className='text-md'>Weight (lbs)</p>
+            <input className='text-md border rounded-lg w-full py-1 px-2' value={editWeight}
+              onChange={(e)=>setEditWeight(e.target.value)}
+            />
+            <p className='text-md'>Notes</p>
+            <input className='text-md border rounded-lg w-full py-1 px-2' value={editNotes}
+              onChange={(e)=>setEditNotes(e.target.value)}
+            />
+          </div>
+          <div className='flex justify-end px-3 py-3 gap-3'>
+              <button className='border border-gray-400 py-1 px-3 rounded-xl hover:bg-red-100 hover:border-red-200 hover:text-red-500 hover:scale-105 transition duration-200'
+                onClick={HandleClose}
               >Cancel</button>
-              { updating ?
-                <button disabled className='shadow-sm border border-green-800 bg-green-600 text-white rounded-md py-1 px-4'
-                >Saving...
-                </button>
+              { updating ? 
+                <button className='block shadow-md py-1 px-3 rounded-xl bg-green-700 bg-opacity-60 text-gray-200 hover:scale-105 transition duration-200'
+                  disabled
+                >Updating...</button>
               :
-                <button className='shadow-sm border border-green-800 bg-green-600 text-white rounded-md py-1 px-4'
-                  onClick={UpdateProfile}
-                >Save
-                </button>
+                <button className='block shadow-md py-1 px-3 rounded-xl bg-green-700 hover:bg-opacity-80 text-white hover:scale-105 transition duration-200'
+                  onClick={HandleEdit}
+                >Update</button>
               }
               
-            </div>
           </div>
         </Dialog>
+        :
+        <></>
+      }
+      <Dialog open={editProfile} onClose={()=>setEditProfile(false)}>
+        <div className='px-4 py-2'>
+          <p className='font-semibold text-lg py-2'>Edit Profile</p>
+          <div className='grid grid-cols-4 gap-1'>
+              <p>Name</p>
+              <input type="text" defaultValue={profile.name} placeholder='Name' className='border border-gray-400 rounded-md p-1 col-span-4'
+                onChange={(e)=>setNewName(e.target.value)}
+              />
+              <p>Bio</p>
+              <textarea type="text" defaultValue={profile.bio} placeholder='Bio' className='border border-gray-400 rounded-md p-1 col-span-4'
+                onChange={(e)=>setNewBio(e.target.value)}
+              />
+              <p>Goal</p>
+              <textarea type="text" defaultValue={profile.goal} placeholder='Goal' className='border border-gray-400 rounded-md p-1 col-span-4'
+                onChange={(e)=>setNewGoal(e.target.value)}
+              />
+          </div>
+          <div className='flex justify-between mt-4'>
+            <button className='shadow-sm border border-neutral-500 rounded-md py-1 px-3'
+              onClick={()=>setEditProfile(false)}
+            >Cancel</button>
+            { updating ?
+              <button disabled className='shadow-sm border border-green-800 bg-green-600 text-white rounded-md py-1 px-4'
+              >Saving...
+              </button>
+            :
+              <button className='shadow-sm border border-green-800 bg-green-600 text-white rounded-md py-1 px-4'
+                onClick={UpdateProfile}
+              >Save
+              </button>
+            }
+            
+          </div>
+        </div>
+      </Dialog>
     </main>
   )
 }

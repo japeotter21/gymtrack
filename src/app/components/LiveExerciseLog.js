@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation';
 import { FormControl, RadioGroup, FormControlLabel, Radio } from '@mui/material';
 import { repConstant } from '@/globals';
 
-export default function LiveExerciseLog({complete, lift, id, setComplete, currentWorkout, profile, currentWorkoutIndex, exercises}) {
+export default function LiveExerciseLog({complete, lift, id, setComplete, currentWorkout, profile, currentWorkoutIndex, exercises, username}) {
     const [radioVal, setRadioVal] = useState(0)
     const [addSet, setAddSet] = useState([])
     function SubmitSetForm(e) {
@@ -40,7 +40,7 @@ export default function LiveExerciseLog({complete, lift, id, setComplete, curren
             date: new Date().getTime(),
             rpe: radioVal
         }
-        axios.post('/api/exercise',postObj,{ params: { workout:currentWorkoutIndex, log:1, exercise: exerciseIndex}})
+        axios.post('/api/exercise',postObj,{ params: { workout:currentWorkoutIndex, log:1, exercise: exerciseIndex, user: username}})
         .then(res=>{
             const storeComplete = [...complete]
             storeComplete.push(exerciseIndex)

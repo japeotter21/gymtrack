@@ -25,7 +25,7 @@ export default function Workouts() {
         if(activeUser)
         {
             const endpoints = ['/api/user', '/api/exercise', '/api/workouts']
-            axios.all(endpoints.map((endpoint) => axios.get(endpoint))).then(
+            axios.all(endpoints.map((endpoint) => axios.get(endpoint,{params:{user:activeUser}}))).then(
             axios.spread((user, exercise, workout) => {
                 setLoading(false)
                 setPrograms(workout.data.programs)
@@ -53,9 +53,9 @@ export default function Workouts() {
             exercises: []
         }
         const newWorkoutIndex = workouts.length
-        axios.post('/api/routine', postObj, {params:{workout: newWorkoutIndex, user:profile.username, program: programIndex }})
+        axios.post('/api/routine', postObj, {params:{workout: newWorkoutIndex, user:activeUser, program: programIndex }})
         .then(res=>{
-            axios.get('/api/workouts')
+            axios.get('/api/workouts',{params:{user:activeUser}})
             .then(r=>{
                 const currentIndex = r.data.currentProgram
                 const dayIndex = r.data.currentDay
@@ -69,9 +69,9 @@ export default function Workouts() {
 
     function ChangeProgram() {
         const postObj = {newProgram: parseInt(programIndex)}
-        axios.put('/api/workouts', postObj, {params:{user:profile.username}})
+        axios.put('/api/workouts', postObj, {params:{user:activeUser}})
         .then(res=>{
-            axios.get('/api/workouts')
+            axios.get('/api/workouts',{params:{user:activeUser}})
             .then(r=>{
                 const currentIndex = r.data.currentProgram
                 setCurrentProgram(r.data.programs[currentIndex])

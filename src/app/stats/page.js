@@ -24,7 +24,7 @@ export default function Stats() {
     useEffect(()=>{
         if(activeUser)
         {
-            axios.get('/api/exercise')
+            axios.get('/api/exercise', { params: { user: activeUser } })
             .then(res=>{
               setLoading(false)
               setResults(res.data.exercises)

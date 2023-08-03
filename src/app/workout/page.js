@@ -25,7 +25,7 @@ export default function Workout() {
         if(activeUser)
         {
             const endpoints = ['/api/user', '/api/exercise', '/api/workouts']
-            axios.all(endpoints.map((endpoint) => axios.get(endpoint))).then(
+            axios.all(endpoints.map((endpoint) => axios.get(endpoint, {params: {user:activeUser}}))).then(
             axios.spread((user, exercise, workout) => {
                 setProfile(user.data.profile)
                 setExercises(exercise.data.exercises)
@@ -76,7 +76,7 @@ export default function Workout() {
                 dayNum = currentDay + 1
             }
             const postObj = {day: dayNum}
-            axios.post('/api/finished',postObj,{ params: {user:profile.username}})
+            axios.post('/api/finished',postObj,{ params: {activeUser}})
             .then(res=>{
                 router.push('/')
             })
@@ -100,16 +100,16 @@ export default function Workout() {
 
     return (
         <main className="flex min-h-screen flex-col items-center pt-6 pb-12 px-2 lg:p-12 gap-4">
-            <div className='flex justify-between w-full'>
-                <button className='rounded-lg shadow-md border border-red-300 bg-slate-100 hover:text-red-600 px-7 py-2'
+            <div className='flex justify-between w-full lg:w-1/2'>
+                <button className='rounded-lg shadow-md border border-red-300 bg-stone-50 hover:text-red-600 px-7 py-2'
                     onClick={Cancel}
                 >Cancel</button>
                 { pause ? 
-                    <button className='rounded-lg shadow-md border border-green-300 bg-slate-100 hover:text-green-500 px-7 py-2'
+                    <button className='rounded-lg shadow-md border border-green-300 bg-stone-50 hover:text-green-500 px-7 py-2'
                         onClick={()=>setPause(false)}
                     >Resume</button>
                 :
-                    <button className='rounded-lg shadow-md border border-green-300 bg-slate-100 hover:text-green-500 px-7 py-2'
+                    <button className='rounded-lg shadow-md border border-green-300 bg-stone-50 hover:text-green-500 px-7 py-2'
                         onClick={()=>setPause(true)}
                     >Pause</button>
                 }
@@ -120,7 +120,7 @@ export default function Workout() {
                     <></>
                 :
                     <LiveExerciseLog lift={lift} id={id} complete={complete} setComplete={setComplete} currentWorkout={currentWorkout} currentWorkoutIndex={currentWorkoutIndex}
-                        profile={profile} exercises={exercises}
+                        profile={profile} exercises={exercises} username={activeUser}
                     />
                 }
                 </>

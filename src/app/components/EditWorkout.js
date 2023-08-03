@@ -69,9 +69,9 @@ export default function PostExercise({username, currentWorkoutIndex, currentWork
         newWorkout.push(newExercise)
         const postObj = newWorkout
         setLoading(true)
-        axios.post('/api/workouts',postObj, {params:{workout: currentWorkoutIndex}})
+        axios.post('/api/workouts',postObj, {params:{workout: currentWorkoutIndex, user:username}})
         .then(res=>{
-            axios.get('/api/workouts')
+            axios.get('/api/workouts', {params: { user: username }})
             .then(r=>{
                 const currentIndex = r.data.currentProgram
                 const dayIndex = r.data.currentDay
@@ -141,9 +141,9 @@ export function DeleteExercise ({item, id, currentWorkout, setCurrentWorkout, cu
             postObj = []
         }
         setLoading(true)
-        axios.post('/api/workouts',postObj, {params:{workout: currentWorkoutIndex}})
+        axios.post('/api/workouts',postObj, {params:{workout: currentWorkoutIndex, user: username }})
         .then(res=>{
-            axios.get('/api/workouts')
+            axios.get('/api/workouts', { params: { user: username } })
             .then(r=>{
                 const currentIndex = r.data.currentProgram
                 const dayIndex = r.data.currentDay

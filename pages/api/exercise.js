@@ -9,12 +9,14 @@ export default async function handler(req, res) {
     // }
         if (req.method === 'GET')
         {
+            const user = req.query.user
             const data = JSON.stringify({
                 "collection": "user0",
                 "database": "gymtrack",
                 "dataSource": "link0",
                 "filter": {
-                    [`key`]: 'exercises'
+                    [`key`]: 'exercises',
+                    [`user`]: user
                 }
             });
             const config = {
@@ -39,7 +41,7 @@ export default async function handler(req, res) {
     // {
         else if (req.method === 'POST')
         {
-            const workout = req.query.workout
+            const user = req.query.user
             const batch = req.query.batch
             const loggingWorkout = req.query.log
             const exercise = req.query.exercise
@@ -65,7 +67,8 @@ export default async function handler(req, res) {
                 "database": "gymtrack",
                 "dataSource": "link0",
                 "filter": {
-                    [`key`]: 'exercises'
+                    [`key`]: 'exercises',
+                    [`user`]: user
                 },
                 "update": updateData
             });

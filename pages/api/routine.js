@@ -18,7 +18,8 @@ export default async function handler(req, res) {
                 "database": "gymtrack",
                 "dataSource": "link0",
                 "filter": {
-                    [`key`]: 'workouts'
+                    [`key`]: 'workouts',
+                    [`user`]: req.query.user
                 },
                 "update": {
                     "$push": {

@@ -2,6 +2,7 @@ require('dotenv').config()
 const axios = require('axios')
 const bcrypt = require('bcrypt')
 const saltRounds = 11
+import { userProfile, userEx, userWork } from '@/globals'
 
 export default function handler(req, res) {
     if (req.method === 'POST')
@@ -10,6 +11,8 @@ export default function handler(req, res) {
         bcrypt.hash(req.body.password, saltRounds, function(err, hash) {
             if(hash)
             {
+
+                // create user account in user table
                 const data = JSON.stringify({
                     "collection": "users",
                     "database": "gymtrack",
@@ -29,14 +32,45 @@ export default function handler(req, res) {
                     },
                     data: data
                 }; 
-                axios(config)
+
+                // create user data for profile, workouts, and exercises
+                userProfile.user = username
+                userEx.user = username
+                userWork.user = username
+                const userData = JSON.stringify({
+                    "collection": "user0",
+                    "database": "gymtrack",
+                    "dataSource": "link0",
+                    "documents": [
+                        userProfile, userEx, userWork
+                    ]
+                });
+                const userDataConfig = {
+                    method: 'post',
+                    url: 'https://us-east-2.aws.data.mongodb-api.com/app/data-hdjhg/endpoint/data/v1/action/insertMany',
+                    headers: {
+                    'Content-Type': 'application/json',
+                    'Access-Control-Request-Headers': '*',
+                    'api-key': process.env.API_KEY,
+                    },
+                    data: userData
+                }; 
+                axios(userDataConfig)
                 .then(function (response) {
-                    res.status(200).json({data:true});
+                    axios(config)
+                    .then(function (response) {
+                        res.status(200).json({data:true});
+                    })
+                    .catch(function (error) {
+                        console.log(error.message)
+                        res.status(400).json({data: 'failed to create user account'})
+                    });
                 })
                 .catch(function (error) {
                     console.log(error.message)
-                    res.status(400).json({data: 'request failed'})
+                    res.status(400).json({data: 'failed to create user data'})
                 });
+                
             }
         });
         

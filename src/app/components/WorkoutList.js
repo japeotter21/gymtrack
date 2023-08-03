@@ -142,7 +142,7 @@ export default function WorkoutList({exercises, currentWorkout, setCurrentWorkou
                                                         <p>{exercises[ex].name}</p>
                                                         <DeleteExercise currentWorkout={workouts[day]} currentWorkoutIndex={day}
                                                             setPrograms={setPrograms} setCurrentProgram={setCurrentProgram} homepage={false}
-                                                            username={profile.username} item={ex} id={ind} setWorkouts={setWorkouts} exercises={exercises}
+                                                            username={activeUser} item={ex} id={ind} setWorkouts={setWorkouts} exercises={exercises}
                                                         />
                                                     </div>
                                                     <div className='flex flex-col gap-1 text-sm'>
@@ -185,7 +185,7 @@ export default function WorkoutList({exercises, currentWorkout, setCurrentWorkou
                         )}
                         </Droppable>
                         <PostExercise currentWorkout={workouts[day]} currentWorkoutIndex={day} setCurrentWorkout={setCurrentWorkout} setCurrentProgram={setCurrentProgram}
-                            username={profile.username} exercises={exercises} setPrograms={setPrograms} setWorkouts={setWorkouts} homepage={false}
+                            username={activeUser} exercises={exercises} setPrograms={setPrograms} setWorkouts={setWorkouts} homepage={false}
                         />
                     </div>
             </form>

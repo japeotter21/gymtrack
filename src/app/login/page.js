@@ -37,6 +37,7 @@ export default function Schedule() {
             }
             else
             {
+                setLoggingIn(true)
                 axios.get('/api/login',{params: {username:username}})
                 .then(res=>{
                     if(!res.data.document)
@@ -51,21 +52,27 @@ export default function Schedule() {
                             {
                                 setSuccess('Account created. Returning to Login')
                                 setNewUser(false)
+                                setLoggingIn(false)
+                                setActiveUser(username)
+                                router.push('/')
                             }
                         })
                         .catch(err=>{
                             console.error(err)
                             setWarning('Signup failed. Please try again later')
+                            setLoggingIn(false)
                         })
                     }
                     else
                     {
-                        setWarning('username already exists. Returning to login.')
+                        setWarning('username already exists. Returning to login')
                         setNewUser(false)
+                        setLoggingIn(false)
                     }
                 })
                 .catch(err=>{
                     console.error(err.message)
+                    setLoggingIn(false)
                 })
             }
         }
@@ -80,7 +87,7 @@ export default function Schedule() {
             .then(res=>{
                 if(res.data)
                 {
-                    setActiveUser(true)
+                    setActiveUser(username)
                     setSuccess('Logged In successfully!')
                     router.push('/')
                 }
