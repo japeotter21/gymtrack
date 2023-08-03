@@ -14,16 +14,19 @@ Core Features:
 To Do:
 <p>✅ Progress tracking by exercise (chart)</p>
 <p>✅ Create and edit workouts</p>
-<p>⬜ Create and edit programs</p>
+<p>⬜ Show workout history</p>
+<p>⬜ Create and ✅ edit programs</p>
+<p>⬜ Configure progression to set target weights</p>
+<p>✅ User flow and auth
+  - User associated data
+</p>
+<p>⬜ Add exercises and assign attributes (back/pull/etc.)</p>
+<p>⬜ AI workout progressions, plans and exercise recommendations</p>
+<p>⬜ duration tracking of exercises and workouts</p>
 <p>⬜ Attendance tracking (streak, bar graph)
   - Behavior when workout finished and day hasn't changed
   - Behavior when workout incomplete and day changes
 </p>
-<p>⬜ Add exercises and assign attributes (back/pull/etc.)</p>
-<p>⬜ AI workout progressions, plans and exercise recommendations</p>
-<p>✅ User flow and auth</p>
-  - User associated data
-<p>⬜ duration tracking of exercises and workouts</p>
 
 ![Screenshot 2023-07-24 034851](https://github.com/japeotter21/gymtrack/assets/97000604/8739a44e-bcc3-4d50-bfe8-b3d60b5b04b4)
 
