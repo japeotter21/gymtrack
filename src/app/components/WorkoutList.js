@@ -30,9 +30,9 @@ export default function WorkoutList({exercises, currentWorkout, setCurrentWorkou
         const endIndex = e.target.length
         const startIndex = 2
         const targetObj = []
-        for (let index = startIndex; index < endIndex; index += 2)
+        for (let index = startIndex; index < endIndex; index += 3)
         {
-            targetObj.push(Array.from({length:e.target[index].value}, i => [parseInt(e.target[index+1].value),0] ))
+            targetObj.push(Array.from({length:e.target[index].value}, i => [parseInt(e.target[index+1].value),parseInt(e.target[index+2].value)] ))
         }
         let exercisesTemp = [...exercises]
         let workoutObj = currentWorkout
@@ -146,9 +146,10 @@ export default function WorkoutList({exercises, currentWorkout, setCurrentWorkou
                                                         />
                                                     </div>
                                                     <div className='flex flex-col gap-1 text-sm'>
-                                                        <div className='grid grid-cols-2 gap-x-6 mb-2'>
+                                                        <div className='grid grid-cols-3 gap-x-6 mb-2'>
                                                             <p>Sets</p>
                                                             <p>Reps</p>
+                                                            <p>Weight</p>
                                                             <select defaultValue={exercises[ex].target.sets.length} className='border border-gray-400 rounded-md'
                                                                 onChange={()=>setEdited(true)}
                                                                 name={`set-${ind}`} id={`set-${ind}`}
@@ -165,6 +166,10 @@ export default function WorkoutList({exercises, currentWorkout, setCurrentWorkou
                                                                     <option value={num} key={setNum}>{num}</option>
                                                                 )}
                                                             </select>
+                                                            <input type="number" defaultValue={exercises[ex].target.sets[0][1]} className='border border-gray-400 rounded-md px-1'
+                                                                onChange={()=>setEdited(true)}
+                                                                name={`weight-${ind}`} id={`weight-${ind}`}
+                                                            />
                                                         </div>
                                                     </div>
                                                 </div>

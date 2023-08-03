@@ -50,7 +50,11 @@ export default function Stats() {
                 labelsTemp.push(month+'-'+dateObj.getDate())
                 let maxWeightArr = []
                 item.sets.forEach((set,index)=>{
-                    if(set[0] < maxPercent.length)
+                    if(set[0] < 1)
+                    {
+                        maxWeightArr.push(0)
+                    }
+                    else if(set[0] < maxPercent.length)
                     {
                         //max weight quantized to multiples of 5
                         const calcMax = Math.floor((set[1]/maxPercent[set[0]])/5)*5
@@ -151,7 +155,7 @@ export default function Stats() {
                                     pointBorderWidth={2}
                                     pointBorderColor={{ from: 'serieColor' }}
                                     pointLabelYOffset={-7}
-                                    useMesh={true}
+                                    useMesh={false}
                                 />
                                 
                         </div>

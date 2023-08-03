@@ -97,11 +97,11 @@ export default function PostExercise({username, currentWorkoutIndex, currentWork
     
 
     return(
-        <div className='flex justify-between rounded-md px-3 py-2 items-center bg-neutral-200 bg-opacity-80'>
+        <div className='grid grid-cols-3 lg:flex lg:justify-between rounded-md px-3 py-2 items-center bg-neutral-200 bg-opacity-80'>
             { !loading ?
             <>
                 <p>Add Exercise</p>
-                <select className='border border-gray-400 rounded-md p-1 bg-stone-50'
+                <select className='border border-gray-400 rounded-md p-1 bg-stone-50 col-span-2'
                     onChange={(e)=>AddExercise(e)} defaultValue=''
                 >
                     <option value='' disabled>Select Exercise</option>

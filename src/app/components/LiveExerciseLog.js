@@ -1,6 +1,6 @@
 "use client"
 import React, { useState } from 'react'
-import { BsPause, BsPauseBtn, BsPlay, BsPlus } from 'react-icons/bs'
+import { BsPause, BsPauseBtn, BsPlay, BsPlus, BsTrash } from 'react-icons/bs'
 import axios from 'axios'
 import { useRouter } from 'next/navigation';
 import { FormControl, RadioGroup, FormControlLabel, Radio } from '@mui/material';
@@ -44,6 +44,12 @@ export default function LiveExerciseLog({complete, lift, id, setComplete, curren
         setRadioVal(parseInt(e.target.value))
     }
 
+    function RemoveExtraSet() {
+        const setTemp = [...addSet]
+        setTemp.pop()
+        setAddSet(setTemp)
+    }
+
     return (
         <div className='w-full lg:w-1/2 flex-col gap-3 items-center border border-gray-300 rounded-lg bg-stone-50 px-4 py-1' key={id}>
             <p className='text-lg font-semibold text-center'>{exercises[lift].name}</p>
@@ -70,7 +76,13 @@ export default function LiveExerciseLog({complete, lift, id, setComplete, curren
                 )}
                 {addSet.map((set,index)=>
                     <div key={index} className='grid grid-cols-3 my-1 gap-2 items-center'>
-                        <p className='text-sm'>{exercises[lift].target.sets.length+index+1}</p>
+                        <div className='flex gap-3 items-center'>
+                            <p className='text-sm'>{exercises[lift].target.sets.length+index+1}</p>
+                            <button className='text-red-500 text-xs border border-red-200 rounded-md px-1'
+                                type="button"
+                                onClick={RemoveExtraSet}
+                            >Remove</button>
+                        </div>
                         <select type="number" id={`extraset${index+1}`} name={`extraset${index+1}`} defaultValue={0}
                             className='border border-gray-400 rounded-md px-2'
                         >
@@ -83,11 +95,15 @@ export default function LiveExerciseLog({complete, lift, id, setComplete, curren
                         />
                     </div>
                 )}
-                <button onClick={()=>setAddSet([...addSet,[0,0]])} type="button"
-                    className='w-full text-sm bg-gradient-to-r from-gray-100 to-gray-50 border border-gray-300 rounded-md px-1 py-1 text-gray-400 lg:w-1/6 mt-1'
-                >
-                    Add Set
-                </button>
+                <div className='grid grid-cols-3 my-2 gap-2 items-center'>
+                    <button onClick={()=>setAddSet([...addSet,[0,0]])} type="button"
+                        className='text-sm bg-green-600 text-white shadow-sm rounded-md px-1 py-0.5 lg:w-1/6'
+                    >
+                        Add Set
+                    </button>
+                    <div className='rounded-md bg-gradient-to-r from-gray-200 to-gray-100 w-full h-6 col-span-2'></div>
+                </div>
+                
                 <FormControl onChange={(e)=>RPEForm(e)} sx={{mx: 'auto', w:'max-content', display:'grid', placeItems:'center'}}>
                     <RadioGroup row sx={{display:"flex", alignItems:'center'}}>
                         <Radio

@@ -116,7 +116,7 @@ export default function Workout() {
             </div>
             { currentWorkout.exercises.map((lift,id)=>
                 <>
-                { complete.includes(id.toString()) ?
+                { complete.includes(lift.toString()) ?
                     <></>
                 :
                     <LiveExerciseLog lift={lift} id={id} complete={complete} setComplete={setComplete} currentWorkout={currentWorkout} currentWorkoutIndex={currentWorkoutIndex}
