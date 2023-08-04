@@ -13,6 +13,7 @@ import { RiDraggable, RiPencilLine } from 'react-icons/ri'
 import { repConstant, setConstant } from '@/globals'
 import AppContext from './AppContext'
 import { redirect } from 'next/navigation'
+import { FinishWorkout } from '@/services/services'
 
 export default function Home() {
   const [day, setDay] = useState(0)
@@ -168,8 +169,26 @@ export default function Home() {
       })
   }
 
+  function CompleteWorkout() {
+    let dayNum = 0 
+    if (currentDay !== currentProgram.schedule.length - 1)
+    {
+        dayNum = currentDay + 1
+    }
+    FinishWorkout(dayNum, activeUser)
+    .then(r=>{
+        axios.get('/api/workouts')
+        .then(res=>{
+            const dayIndex = res.data.currentDay
+            const currentIndex = res.data.currentProgram
+            const workoutIndex = res.data.programs[currentIndex].schedule[dayIndex]
+            setCurrentDay(dayIndex)
+            setCurrentWorkout(res.data.workouts[workoutIndex])
+        })
+    })
+  }
+
   const getListStyle = isDraggingOver => ({
-      // background: isDraggingOver && mode === 'light' ? 'linear-gradient(#2997ff55, white)' : isDraggingOver && mode === 'dark' ? 'linear-gradient(#010304, #2997ff55)' : 'none',
       boxShadow: isDraggingOver ? '0 0 10px 2px #2997ff55' : 'none',
       padding: 0,
       width: '100%',
@@ -217,7 +236,7 @@ export default function Home() {
           <p className='font-semibold text-lg my-2'>{currentWorkout.name}</p>
         </div>
         <p className='text-sm text-gray-600'>from {currentProgram.name}</p>
-        <div className='border border-gray-300 rounded-md pt-1 mt-4 mb-4 bg-stone-50 shadow-lg'>
+        <div className='border border-gray-300 rounded-md pt-1 mt-4 mb-4 bg-stone-50 shadow-lg cursor-pointer'>
             <div className='text-sm font-semibold grid grid-cols-7 border-b-2'>
                 <div className='p-2 col-span-3 ml-[10px]'>Exercise</div>
                 <div className='p-2'>Sets</div>
@@ -264,13 +283,24 @@ export default function Home() {
               username={activeUser} exercises={exercises} homepage={true} setCurrentWorkoutIndex={setCurrentWorkoutIndex}
             />
         </div>
-        <Link href="/workout">
-          <button
-            className='w-11/12 lg:w-[10vw] shadow-md py-3 my-4 lg:my-2 mx-auto lg:ml-auto lg:mr-0 block px-5 rounded-full bg-green-700 hover:bg-opacity-80
-              text-white hover:scale-105 transition duration-300'
-            
-          >Start Workout</button>    
-        </Link>
+        { currentWorkout ?
+            currentWorkout.exercises.length > 0 ?
+              <Link href="/workout">
+                <button
+                  className='w-11/12 lg:w-[10vw] shadow-md py-3 my-4 lg:my-2 mx-auto lg:ml-auto lg:mr-0 block px-5 rounded-full bg-green-700 hover:bg-opacity-80
+                    text-white hover:scale-105 transition duration-300'
+                  
+                >Start Workout</button>    
+              </Link>
+            :
+              <button onClick={CompleteWorkout}
+                className='w-11/12 lg:w-[10vw] shadow-md py-3 my-4 lg:my-2 mx-auto lg:ml-auto lg:mr-0 block px-5 rounded-full bg-green-700 hover:bg-opacity-80
+                  text-white hover:scale-105 transition duration-300'
+                
+              >Complete Workout</button>  
+          :
+          <></>
+        }
       </div>
       <Pagenav page='home' />
       { exercises.length > 0 && editing !== null ? 

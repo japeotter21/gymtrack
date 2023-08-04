@@ -25,7 +25,6 @@ export default function LiveExerciseLog({complete, lift, id, setComplete, curren
                 postArr.push(newResult)
             }
         })
-        console.log(extraFormLength)
         extraFormLength.forEach((item,id)=>{
             if(id % 2 === 1)
             {

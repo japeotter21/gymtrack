@@ -7,7 +7,7 @@ import { RiDraggable, RiPencilLine } from 'react-icons/ri'
 import PostExercise from '../components/EditWorkout'
 import { repConstant, setConstant } from '@/globals';
 
-export default function WorkoutList({exercises, currentWorkout, setCurrentWorkout, day, i, profile, workouts, setPrograms, setCurrentProgram, setWorkouts}) {
+export default function WorkoutList({exercises, currentWorkout, setCurrentWorkout, day, i, profile, workouts, setPrograms, setCurrentProgram, setWorkouts, activeUser}) {
     const [loading, setLoading] = useState(0)
     const [edited, setEdited] = useState(false)
     const [show, setShow] = useState(false)

@@ -127,7 +127,7 @@ export default function Workouts() {
                         <div key={`${i}-${day}`} className='border border-gray-400 bg-stone-50 rounded-md shadow-sm'> 
                             <WorkoutList currentWorkout={workouts[day]} exercises={exercises} setCurrentWorkout={setCurrentWorkout}
                                 setPrograms={setPrograms} setCurrentProgram={setCurrentProgram} workouts={workouts}
-                                profile={profile} setWorkouts={setWorkouts} day={day} i={i}
+                                profile={profile} setWorkouts={setWorkouts} day={day} i={i} activeUser={activeUser}
                             />
                         </div>
                     )}
