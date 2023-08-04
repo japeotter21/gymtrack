@@ -1114,23 +1114,22 @@ export const userWork = {
         {
             "name": "Pull Day",
             "exercises": [
-                1,
-                8,
-                6,
-                11,
-                36,
-                40
+                16,
+                15,
+                19,
+                24,
+                31,
+                33
             ]
         },
         {
             "name": "Leg Day",
             "exercises": [
-                1,
-                8,
-                6,
-                11,
-                36,
-                40
+                49,
+                51,
+                52,
+                53,
+                54
             ]
         }
     ],
