@@ -118,9 +118,9 @@ export default function Stats() {
             </select>
             { current !== null ?
                 <>
+                    <p className='mx-auto w-max'>Projected 1-Rep Max (lbs)</p>
                     <div className='h-[50vh] w-full lg:w-3/4 mb-2 overflow-x-auto overflow-y-hidden'>
-                        <p className='mx-auto w-max'>Projected 1-Rep Max (lbs)</p>
-                        <div className={`w-${chartData.length > 10 ? '[1000px]': 'w-full lg:w-3/4'} h-[50vh] block mx-auto`}>
+                        <div className={`${chartData.length > 10 ? 'w-[1000px]': 'w-full lg:w-3/4'} h-[50vh] block mx-auto`}>
                                 <ResponsiveLine
                                     data={data}
                                     margin={{ top: 20, right: 50, bottom: 50, left: 40 }}
@@ -148,6 +148,8 @@ export default function Stats() {
                                         tickSize: 0,
                                         tickPadding: 20,
                                     }}
+                                    enableGridX={false}
+                                    enableGridY={false}
                                     isInteractive={false}
                                     pointSize={3}
                                     enablePointLabel={true}

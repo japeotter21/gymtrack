@@ -23,7 +23,7 @@ export default function Home() {
   const [currentWorkout, setCurrentWorkout] = useState(null)
   const [currentWorkoutIndex, setCurrentWorkoutIndex] = useState(0)
   const [currentDay, setCurrentDay] = useState(0)
-  const [programs, setPrograms] = useState([])
+  const [workouts, setWorkouts] = useState([])
   const [exercises, setExercises] = useState([])
   const [editing, setEditing] = useState(null)
   const [editSets, setEditSets] = useState(0)
@@ -35,6 +35,7 @@ export default function Home() {
   const [newBio, setNewBio] = useState('')
   const [newGoal, setNewGoal] = useState('')
   const [editProfile, setEditProfile] = useState(false)
+  const [changeDay, setChangeDay] = useState(false)
   const {activeUser} = useContext(AppContext)
 
   useEffect(()=>{
@@ -46,11 +47,11 @@ export default function Home() {
         axios.spread((user, exercise, workout) => {
           setProfile(user.data.profile)
           setExercises(exercise.data.exercises)
-          setPrograms(workout.data.programs)
           const currentIndex = workout.data.currentProgram
           setCurrentProgram(workout.data.programs[currentIndex])
           const dayIndex = workout.data.currentDay
           const workoutIndex = workout.data.programs[currentIndex].schedule[dayIndex]
+          setWorkouts(workout.data.workouts)
           setCurrentWorkoutIndex(workoutIndex)
           setCurrentWorkout(workout.data.workouts[workoutIndex])
           setCurrentDay(dayIndex)
@@ -169,6 +170,22 @@ export default function Home() {
       })
   }
 
+  function UpdateCurrentDay() {
+    const postObj = {newDay: currentDay}
+    axios.put('/api/workouts', postObj, { params: {user:activeUser}})
+    .then(r=>{
+      axios.get('/api/workouts', { params: {user:activeUser}})
+        .then(res=>{
+            const dayIndex = res.data.currentDay
+            const currentIndex = res.data.currentProgram
+            const workoutIndex = res.data.programs[currentIndex].schedule[dayIndex]
+            setCurrentDay(dayIndex)
+            setCurrentWorkout(res.data.workouts[workoutIndex])
+            setChangeDay(false)
+        })
+    })
+  }
+
   function CompleteWorkout() {
     let dayNum = 0 
     if (currentDay !== currentProgram.schedule.length - 1)
@@ -177,7 +194,7 @@ export default function Home() {
     }
     FinishWorkout(dayNum, activeUser)
     .then(r=>{
-        axios.get('/api/workouts')
+        axios.get('/api/workouts', { params: {user:activeUser}})
         .then(res=>{
             const dayIndex = res.data.currentDay
             const currentIndex = res.data.currentProgram
@@ -234,6 +251,9 @@ export default function Home() {
         <div className='flex items-baseline'>
           <p className='text-gray-600 text-lg my-2'>Today's Workout:&nbsp;</p>
           <p className='font-semibold text-lg my-2'>{currentWorkout.name}</p>
+          <button className='text-xs px-2 py-0.5 rounded-md ml-1 text-sky-600'
+            onClick={()=>setChangeDay(true)}
+          >Change</button>
         </div>
         <p className='text-sm text-gray-600'>from {currentProgram.name}</p>
         <div className='border border-gray-300 rounded-md pt-1 mt-4 mb-4 bg-stone-50 shadow-lg cursor-pointer'>
@@ -287,14 +307,14 @@ export default function Home() {
             currentWorkout.exercises.length > 0 ?
               <Link href="/workout">
                 <button
-                  className='w-full lg:w-[10vw] shadow-md py-3 my-4 lg:my-2 mx-auto lg:ml-auto lg:mr-0 block px-5 rounded-full bg-green-700 hover:bg-opacity-80
+                  className='w-full lg:w-[10vw] shadow-md py-3 my-4 lg:my-2 mx-auto lg:ml-auto lg:mr-0 block px-5 rounded-full bg-green-600 hover:bg-opacity-80
                     text-white hover:scale-105 transition duration-300'
                   
                 >Start Workout</button>    
               </Link>
             :
               <button onClick={CompleteWorkout}
-                className='w-full lg:w-[10vw] shadow-md py-3 my-4 lg:my-2 mx-auto lg:ml-auto lg:mr-0 block px-5 rounded-full bg-green-700 hover:bg-opacity-80
+                className='w-full lg:w-[10vw] shadow-md py-3 my-4 lg:my-2 mx-auto lg:ml-auto lg:mr-0 block px-5 rounded-full bg-green-600 hover:bg-opacity-80
                   text-white hover:scale-105 transition duration-300'
                 
               >Complete Workout</button>  
@@ -369,16 +389,49 @@ export default function Home() {
               />
           </div>
           <div className='flex justify-between mt-4'>
-            <button className='shadow-sm border border-neutral-500 rounded-md py-1 px-3'
+            <button className='shadow-md border border-neutral-500 rounded-md py-1 px-3'
               onClick={()=>setEditProfile(false)}
             >Cancel</button>
             { updating ?
-              <button disabled className='shadow-sm border border-green-800 bg-green-600 text-white rounded-md py-1 px-4'
+              <button disabled className='shadow-md bg-green-600 text-white rounded-md py-1 px-4'
               >Saving...
               </button>
             :
-              <button className='shadow-sm border border-green-800 bg-green-600 text-white rounded-md py-1 px-4'
+              <button className='shadow-md bg-green-600 text-white rounded-md py-1 px-4'
                 onClick={UpdateProfile}
+              >Save
+              </button>
+            }
+            
+          </div>
+        </div>
+      </Dialog>
+      <Dialog open={changeDay} onClose={()=>setChangeDay(false)} maxWidth="sm" fullWidth>
+        <div className='px-4 py-2'>
+          <p className='font-semibold text-lg py-2'>Change Workout</p>
+            { currentProgram && workouts.length > 0 ? 
+              <>
+                <p>Name</p>
+                <select value={currentDay} className='text-md border rounded-lg w-full py-1 px-2' onChange={(e)=>setCurrentDay(e.target.value)}>
+                    { currentProgram.schedule.map((index,i)=>
+                        <option key={i} value={i}>{workouts[index].name}</option>
+                    )}
+                </select>
+              </>
+              :
+              <></>
+            }
+          <div className='flex justify-between mt-4'>
+            <button className='shadow-md border border-neutral-500 rounded-md py-1 px-3'
+              onClick={()=>setChangeDay(false)}
+            >Cancel</button>
+            { updating ?
+              <button disabled className='shadow-md bg-green-600 text-white rounded-md py-1 px-4'
+              >Saving...
+              </button>
+            :
+              <button className='shadow-md bg-green-600 text-white rounded-md py-1 px-4'
+                onClick={UpdateCurrentDay}
               >Save
               </button>
             }

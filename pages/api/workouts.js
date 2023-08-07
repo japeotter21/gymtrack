@@ -48,7 +48,12 @@ export default async function handler(req, res) {
                     [`key`]: 'workouts',
                     [`user`]: req.query.user
                 },
-                "update": {
+                "update": req.body.newDay ?  {
+                    "$set": {
+                        [`currentDay`]: parseInt(req.body.newDay),
+                    }
+                }
+                : {
                     "$set": {
                         [`currentProgram`]: req.body.newProgram,
                         [`currentDay`]: 0,
