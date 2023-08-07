@@ -1,16 +1,22 @@
 "use client"
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { BsPause, BsPauseBtn, BsPlay, BsPlus, BsTrash } from 'react-icons/bs'
 import axios from 'axios'
 import { useRouter } from 'next/navigation';
 import { FormControl, RadioGroup, FormControlLabel, Radio } from '@mui/material';
 import { repConstant } from '@/globals';
 
-export default function LiveExerciseLog({complete, lift, id, setComplete, currentWorkout, profile, currentWorkoutIndex, exercises, username}) {
+export default function LiveExerciseLog({complete, lift, id, setComplete, currentWorkout, profile, currentWorkoutIndex, exercises, setExercises, username}) {
     const [radioVal, setRadioVal] = useState(6)
     const [addSet, setAddSet] = useState([])
     const [editing, setEditing] = useState(false)
-    const completed = complete.includes(lift.toString())
+    const [completed, setCompleted] = useState(false)
+    const [loading, setLoading] = useState(true)
+    console.log(completed)
+    useEffect(()=>{
+        complete.includes(lift.toString()) ? setCompleted(true) : setCompleted(false)
+        setLoading(false)
+    },[complete])
 
     function SubmitSetForm(e) {
         e.preventDefault()
@@ -55,9 +61,14 @@ export default function LiveExerciseLog({complete, lift, id, setComplete, curren
         {
             axios.post('/api/exercise',postObj,{ params: { workout:currentWorkoutIndex, log:1, exercise: exerciseIndex, user: username}})
             .then(res=>{
-                const storeComplete = [...complete]
-                storeComplete.push(exerciseIndex)
-                setComplete(storeComplete)
+                axios.get('/api/exercise',{ params: {user: username}})
+                .then(r=>{
+                    const storeComplete = [...complete]
+                    storeComplete.push(exerciseIndex)
+                    setComplete(storeComplete)
+                    setCompleted(true)
+                    setExercises(r.data.exercises)
+                })
             })
         }
     }
@@ -96,6 +107,13 @@ export default function LiveExerciseLog({complete, lift, id, setComplete, curren
         // {
         //     setRevert(false)
         // }
+    }
+
+    if(loading)
+    {
+        return(
+            <></>
+        )
     }
 
     return (
