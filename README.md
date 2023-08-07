@@ -15,7 +15,7 @@ To Do:
 <p>✅ Progress tracking by exercise (chart)</p>
 <p>✅ Create and edit workouts</p>
 <p>⬜ Show workout history</p>
-<p>⬜ Create and ✅ edit programs</p>
+<p>✅ Create and ✅ edit programs</p>
 <p>⬜ Configure progression to set target weights</p>
 <p>✅ User flow and auth
   ✅ User associated data
