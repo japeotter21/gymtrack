@@ -50,7 +50,8 @@ export default async function handler(req, res) {
                 },
                 "update": {
                     "$set": {
-                        [`currentProgram`]: req.body.newProgram
+                        [`currentProgram`]: req.body.newProgram,
+                        [`currentDay`]: 0,
                     }
                 }
             });

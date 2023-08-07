@@ -84,6 +84,10 @@ export default function Workout() {
         }
     },[workoutComplete])
 
+    useEffect(()=>{
+        router.prefetch('/')
+    },[router])
+
     function Cancel() {
         sessionStorage.removeItem('completed')
         router.push('/')
@@ -98,16 +102,16 @@ export default function Workout() {
 
     return (
         <main className="flex min-h-screen flex-col items-center pt-6 pb-12 px-2 lg:p-12 gap-4">
-            <div className='flex justify-between w-full lg:w-1/2'>
-                <button className='rounded-lg border border-red-400 shadow-md bg-slate-600 text-white px-7 py-2'
+            <div className='flex justify-between w-5/6 lg:w-1/2'>
+                <button className='rounded-lg border border-red-400 shadow-md bg-stone-50 text-red-600 px-7 py-2'
                     onClick={Cancel}
                 >Cancel</button>
                 { pause ? 
-                    <button className='rounded-lg shadow-md bg-slate-600 border border-green-500 text-white px-7 py-2'
+                    <button className='rounded-lg shadow-md bg-stone-50 border border-green-500 text-green-600 px-7 py-2'
                         onClick={()=>setPause(false)}
                     >Resume</button>
                 :
-                    <button className='rounded-lg shadow-md bg-slate-600 border border-green-500 text-white px-7 py-2'
+                    <button className='rounded-lg shadow-md bg-stone-50 border border-green-500 text-green-600 px-7 py-2'
                         onClick={()=>setPause(true)}
                     >Pause</button>
                 }

@@ -1075,6 +1075,42 @@ export const userEx = {
                 "reminder": ""
             },
             "results": []
+        },
+        {
+            "name": "Calf Raise",
+            "attributes": [
+                "legs",
+                "secondary"
+            ],
+            "target": {
+                "sets": [
+                    [
+                        0,
+                        0
+                    ]
+                ],
+                "notes": "",
+                "reminder": ""
+            },
+            "results": []
+        },
+        {
+            "name": "Deadlift",
+            "attributes": [
+                "back",
+                "primary"
+            ],
+            "target": {
+                "sets": [
+                    [
+                        0,
+                        0
+                    ]
+                ],
+                "notes": "",
+                "reminder": ""
+            },
+            "results": []
         }
     ]
 }
@@ -1103,7 +1139,7 @@ export const userWork = {
         {
             "name": "Push Day",
             "exercises": [
-                1,
+                0,
                 8,
                 6,
                 11,
@@ -1126,8 +1162,8 @@ export const userWork = {
             "name": "Leg Day",
             "exercises": [
                 49,
-                51,
                 52,
+                51,
                 53,
                 54
             ]

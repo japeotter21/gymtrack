@@ -6,6 +6,12 @@ import { useRouter } from 'next/navigation';
 export default function Pagenav({page}) {
         const router = useRouter()
 
+        useEffect(()=>{
+            router.prefetch('/')
+            router.prefetch('/stats')
+            router.prefetch('/workouts')
+        },[router])
+
         function Navigate(destination)
         {
             router.push(destination)

@@ -6,12 +6,13 @@ import { BsChevronDown, BsChevronExpand, BsChevronUp, BsThreeDotsVertical } from
 import { RiDraggable, RiPencilLine } from 'react-icons/ri'
 import PostExercise from '../components/EditWorkout'
 import { repConstant, setConstant } from '@/globals';
+import { Dialog } from '@mui/material';
 
-export default function WorkoutList({exercises, currentWorkout, setCurrentWorkout, day, i, profile, workouts, setPrograms, setCurrentProgram, setWorkouts, activeUser}) {
+export default function WorkoutList({exercises, currentWorkout, setCurrentWorkout, day, i, profile, workouts, setPrograms, setCurrentProgram, setWorkouts, activeUser, currentProgram, HandleDelete}) {
     const [loading, setLoading] = useState(0)
     const [edited, setEdited] = useState(false)
     const [show, setShow] = useState(false)
-
+    const [deleteWorkout, setDeleteWorkout] = useState(false)
 
     const getListStyle = isDraggingOver => ({
         // background: isDraggingOver && mode === 'light' ? 'linear-gradient(#2997ff55, white)' : isDraggingOver && mode === 'dark' ? 'linear-gradient(#010304, #2997ff55)' : 'none',
@@ -28,7 +29,7 @@ export default function WorkoutList({exercises, currentWorkout, setCurrentWorkou
     function PostExercises(e) {
         e.preventDefault()
         const endIndex = e.target.length
-        const startIndex = 2
+        const startIndex = 3
         const targetObj = []
         for (let index = startIndex; index < endIndex; index += 3)
         {
@@ -94,6 +95,7 @@ export default function WorkoutList({exercises, currentWorkout, setCurrentWorkou
         })
     }
 
+
     return (
         <DragDropContext onDragEnd={onDragEnd}>
             <form id={`${i}`} onSubmit={(e)=>PostExercises(e)}>
@@ -110,13 +112,25 @@ export default function WorkoutList({exercises, currentWorkout, setCurrentWorkou
                         </button>
                     </div>
                     { !loading && !edited && show ?
-                        <button className='bg-gray-300 text-white shadow-md px-3 py-1 rounded-md' type="button">Save</button>
+                        <div className='flex gap-2'>
+                            <button disabled className='bg-gray-300 text-white shadow-md px-3 py-0.5 rounded-md' type="button">Save</button>
+                            <button className='bg-stone-50 text-red-600 border border-red-100 shadow-md px-3 py-0.5 rounded-md' type="button"
+                                onClick={()=>setDeleteWorkout(true)}
+                            >Delete</button>
+                        </div>
                     : !loading && show ?
-                        <button className='bg-green-600 text-white shadow-md px-3 py-1 rounded-md' type="submit">Save</button>
+                        <div className='flex gap-2'>
+                            <button className='bg-green-600 text-white shadow-md px-3 py-0.5 rounded-md' type="submit">Save</button>
+                            <button className='bg-stone-50 text-red-600 border border-red-100 shadow-md px-3 py-0.5 rounded-md' type="button"
+                                onClick={()=>setDeleteWorkout(true)}
+                            >Delete</button>
+                        </div>
                     : show ?
-                        <button className='bg-green-600 text-white shadow-md px-3 py-1 rounded-md' disabled>Saving...</button>
+                        <button className='bg-green-600 text-white shadow-md px-3 py-0.5 rounded-md' disabled>Saving...</button>
                     :
-                    <></>
+                        <button className='bg-stone-50 text-red-600 border border-red-100 shadow-md px-3 py-0.5 rounded-md' type="button"
+                            onClick={()=>setDeleteWorkout(true)}
+                        >Delete</button>
                     }
                 </div>
                     <div className={`transition duration-100 ease-in ${!show ? 'h-[0px] opacity-0 invisible' : 'h-max opacity-1'}`}>
@@ -189,6 +203,23 @@ export default function WorkoutList({exercises, currentWorkout, setCurrentWorkou
                         />
                     </div>
             </form>
+            { workouts.length > 0 && deleteWorkout ? 
+                <Dialog open={deleteWorkout} onClose={()=>setDeleteWorkout(false)}>
+                    <div className='px-4 py-3'>
+                        <p>Are you sure you want to delete {workouts[day].name}?</p>
+                        <div className='flex justify-between mt-4'>
+                            <button className='border border-gray-400 py-1 px-3 rounded-xl hover:bg-red-100 hover:border-red-200 hover:text-red-500 hover:scale-105 transition duration-200'
+                                onClick={()=>setDeleteWorkout(false)}
+                            >Cancel</button>
+                            <button className='block shadow-md py-1 px-3 rounded-xl bg-red-600 hover:bg-opacity-80 text-white hover:scale-105 transition duration-200'
+                                onClick={()=>HandleDelete(i)}
+                            >Remove</button>
+                        </div>
+                    </div>
+                </Dialog>
+            :
+                <></>
+            }
         </DragDropContext>
     )
 }
