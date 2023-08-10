@@ -69,8 +69,8 @@ export default function Home() {
     if(editing !== null)
     {
         setEditSets(exercises[editing].target.sets.length)
-        setEditReps(exercises[editing].target.sets[0][0])
-        setEditWeight(exercises[editing].target.sets[0][1])
+        setEditReps(exercises[editing].target.sets[0].reps)
+        setEditWeight(exercises[editing].target.sets[0].weight)
         setEditNotes(exercises[editing].target.notes)
     }
   },[editing])
@@ -106,9 +106,10 @@ export default function Home() {
     const newSets = parseInt(editSets)
     const newReps = parseInt(editReps)
     const newWeight = parseInt(editWeight)
-    const newExObj = Array.from({length: newSets},(x)=>[newReps,newWeight])
+    let newPostArr = Array.from({length: newSets}, x=>0)
+    newPostArr.forEach((item,id)=>newPostArr[id]={reps:newReps, weight:newWeight})
     const postObj = {
-        sets: newExObj,
+        sets: newPostArr,
         notes: editNotes,
         reminder: ""
     }
@@ -285,8 +286,8 @@ export default function Home() {
                                 {...provided.dragHandleProps}
                                 ><RiDraggable size={16} className='absolute ml-[-10px] text-gray-500' /><span className='ml-[10px]'>{exercises[item].name}</span></div>
                                 <div className='p-2' onClick={()=>setEditing(item)}>{exercises[item].target.sets.length}</div>
-                                <div className='p-2' onClick={()=>setEditing(item)}>{exercises[item].target.sets[0][0]}</div>
-                                <div className='p-2' onClick={()=>setEditing(item)}>{exercises[item].target.sets[0][1]}</div>
+                                <div className='p-2' onClick={()=>setEditing(item)}>{exercises[item].target.sets[0].reps}</div>
+                                <div className='p-2' onClick={()=>setEditing(item)}>{exercises[item].target.sets[0].weight}</div>
                                 <DeleteExercise currentWorkout={currentWorkout} currentWorkoutIndex={currentWorkoutIndex} setCurrentWorkout={setCurrentWorkout}
                                   username={activeUser} item={item} id={id} homepage={true} exercises={exercises}
                                 />

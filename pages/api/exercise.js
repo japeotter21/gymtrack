@@ -11,7 +11,7 @@ export default async function handler(req, res) {
         {
             const user = req.query.user
             const data = JSON.stringify({
-                "collection": "user0",
+                "collection": "exercises",
                 "database": "gymtrack",
                 "dataSource": "link0",
                 "filter": {
@@ -64,7 +64,7 @@ export default async function handler(req, res) {
                 }
             }
             const data = JSON.stringify({
-                "collection": "user0",
+                "collection": "exercises",
                 "database": "gymtrack",
                 "dataSource": "link0",
                 "filter": {
@@ -115,7 +115,7 @@ export default async function handler(req, res) {
                 }
             }
             const data = JSON.stringify({
-                "collection": "user0",
+                "collection": "exercises",
                 "database": "gymtrack",
                 "dataSource": "link0",
                 "filter": {

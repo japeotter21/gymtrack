@@ -8,7 +8,7 @@ import PostExercise from '../components/EditWorkout'
 import { repConstant, setConstant } from '@/globals';
 import { Dialog } from '@mui/material';
 
-export default function WorkoutList({exercises, currentWorkout, setCurrentWorkout, day, i, profile, workouts, setPrograms, setCurrentProgram, setWorkouts, activeUser, currentProgram, HandleDelete}) {
+export default function WorkoutList({exercises, setExercises, currentWorkout, setCurrentWorkout, day, i, profile, workouts, setPrograms, setCurrentProgram, setWorkouts, activeUser, currentProgram, HandleDelete}) {
     const [loading, setLoading] = useState(0)
     const [edited, setEdited] = useState(false)
     const [show, setShow] = useState(false)
@@ -33,7 +33,9 @@ export default function WorkoutList({exercises, currentWorkout, setCurrentWorkou
         const targetObj = []
         for (let index = startIndex; index < endIndex; index += 3)
         {
-            targetObj.push(Array.from({length:e.target[index].value}, i => [parseInt(e.target[index+1].value),parseInt(e.target[index+2].value)] ))
+            const setTemp = Array.from({length:e.target[index].value}, i => 0)
+            setTemp.forEach((item,id)=>setTemp[id] = ({reps: parseInt(e.target[index+1].value), weight: parseInt(e.target[index+2].value)}))
+            targetObj.push(setTemp)
         }
         let exercisesTemp = [...exercises]
         let workoutObj = currentWorkout
@@ -42,9 +44,9 @@ export default function WorkoutList({exercises, currentWorkout, setCurrentWorkou
         })
         const postObj = exercisesTemp
         setLoading(true)
-        axios.post('/api/exercise',postObj,{ params: { batch:true }})
+        axios.post('/api/exercise',postObj,{ params: { batch:true, user:activeUser }})
         .then(res=>{
-            axios.get('/api/workouts')
+            axios.get('/api/workouts', { params: { user: activeUser } })
             .then(r=>{
                 const currentIndex = r.data.currentProgram
                 const dayIndex = r.data.currentDay
@@ -54,11 +56,13 @@ export default function WorkoutList({exercises, currentWorkout, setCurrentWorkou
                 setWorkouts(r.data.workouts)
                 setLoading(false)
                 setEdited(false)
+                
             })
             .catch(err=>{
                 setLoading(false)
                 setEdited(false)
             })
+            
         })
         .catch(err=>{
             setLoading(false)
@@ -172,7 +176,7 @@ export default function WorkoutList({exercises, currentWorkout, setCurrentWorkou
                                                                     <option value={num} key={setNum}>{num}</option>
                                                                 )}
                                                             </select>
-                                                            <select defaultValue={exercises[ex].target.sets[0][0]} className='border border-gray-400 rounded-md'
+                                                            <select defaultValue={exercises[ex].target.sets[0].reps} className='border border-gray-400 rounded-md'
                                                                 onChange={()=>setEdited(true)}
                                                                 name={`rep-${ind}`} id={`rep-${ind}`}
                                                             >
@@ -180,7 +184,7 @@ export default function WorkoutList({exercises, currentWorkout, setCurrentWorkou
                                                                     <option value={num} key={setNum}>{num}</option>
                                                                 )}
                                                             </select>
-                                                            <input type="number" defaultValue={exercises[ex].target.sets[0][1]} className='border border-gray-400 rounded-md px-1'
+                                                            <input type="number" defaultValue={exercises[ex].target.sets[0].weight} className='border border-gray-400 rounded-md px-1'
                                                                 onChange={()=>setEdited(true)}
                                                                 name={`weight-${ind}`} id={`weight-${ind}`}
                                                             />

@@ -10,7 +10,7 @@ export default async function handler(req, res) {
         if (req.method === 'GET')
         {
             const data = JSON.stringify({
-                "collection": "user0",
+                "collection": "workouts",
                 "database": "gymtrack",
                 "dataSource": "link0",
                 "filter": {
@@ -41,7 +41,7 @@ export default async function handler(req, res) {
         else if (req.method === 'PUT')
         {
             const data = JSON.stringify({
-                "collection": "user0",
+                "collection": "workouts",
                 "database": "gymtrack",
                 "dataSource": "link0",
                 "filter": {
@@ -83,7 +83,7 @@ export default async function handler(req, res) {
             const workout = req.query.workout
             
             const data = JSON.stringify({
-                "collection": "user0",
+                "collection": "workouts",
                 "database": "gymtrack",
                 "dataSource": "link0",
                 "filter": {

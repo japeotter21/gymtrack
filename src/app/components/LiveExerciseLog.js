@@ -32,14 +32,14 @@ export default function LiveExerciseLog({complete, lift, id, setComplete, curren
         formLength.forEach((item,id)=>{
             if(id % 2 === 1)
             {
-                const newResult = [parseInt(e.target[id-1].value),parseInt(e.target[id].value)]
+                const newResult = {reps: parseInt(e.target[id-1].value),weight: parseInt(e.target[id].value)}
                 postArr.push(newResult)
             }
         })
         extraFormLength.forEach((item,id)=>{
             if(id % 2 === 1)
             {
-                const newResult = [parseInt(extraFormLength[id-1]),parseInt(item)]
+                const newResult = {reps:parseInt(extraFormLength[id-1]),weight:parseInt(item)}
                 postArr.push(newResult)
             }
         })

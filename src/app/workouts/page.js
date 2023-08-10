@@ -172,7 +172,7 @@ export default function Workouts() {
                 <div className='flex flex-col gap-4 w-full mb-4'>
                     {programs[programIndex].schedule.map((day,i)=>
                         <div key={`${i}-${day}`} className='border border-gray-400 bg-stone-50 rounded-md shadow-sm'> 
-                            <WorkoutList currentWorkout={workouts[day]} exercises={exercises} setCurrentWorkout={setCurrentWorkout}
+                            <WorkoutList currentWorkout={workouts[day]} exercises={exercises} setCurrentWorkout={setCurrentWorkout} setExercises={setExercises}
                                 setPrograms={setPrograms} setCurrentProgram={setCurrentProgram} workouts={workouts} currentProgram={currentProgram}
                                 profile={profile} setWorkouts={setWorkouts} day={day} i={i} activeUser={activeUser} HandleDelete={HandleDelete}
                             />
