@@ -31,10 +31,6 @@ export default function Home() {
   const [editWeight, setEditWeight] = useState(0)
   const [editNotes, setEditNotes] = useState('')
   const [updating, setUpdating] = useState(false)
-  const [newName, setNewName] = useState('')
-  const [newBio, setNewBio] = useState('')
-  const [newGoal, setNewGoal] = useState('')
-  const [editProfile, setEditProfile] = useState(false)
   const [changeDay, setChangeDay] = useState(false)
   const {activeUser} = useContext(AppContext)
 
@@ -75,14 +71,6 @@ export default function Home() {
     }
   },[editing])
 
-  useEffect(()=>{
-    if(editProfile)
-    {
-        setNewBio(profile.bio)
-        setNewGoal(profile.goal)
-        setNewName(profile.name)
-    }
-  },[editProfile])
 
   // useEffect(()=>{
   //   if(day > 0)
@@ -125,23 +113,6 @@ export default function Home() {
     })
   }
 
-  function UpdateProfile() {
-    const postObj = {
-        name: newName,
-        bio: newBio
-        // goal: newGoal
-    }
-    setUpdating(true)
-    axios.put('/api/user', postObj, { params: {user:activeUser}})
-    .then(res=>{
-        axios.get('/api/user', { params: {user:activeUser}})
-        .then(r=>{
-            setProfile(r.data.profile)
-            setUpdating(false)
-            setEditProfile(false)
-        })
-    })
-  }
   
   const reorder = (list, startIndex, endIndex) => {
     const result = list
@@ -226,28 +197,7 @@ export default function Home() {
   
   return (
     <main className="flex min-h-screen flex-col items-center py-6 px-2 gap-1">
-      <div className='w-full gap-3 lg:w-1/2'>
-        <div className='flex w-full items-center gap-2 lg:gap-6'>
-          <div>
-            <Avatar sx={{height:60, width:60}}>{profile.name ? profile.name.charAt(0) : activeUser.charAt(0)}</Avatar>
-          </div>
-          <div className='w-full border border-gray-300 rounded-lg bg-stone-50 px-4 py-2'>
-            <div className='text-sm flex justify-between'>
-              <strong>{profile.name ? profile.name : activeUser}</strong>
-              <button className='text-gray-500'
-                onClick={()=>setEditProfile(true)}
-              ><RiPencilLine size={18}/></button>
-            </div>
-            <p className='text-sm mt-0.5'>{profile.bio ? profile.bio : <>Add a Bio!</>}</p>
-            <hr className='my-2'/>
-            <div className='flex gap-2 items-center justify-start'>
-              <p className={profile.streak.current > 0 ? 'text-red-500' : 'text-neutral-400'}>🔥&nbsp;{profile.streak.current}</p>
-              <p className='text-sm'>Best: {profile.streak.best}</p>
-            </div>
-            {/* <p className='text-sm'>Goal: {profile.goal}</p> */}
-          </div>
-        </div>
-      </div>
+      
       <div className='w-full lg:w-1/2 flex-col gap-2 items-center'>
         <div className='flex items-baseline'>
           <p className='text-gray-600 text-lg my-2'>Today's Workout:&nbsp;</p>
@@ -372,41 +322,6 @@ export default function Home() {
         :
         <></>
       }
-      <Dialog open={editProfile} onClose={()=>setEditProfile(false)}>
-        <div className='px-4 py-2'>
-          <p className='font-semibold text-lg py-2'>Edit Profile</p>
-          <div className='grid grid-cols-4 gap-1'>
-              <p>Name</p>
-              <input type="text" defaultValue={profile.name} placeholder='Name' className='border border-gray-400 rounded-md p-1 col-span-4'
-                onChange={(e)=>setNewName(e.target.value)}
-              />
-              <p>Bio</p>
-              <textarea type="text" defaultValue={profile.bio} placeholder='Bio' className='border border-gray-400 rounded-md p-1 col-span-4'
-                onChange={(e)=>setNewBio(e.target.value)}
-              />
-              <p>Goal</p>
-              <textarea type="text" defaultValue={profile.goal} placeholder='Goal' className='border border-gray-400 rounded-md p-1 col-span-4'
-                onChange={(e)=>setNewGoal(e.target.value)}
-              />
-          </div>
-          <div className='flex justify-between mt-4'>
-            <button className='shadow-md border border-neutral-500 rounded-md py-1 px-3'
-              onClick={()=>setEditProfile(false)}
-            >Cancel</button>
-            { updating ?
-              <button disabled className='shadow-md bg-green-600 text-white rounded-md py-1 px-4'
-              >Saving...
-              </button>
-            :
-              <button className='shadow-md bg-green-600 text-white rounded-md py-1 px-4'
-                onClick={UpdateProfile}
-              >Save
-              </button>
-            }
-            
-          </div>
-        </div>
-      </Dialog>
       <Dialog open={changeDay} onClose={()=>setChangeDay(false)} maxWidth="sm" fullWidth>
         <div className='px-4 py-2'>
           <p className='font-semibold text-lg py-2'>Change Workout</p>

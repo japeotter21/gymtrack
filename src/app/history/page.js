@@ -18,7 +18,7 @@ export default function Schedule() {
     useEffect(()=>{
         if (activeUser)
         {
-            axios.get('/api/workouts')
+            axios.get('/api/workouts',{params:{user:activeUser}})
             .then(res=>{
             setLoading(false)
             setPrograms(res.data.programs)
@@ -48,7 +48,7 @@ export default function Schedule() {
 
     return (
         <main className="flex min-h-screen flex-col items-center py-6 lg:pt-12 px-2 lg:p-12 gap-4">
-            <Pagenav page='schedule' />
+            <Pagenav page='history' />
         </main>
     )
 }

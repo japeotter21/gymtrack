@@ -87,9 +87,9 @@ export default function WorkoutList({exercises, setExercises, currentWorkout, se
         //sInd: index of source group
         const sInd = source.droppableId
         const postObj = reorder(currentWorkout.exercises, source.index, destination.index);
-        axios.post('/api/workouts',postObj, {params:{workout: day}})
+        axios.post('/api/workouts',postObj, {params:{workout: day, user:activeUser}})
         .then(res=>{
-          axios.get('/api/workouts')
+          axios.get('/api/workouts', {params: {user: activeUser}})
           .then(r=>{
               const currentIndex = r.data.currentProgram
               const dayIndex = r.data.currentDay
