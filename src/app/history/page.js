@@ -28,6 +28,10 @@ export default function Schedule() {
             .catch(err=>{
             console.error(err.message)
             })
+            axios.post('api/history',null,{params:{user:activeUser}})
+            .then(res=>{
+                console.log(res.data)
+            })
         }
         else
         {

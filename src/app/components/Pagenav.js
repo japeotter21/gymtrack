@@ -41,15 +41,15 @@ export default function Pagenav({page}) {
                         <p className='text-sm mt-2'>Workouts</p>
                     </div>
                 }
-                {page === 'schedule' ?
+                {page === 'history' ?
                     <div className='cursor-pointer hover:scale-105 hover:bg-opacity-80 transition duration-300 shadow-md rounded-lg w-full bg-zinc-500 px-4 py-3 text-white' onClick={()=>Navigate('/')}>
                         <BsHouse />
                         <p className='text-sm mt-2'>Home</p>
                     </div>
                 :
-                    <div className='cursor-pointer hover:scale-105 hover:bg-opacity-80 transition duration-300 shadow-md rounded-lg w-full bg-zinc-500 px-4 py-3 text-white' onClick={()=>Navigate('/schedule')}>
+                    <div className='cursor-pointer hover:scale-105 hover:bg-opacity-80 transition duration-300 shadow-md rounded-lg w-full bg-zinc-500 px-4 py-3 text-white' onClick={()=>Navigate('/history')}>
                         <BsCalendar />
-                        <p className='text-sm mt-2'>Schedule</p>
+                        <p className='text-sm mt-2'>History</p>
                     </div>
                 }
             </div>
