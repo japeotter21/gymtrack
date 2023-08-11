@@ -2,11 +2,12 @@ import React, { useState } from 'react'
 import { DeleteExercise } from '../components/EditWorkout'
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd'
 import axios from 'axios';
-import { BsChevronDown, BsChevronExpand, BsChevronUp, BsThreeDotsVertical } from 'react-icons/bs';
+import { BsChevronDown, BsChevronExpand, BsChevronUp, BsThreeDotsVertical, BsTrash } from 'react-icons/bs';
 import { RiDraggable, RiPencilLine } from 'react-icons/ri'
 import PostExercise from '../components/EditWorkout'
 import { repConstant, setConstant } from '@/globals';
 import { Dialog } from '@mui/material';
+import { HiChevronUpDown } from 'react-icons/hi2';
 
 export default function WorkoutList({exercises, setExercises, currentWorkout, setCurrentWorkout, day, i, profile, workouts, setPrograms, setCurrentProgram, setWorkouts, activeUser, currentProgram, HandleDelete}) {
     const [loading, setLoading] = useState(0)
@@ -120,21 +121,21 @@ export default function WorkoutList({exercises, setExercises, currentWorkout, se
                             <button disabled className='bg-gray-300 text-white shadow-md px-3 py-0.5 rounded-md' type="button">Save</button>
                             <button className='bg-stone-50 text-red-600 border border-red-100 shadow-md px-3 py-0.5 rounded-md' type="button"
                                 onClick={()=>setDeleteWorkout(true)}
-                            >Delete</button>
+                            ><BsTrash /></button>
                         </div>
                     : !loading && show ?
                         <div className='flex gap-2'>
                             <button className='bg-green-600 text-white shadow-md px-3 py-0.5 rounded-md' type="submit">Save</button>
                             <button className='bg-stone-50 text-red-600 border border-red-100 shadow-md px-3 py-0.5 rounded-md' type="button"
                                 onClick={()=>setDeleteWorkout(true)}
-                            >Delete</button>
+                            ><BsTrash /></button>
                         </div>
                     : show ?
                         <button className='bg-green-600 text-white shadow-md px-3 py-0.5 rounded-md' disabled>Saving...</button>
                     :
                         <button className='bg-stone-50 text-red-600 border border-red-100 shadow-md px-3 py-0.5 rounded-md' type="button"
                             onClick={()=>setDeleteWorkout(true)}
-                        >Delete</button>
+                        ><BsTrash /></button>
                     }
                 </div>
                     <div className={`transition duration-100 ease-in ${!show ? 'h-[0px] opacity-0 invisible' : 'h-max opacity-1'}`}>
@@ -148,7 +149,7 @@ export default function WorkoutList({exercises, setExercises, currentWorkout, se
                                 { workouts[day].exercises.map((ex,ind)=>
                                     <Draggable key={exercises[ex].name} draggableId={exercises[ex].name} index={ind}>
                                         {(provided, snapshot)=>(
-                                            <div className={`text-sm flex items-stretch  ${!show ? 'h-[0px]' : 'h-max'}`}
+                                            <div className={`text-sm flex items-stretch ${!show ? 'h-[0px]' : 'h-max'}`}
                                                 ref={provided.innerRef}
                                                 style={getItemStyle(snapshot.isDragging,
                                                     provided.draggableProps.style)}
@@ -192,7 +193,7 @@ export default function WorkoutList({exercises, setExercises, currentWorkout, se
                                                     </div>
                                                 </div>
                                                 <div className='text-white bg-neutral-300 flex flex-col justify-center px-1'>
-                                                    <RiDraggable size={25} />
+                                                    <HiChevronUpDown size={28} />
                                                 </div>
                                             </div>
                                         )}

@@ -50,19 +50,19 @@ export default function Stats() {
                 labelsTemp.push(month+'-'+dateObj.getDate())
                 let maxWeightArr = []
                 item.sets.forEach((set,index)=>{
-                    if(set[0] < 1)
+                    if(set.reps < 1)
                     {
                         maxWeightArr.push(0)
                     }
-                    else if(set[0] < maxPercent.length)
+                    else if(set.reps < maxPercent.length)
                     {
                         //max weight quantized to multiples of 5
-                        const calcMax = Math.floor((set[1]/maxPercent[set[0]])/5)*5
+                        const calcMax = Math.floor((set.weight/maxPercent[set.reps])/5)*5
                         maxWeightArr.push(calcMax)
                     }
                     else
                     {
-                        maxWeightArr.push(Math.floor((set[1]*2)/5)*5)
+                        maxWeightArr.push(Math.floor((set.weight*2)/5)*5)
                     }
                 })
                 const maxWeight = Math.max(...maxWeightArr)
@@ -174,7 +174,7 @@ export default function Stats() {
                                     <p className='col-span-1 text-sm'>{new Date(item.date).getMonth()+1}-{new Date(item.date).getDate()}</p>
                                     <div className='flex gap-3 text-sm col-span-4'>
                                     { item.sets.map((set,index)=>
-                                        <p key={index}>{set.slice(0).reverse().join('x')}</p>
+                                        <p key={index}>{set.weight}x{set.reps}</p>
                                     )}
                                     </div>
                                 </div>

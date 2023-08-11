@@ -6,16 +6,25 @@ import { useRouter } from 'next/navigation';
 import { FormControl, RadioGroup, FormControlLabel, Radio } from '@mui/material';
 import { repConstant } from '@/globals';
 
-export default function LiveExerciseLog({complete, lift, id, setComplete, currentWorkout, profile, currentWorkoutIndex, exercises, setExercises, username}) {
+export default function LiveExerciseLog({complete, lift, id, setComplete, currentWorkout, profile, currentWorkoutIndex, exercises, setExercises, username, setFinishObj}) {
     const [radioVal, setRadioVal] = useState(6)
     const [addSet, setAddSet] = useState([])
     const [editing, setEditing] = useState(false)
     const [completed, setCompleted] = useState(false)
     const [loading, setLoading] = useState(true)
-    console.log(completed)
     useEffect(()=>{
-        complete.includes(lift.toString()) ? setCompleted(true) : setCompleted(false)
-        setLoading(false)
+        if(complete)
+        {
+            if(complete.length > 0 )
+            {
+                complete[id].name !== "" ? setCompleted(true) : setCompleted(false)
+            }
+            else
+            {
+                setCompleted(false)
+            }
+            setLoading(false)
+        }
     },[complete])
 
     function SubmitSetForm(e) {
@@ -25,16 +34,14 @@ export default function LiveExerciseLog({complete, lift, id, setComplete, curren
         const postLength = currentExercise.target.sets.length
         //needed to edit results after saving
         const lastIndex = exercises[lift].results.length-1
-        const formLength = !completed ? currentExercise.target.sets.flat() : currentExercise.results[lastIndex].sets.flat()
+        console.log(lastIndex)
+        const formLength = !completed ? currentExercise.target.sets : currentExercise.results[lastIndex].sets
         const extraLength = addSet.length
         const extraFormLength = addSet.flat()
         let postArr = []
         formLength.forEach((item,id)=>{
-            if(id % 2 === 1)
-            {
-                const newResult = {reps: parseInt(e.target[id-1].value),weight: parseInt(e.target[id].value)}
-                postArr.push(newResult)
-            }
+            const newResult = {reps: parseInt(e.target[2*id].value),weight: parseInt(e.target[2*id+1].value)}
+            postArr.push(newResult)
         })
         extraFormLength.forEach((item,id)=>{
             if(id % 2 === 1)
@@ -50,26 +57,40 @@ export default function LiveExerciseLog({complete, lift, id, setComplete, curren
             date: new Date().getTime(),
             rpe: radioVal
         }
+        const resultObj = {
+            sets: postArr,
+            notes: '',
+            name: exercises[lift].name,
+            rpe: radioVal
+        }
         if(completed && editing)
         {
             axios.put('/api/exercise',postObj,{ params: { workout:currentWorkoutIndex, log:1, exercise: exerciseIndex, user: username, index:lastIndex}})
             .then(res=>{
-                setEditing(false)
+                axios.get('/api/workouts',{ params: {user: username}})
+                .then(r=>{
+                    setFinishObj(r.data.inProgress)
+                    setEditing(false)
+                })
+            }) 
+            axios.put('/api/history',resultObj,{ params: { user: username, index: id }})
+            .then(res=>{
             }) 
         }
         else
         {
             axios.post('/api/exercise',postObj,{ params: { workout:currentWorkoutIndex, log:1, exercise: exerciseIndex, user: username}})
             .then(res=>{
-                axios.get('/api/exercise',{ params: {user: username}})
+                axios.get('/api/workouts',{ params: {user: username}})
                 .then(r=>{
-                    const storeComplete = [...complete]
-                    storeComplete.push(exerciseIndex)
-                    setComplete(storeComplete)
+                    setComplete(r.data.inProgress.results)
                     setCompleted(true)
-                    setExercises(r.data.exercises)
+                    setFinishObj(r.data.inProgress)
                 })
             })
+            axios.put('/api/history',resultObj,{ params: { user: username, index: id }})
+            .then(res=>{
+            }) 
         }
     }
 
@@ -129,31 +150,31 @@ export default function LiveExerciseLog({complete, lift, id, setComplete, curren
                     exercises[lift].target.sets.map((set,index)=>
                         <div key={index} className='grid grid-cols-3 my-1 gap-2 items-center'>
                             <p className='text-sm'>{index+1}</p>
-                            <select type="number" id={`${exercises[lift].name}set${index+1}`} name={`${exercises[lift].name}set${index+1}`} defaultValue={set[0] || ''}
+                            <select type="number" id={`${exercises[lift].name}set${index+1}`} name={`${exercises[lift].name}set${index+1}`} defaultValue={set.reps || ''}
                                 className='border border-gray-400 rounded-md px-2'
                             >
                                 {repConstant.map((rep,number)=>
                                     <option value={rep} key={number}>{rep}</option>
                                 )}
                             </select>
-                            <input type="number" id={`${exercises[lift].name}set${index+1}`} name={`${exercises[lift].name}set${index+1}`} defaultValue={set[1] || ''}
-                                className='border border-gray-400 rounded-md px-2'
+                            <input type="number" id={`${exercises[lift].name}set${index+1}`} name={`${exercises[lift].name}set${index+1}`} defaultValue={set.weight || ''}
+                                className='border border-gray-400 rounded-md px-2' required
                             />
                         </div>
                     )
                 :
-                exercises[lift].results[exercises[lift].results.length-1].sets.map((set,index)=>
+                complete[id].sets.map((set,index)=>
                     <div key={index} className='grid grid-cols-3 my-1 gap-2 items-center'>
                         <p className='text-sm'>{index+1}</p>
-                        <select disabled={completed && !editing} type="number" id={`${exercises[lift].name}set${index+1}`} name={`${exercises[lift].name}set${index+1}`} defaultValue={set[0] || ''}
+                        <select disabled={completed && !editing} type="number" id={`${exercises[lift].name}set${index+1}`} name={`${exercises[lift].name}set${index+1}`} defaultValue={set.reps || ''}
                             className='border border-gray-400 rounded-md px-2'
                         >
                             {repConstant.map((rep,number)=>
                                 <option value={rep} key={number}>{rep}</option>
                             )}
                         </select>
-                        <input disabled={completed && !editing} type="number" id={`${exercises[lift].name}set${index+1}`} name={`${exercises[lift].name}set${index+1}`} defaultValue={set[1] || ''}
-                            className='border border-gray-400 rounded-md px-2'
+                        <input disabled={completed && !editing} type="number" id={`${exercises[lift].name}set${index+1}`} name={`${exercises[lift].name}set${index+1}`} defaultValue={set.weight || ''}
+                            className='border border-gray-400 rounded-md px-2' required
                         />
                     </div>
                 )
@@ -177,7 +198,7 @@ export default function LiveExerciseLog({complete, lift, id, setComplete, curren
                         </select>
                         <input type="number" id={`extraset${index+1}`} name={`extraset${index+1}`} defaultValue={0} disabled={completed && !editing}
                             className='border border-gray-400 rounded-md px-2'
-                            onChange={(e)=>UpdateAddSet(e, index, 'weight')}
+                            onChange={(e)=>UpdateAddSet(e, index, 'weight')} required
                         />
                     </div>
                 )}

@@ -51,12 +51,14 @@ export default async function handler(req, res) {
                 "update": req.body.newDay ?  {
                     "$set": {
                         [`currentDay`]: parseInt(req.body.newDay),
+                        [`inProgress.results`]: []
                     }
                 }
                 : {
                     "$set": {
                         [`currentProgram`]: req.body.newProgram,
                         [`currentDay`]: 0,
+                        [`inProgress.results`]: []
                     }
                 }
             });

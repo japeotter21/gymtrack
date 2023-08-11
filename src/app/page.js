@@ -9,10 +9,10 @@ import Link from 'next/link'
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd'
 import PostExercise from './components/EditWorkout'
 import { DeleteExercise } from './components/EditWorkout'
-import { RiDraggable, RiPencilLine } from 'react-icons/ri'
-import { repConstant, setConstant } from '@/globals'
+import { HiChevronUpDown } from 'react-icons/hi2'
+import { inProgressObj, repConstant, setConstant } from '@/globals'
 import AppContext from './AppContext'
-import { redirect } from 'next/navigation'
+import { redirect, useRouter } from 'next/navigation'
 import { FinishWorkout } from '@/services/services'
 
 export default function Home() {
@@ -33,7 +33,7 @@ export default function Home() {
   const [updating, setUpdating] = useState(false)
   const [changeDay, setChangeDay] = useState(false)
   const {activeUser} = useContext(AppContext)
-
+  const router = useRouter()
   useEffect(()=>{
     if (activeUser)
     {
@@ -144,6 +144,8 @@ export default function Home() {
 
   function UpdateCurrentDay() {
     const postObj = {newDay: currentDay}
+    const resultsLength = Array.from({length:currentWorkout.exercises.length},x=>inProgressObj)
+    axios.post('api/start',resultsLength,{params: {user:activeUser, name:currentWorkout.name}})
     axios.put('/api/workouts', postObj, { params: {user:activeUser}})
     .then(r=>{
       axios.get('/api/workouts', { params: {user:activeUser}})
@@ -188,6 +190,15 @@ export default function Home() {
       ...draggableStyle
   })
 
+  function StartWorkout() {
+      router.prefetch('workout')
+      const resultsLength = Array.from({length:currentWorkout.exercises.length},x=>inProgressObj)
+      axios.post('api/start',resultsLength,{params: {user:activeUser, name:currentWorkout.name}})
+      .then(res=>{
+          router.push('/workout')
+      })
+  }
+
   if(loading)
   {
     return (
@@ -209,7 +220,7 @@ export default function Home() {
         <p className='text-sm text-gray-600'>from {currentProgram.name}</p>
         <div className='border border-gray-300 rounded-md pt-1 mt-4 mb-4 bg-stone-50 shadow-lg cursor-pointer'>
             <div className='text-sm font-semibold grid grid-cols-7 border-b-2'>
-                <div className='p-2 col-span-3 ml-[10px]'>Exercise</div>
+                <div className='p-2 col-span-3 ml-[12px]'>Exercise</div>
                 <div className='p-2'>Sets</div>
                 <div className='p-2'>Reps</div>
                 <div className='p-2'>Weight</div>
@@ -234,7 +245,7 @@ export default function Home() {
                               >
                                 <div className='p-2 col-span-3 flex items-center relative'
                                 {...provided.dragHandleProps}
-                                ><RiDraggable size={16} className='absolute ml-[-10px] text-gray-500' /><span className='ml-[10px]'>{exercises[item].name}</span></div>
+                                ><HiChevronUpDown size={18} className='absolute ml-[-8px] text-gray-500' /><span className='ml-[12px]'>{exercises[item].name}</span></div>
                                 <div className='p-2' onClick={()=>setEditing(item)}>{exercises[item].target.sets.length}</div>
                                 <div className='p-2' onClick={()=>setEditing(item)}>{exercises[item].target.sets[0].reps}</div>
                                 <div className='p-2' onClick={()=>setEditing(item)}>{exercises[item].target.sets[0].weight}</div>
@@ -256,13 +267,11 @@ export default function Home() {
         </div>
         { currentWorkout ?
             currentWorkout.exercises.length > 0 ?
-              <Link href="/workout">
-                <button
+                <button onClick={StartWorkout}
                   className='w-full lg:w-[10vw] shadow-md py-3 my-4 lg:my-2 mx-auto lg:ml-auto lg:mr-0 block px-5 rounded-full bg-green-600 hover:bg-opacity-80
                     text-white hover:scale-105 transition duration-300'
                   
                 >Start Workout</button>    
-              </Link>
             :
               <button onClick={CompleteWorkout}
                 className='w-full lg:w-[10vw] shadow-md py-3 my-4 lg:my-2 mx-auto lg:ml-auto lg:mr-0 block px-5 rounded-full bg-green-600 hover:bg-opacity-80

@@ -7,6 +7,7 @@ import LiveExerciseLog from '../components/LiveExerciseLog';
 import AppContext from '../AppContext'
 import { redirect } from 'next/navigation'
 import { FinishWorkout } from '@/services/services';
+import { Dialog } from '@mui/material';
 
 export default function Workout() {
     const [profile, setProfile] = useState({})
@@ -16,9 +17,9 @@ export default function Workout() {
     const [currentWorkoutIndex, setCurrentWorkoutIndex] = useState(0)
     const [currentDay, setCurrentDay] = useState(0)
     const [exercises, setExercises] = useState([])
-    const [complete, setComplete] = useState([])
+    const [complete, setComplete] = useState(null)
     const [workoutComplete, setWorkoutComplete] = useState(false)
-    const [pause, setPause] = useState(false)
+    const [finishObj, setFinishObj] = useState(null)
     const router = useRouter()
     const {activeUser} = useContext(AppContext)
 
@@ -37,49 +38,32 @@ export default function Workout() {
                 setCurrentWorkoutIndex(workoutIndex)
                 setCurrentWorkout(workout.data.workouts[workoutIndex])
                 setCurrentDay(dayIndex)
+                setComplete(workout.data.inProgress.results)
                 setLoading(false)
             })
             )
-            if(sessionStorage.getItem('completed'))
-            {
-                setComplete(JSON.parse(sessionStorage.getItem('completed')))
-            }
         }
         else
         {
             redirect('/login')
         }
-    },[])
+    },[])    
 
     useEffect(()=>{
-        if(complete.length > 0)
-        {
-            if(JSON.stringify(complete) !== sessionStorage.getItem('completed'))
-            {
-                sessionStorage.setItem('completed',JSON.stringify(complete))
-            }
-            // if(currentWorkout)
-            // {
-            //     if(complete.length === currentWorkout.exercises.length)
-            //     {
-            //         setWorkoutComplete(true)
-            //     }
-            // }
-        }
-    },[complete])
+        
+    })
 
     useEffect(()=>{
         if(workoutComplete)
         {
-            let dayNum = 0 
-            if (currentDay !== currentProgram.schedule.length - 1)
-            {
-                dayNum = currentDay + 1
-            }
-            FinishWorkout(dayNum, activeUser)
-            .then(r=>{
-                console.log('done')
-                router.push('/')
+            axios.get('api/workouts',{ params: {user: activeUser }})
+            .then(res=>{
+                let done = false
+                res.data.inProgress.results.forEach((item,id)=>item.name !== "" ? done = true : <></>)
+                if(done)
+                {
+                    setFinishObj(res.data.inProgress)
+                }
             })
         }
     },[workoutComplete])
@@ -89,8 +73,20 @@ export default function Workout() {
     },[router])
 
     function Cancel() {
-        // sessionStorage.removeItem('completed')
         router.push('/')
+    }
+
+    function SaveWorkout() {
+        let dayNum = 0 
+        if (currentDay !== currentProgram.schedule.length - 1)
+        {
+            dayNum = currentDay + 1
+        }
+        FinishWorkout(dayNum, activeUser, finishObj)
+        .then(r=>{
+            console.log('done')
+            router.push('/')
+        })
     }
 
     if(loading)
@@ -115,17 +111,47 @@ export default function Workout() {
                         onClick={()=>setPause(true)}
                     >Pause</button>
                 } */}
-                <button className='rounded-lg shadow-md bg-stone-50 border border-green-500 text-green-600 px-7 py-2'
-                    onClick={()=>setWorkoutComplete(true)}
-                >Finish</button>
+                { finishObj ? 
+                    <button className='rounded-lg shadow-md bg-stone-50 border border-green-500 text-green-600 px-7 py-2'
+                        onClick={()=>setWorkoutComplete(true)}
+                    >Finish</button>
+                :
+                    <button className='rounded-lg shadow-md bg-stone-50 border border-neutral-300 text-neutral-400 px-7 py-2'
+                        disabled
+                    >Finish</button>
+                }
             </div>
             { currentWorkout.exercises.map((lift,id)=>
                 <>
                     <LiveExerciseLog lift={lift} id={id} complete={complete} setComplete={setComplete} currentWorkout={currentWorkout} currentWorkoutIndex={currentWorkoutIndex}
-                        profile={profile} exercises={exercises} username={activeUser} setExercises={setExercises}
+                        profile={profile} exercises={exercises} username={activeUser} setExercises={setExercises} setFinishObj={setFinishObj}
                     />
                 </>
             )}
+            <Dialog open={finishObj && workoutComplete} onClose={()=>setWorkoutComplete(false)}>
+                <div className='px-4 py-3'>
+                    { finishObj ? 
+                    <>
+                        <p className='font-semibold mb-2'>Workout Complete!</p>
+                        <p className='text-sm'>This will record all saved exercise data.</p>
+                        <p className='text-sm'>Any unsaved data will be lost.</p>
+                        <div className='flex justify-between mt-4'>
+                            <button className='border border-neutral-300 shadow-md rounded-md px-3 py-1'
+                                onClick={()=>setWorkoutComplete(false)}
+                            >Cancel</button>
+                            <button className='shadow-md rounded-md px-3 py-1 bg-green-600 text-white'
+                                onClick={SaveWorkout}
+                            >Finish Workout</button>
+                        </div>
+                    </>
+                    :
+                    <>
+                        <p className='font-semibold'>No Workout Data Entered</p>
+                        <p className='text-sm'>Please save exercise results before finishing workout.</p>
+                    </>
+                    }
+                </div>
+            </Dialog>
         </main>
     )
 }

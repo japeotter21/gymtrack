@@ -12,6 +12,7 @@ export default function handler(req, res) {
         if (req.method === 'POST')
         {
             const user = req.query.user
+            const timeNow = new Date().getTime()
             const data = JSON.stringify({
                 "collection": "workouts",
                 "database": "gymtrack",
@@ -22,10 +23,9 @@ export default function handler(req, res) {
                 },
                 "update": {
                     "$set": {
-                        [`currentDay`]: req.body.day,
-                    },
-                    "$push": {
-                        [`results`]: req.body.results
+                        [`inProgress.name`]: req.query.name,
+                        [`inProgress.results`]: req.body,
+                        [`inProgress.date`]: timeNow
                     }
                 }
             });
