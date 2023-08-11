@@ -58,10 +58,10 @@ export default function LiveExerciseLog({complete, lift, id, setComplete, curren
             rpe: radioVal
         }
         const resultObj = {
-            sets: postArr,
-            notes: '',
             name: exercises[lift].name,
-            rpe: radioVal
+            notes: '',
+            rpe: radioVal,
+            sets: postArr
         }
         if(completed && editing)
         {
@@ -71,6 +71,7 @@ export default function LiveExerciseLog({complete, lift, id, setComplete, curren
                 .then(r=>{
                     setFinishObj(r.data.inProgress)
                     setEditing(false)
+                    setAddSet([])
                 })
             }) 
             axios.put('/api/history',resultObj,{ params: { user: username, index: id }})
@@ -85,6 +86,7 @@ export default function LiveExerciseLog({complete, lift, id, setComplete, curren
                 .then(r=>{
                     setComplete(r.data.inProgress.results)
                     setCompleted(true)
+                    setAddSet([])
                     setFinishObj(r.data.inProgress)
                 })
             })

@@ -32,6 +32,7 @@ export default function Home() {
   const [editNotes, setEditNotes] = useState('')
   const [updating, setUpdating] = useState(false)
   const [changeDay, setChangeDay] = useState(false)
+  const [inProgress, setInProgress] = useState(null)
   const {activeUser} = useContext(AppContext)
   const router = useRouter()
   useEffect(()=>{
@@ -50,6 +51,10 @@ export default function Home() {
           setWorkouts(workout.data.workouts)
           setCurrentWorkoutIndex(workoutIndex)
           setCurrentWorkout(workout.data.workouts[workoutIndex])
+          const inProgressArr = workout.data.inProgress.results
+          const progressCheck = []
+          inProgressArr.forEach((item,id)=>item.rpe > 0 ? progressCheck.push(true) : progressCheck.push(false))
+          setInProgress(progressCheck.includes(true))
           setCurrentDay(dayIndex)
           setLoading(false)
         })
@@ -166,7 +171,7 @@ export default function Home() {
     {
         dayNum = currentDay + 1
     }
-    FinishWorkout(dayNum, activeUser)
+    FinishWorkout(dayNum, activeUser, true, null)
     .then(r=>{
         axios.get('/api/workouts', { params: {user:activeUser}})
         .then(res=>{
@@ -192,11 +197,18 @@ export default function Home() {
 
   function StartWorkout() {
       router.prefetch('workout')
-      const resultsLength = Array.from({length:currentWorkout.exercises.length},x=>inProgressObj)
-      axios.post('api/start',resultsLength,{params: {user:activeUser, name:currentWorkout.name}})
-      .then(res=>{
-          router.push('/workout')
-      })
+      if(inProgress)
+      {
+        router.push('/workout')
+      }
+      else
+      {
+        const resultsLength = Array.from({length:currentWorkout.exercises.length},x=>inProgressObj)
+        axios.post('api/start',resultsLength,{params: {user:activeUser, name:currentWorkout.name}})
+        .then(res=>{
+            router.push('/workout')
+        })
+      }
   }
 
   if(loading)

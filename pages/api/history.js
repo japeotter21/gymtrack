@@ -48,16 +48,34 @@ export default async function handler(req, res) {
             const postObj = {
                 query:
                 `query {
-                    workouts (query: {user:"${user}"}) {
-                            results {
-                                date
+                    workouts (query:{user:"${req.query.user}"}) {
+                    record {
+                        name
+                        date
+                        results {
+                            name
+                            notes
+                            rpe
+                            sets {
+                                reps
+                                weight
                             }
                         }
-              }`
+                    }
+                  }
+                }`
             }
             axios.post(graphUrl, JSON.stringify(postObj), { headers: {apiKey: process.env.GRAPH_KEY}})
             .then(function (response) {
-                res.status(200).json(response.data);
+                const responseTemp = response.data
+                const workoutsTemp = []
+                responseTemp.data.workouts[0].record.forEach((item,id)=>{
+                    if(item.date > 0)
+                    {
+                        workoutsTemp.push(item)
+                    }
+                })
+                res.status(200).json(workoutsTemp);
             })
             .catch(function (error) {
                 console.log(error.message)

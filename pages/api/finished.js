@@ -12,6 +12,7 @@ export default function handler(req, res) {
         if (req.method === 'POST')
         {
             const user = req.query.user
+            const rest = req.query.rest
             const data = JSON.stringify({
                 "collection": "workouts",
                 "database": "gymtrack",
@@ -20,12 +21,18 @@ export default function handler(req, res) {
                     [`key`]: 'workouts',
                     [`user`]: user
                 },
-                "update": {
+                "update": rest ? {
+                    "$set": {
+                        [`currentDay`]: req.body.day,
+                    }
+                } 
+                :   
+                {
                     "$set": {
                         [`currentDay`]: req.body.day,
                     },
                     "$push": {
-                        [`results`]: req.body.results
+                        [`record`]: req.body.results
                     }
                 }
             });

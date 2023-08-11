@@ -5,7 +5,7 @@ export const inProgressObj = {
     name: "",
     notes: "",
     rpe: 0,
-    sets: [{reps: 0}, {weight:0}]
+    sets: [{reps: 0, weight:0}]
   }
 
 export const userProfile = {
@@ -1359,7 +1359,7 @@ export const userWork = {
     ],
     "currentProgram": 0,
     "currentDay": 0,
-    "results": [
+    "record": [
         {
             "name": "Push Day",
             "results": [

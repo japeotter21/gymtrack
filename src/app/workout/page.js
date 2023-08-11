@@ -39,6 +39,12 @@ export default function Workout() {
                 setCurrentWorkout(workout.data.workouts[workoutIndex])
                 setCurrentDay(dayIndex)
                 setComplete(workout.data.inProgress.results)
+                let done = false
+                workout.data.inProgress.results.forEach((item,id)=>item.rpe > 0 ? done = true : <></>)
+                if(done)
+                {
+                    setFinishObj(workout.data.inProgress)
+                }
                 setLoading(false)
             })
             )
@@ -82,7 +88,7 @@ export default function Workout() {
         {
             dayNum = currentDay + 1
         }
-        FinishWorkout(dayNum, activeUser, finishObj)
+        FinishWorkout(dayNum, activeUser, false, finishObj)
         .then(r=>{
             console.log('done')
             router.push('/')
