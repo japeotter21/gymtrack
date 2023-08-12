@@ -1,3 +1,5 @@
+import { inProgressObj } from '@/globals';
+
 require('dotenv').config()
 const axios = require('axios')
 
@@ -30,6 +32,7 @@ export default function handler(req, res) {
                 {
                     "$set": {
                         [`currentDay`]: req.body.day,
+                        [`inProgress.results`]: [inProgressObj]
                     },
                     "$push": {
                         [`record`]: req.body.results
