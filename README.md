@@ -7,9 +7,10 @@ Core Features:
 - Plan out gym days and rest days
 - Track progression on each exercise (projected 1-rep max based on NSCA load chart https://www.nsca.com/contentassets/61d813865e264c6e852cadfe247eae52/nsca_training_load_chart.pdf)
 
-![Screenshot 2023-07-28 202746](https://github.com/japeotter21/gymtrack/assets/97000604/33b321ac-3776-453e-8d5a-2ad520b87f3c)
-![Screenshot 2023-07-28 202835](https://github.com/japeotter21/gymtrack/assets/97000604/b435648e-ce4c-4bc5-8b4f-efb60452000c)
-![Screenshot 2023-07-28 202823](https://github.com/japeotter21/gymtrack/assets/97000604/af2c1719-6f65-4b22-a59f-30c9138bbb11)
+![Screenshot 2023-08-13 135900](https://github.com/japeotter21/gymtrack/assets/97000604/4679c1de-6d64-4200-9792-65782fa55709)
+![Screenshot 2023-08-13 135916](https://github.com/japeotter21/gymtrack/assets/97000604/b665d5af-0649-4f9e-90d6-48353382b601)
+![Screenshot 2023-08-13 135947](https://github.com/japeotter21/gymtrack/assets/97000604/096bd79f-1b4b-45c9-b6ae-744a8c24e246)
+
 
 To Do:
 <p>✅ Progress tracking by exercise (chart)</p>
