@@ -6,6 +6,8 @@ import { Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material
 export default function PostExercise({username, currentWorkoutIndex, currentWorkout, setCurrentWorkout, exercises, homepage, setWorkouts, setPrograms, setCurrentProgram, setCurrentWorkoutIndex}) {
     const [loading, setLoading] = useState(false)
     const [groupedEx, setGroupedEx] = useState([])
+    const [choice, setChoice] = useState('')
+    const [addNew, setAddNew] = useState(false)
     const muscleGroups = ['Chest', 'Shoulders', 'Triceps', 'Back', 'Biceps', 'Legs', 'Accessory']
 
     useEffect(()=>{
@@ -63,38 +65,55 @@ export default function PostExercise({username, currentWorkoutIndex, currentWork
         }
     },[exercises])
 
-    function AddExercise(e) {
-        const newExercise = parseInt(e.target.value)
-        const newWorkout = currentWorkout.exercises
-        newWorkout.push(newExercise)
-        const postObj = newWorkout
-        setLoading(true)
-        axios.post('/api/workouts',postObj, {params:{workout: currentWorkoutIndex, user:username}})
-        .then(res=>{
-            axios.get('/api/workouts', {params: { user: username }})
-            .then(r=>{
-                const currentIndex = r.data.currentProgram
-                const dayIndex = r.data.currentDay
-                const workoutIndex = r.data.programs[currentIndex].schedule[dayIndex]
-                if(homepage)
-                {
-                    setCurrentWorkout(r.data.workouts[workoutIndex])
-                }
-                else
-                {
-                    setPrograms(r.data.programs)
-                    const currentIndex = r.data.currentProgram
-                    setCurrentProgram(r.data.programs[currentIndex])
-                    setWorkouts(r.data.workouts)
-                }
-                setLoading(false)
-            })
-            .catch(err=>{
-                setLoading(false)
-            })
-        })
-    } 
-    
+    useEffect(()=> {
+        if(choice !== '')
+        {
+            if(choice=== 'custom')
+            {
+                setAddNew(true)
+                setChoice('')
+            }
+            else
+            {
+                const newExercise = parseInt(choice)
+                const newWorkout = currentWorkout.exercises
+                newWorkout.push(newExercise)
+                const postObj = newWorkout
+                setLoading(true)
+                axios.post('/api/workouts',postObj, {params:{workout: currentWorkoutIndex, user:username}})
+                .then(res=>{
+                    axios.get('/api/workouts', {params: { user: username }})
+                    .then(r=>{
+                        const currentIndex = r.data.currentProgram
+                        const dayIndex = r.data.currentDay
+                        const workoutIndex = r.data.programs[currentIndex].schedule[dayIndex]
+                        if(homepage)
+                        {
+                            setCurrentWorkout(r.data.workouts[workoutIndex])
+                        }
+                        else
+                        {
+                            setPrograms(r.data.programs)
+                            const currentIndex = r.data.currentProgram
+                            setCurrentProgram(r.data.programs[currentIndex])
+                            setWorkouts(r.data.workouts)
+                        }
+                        setChoice('')
+                        setLoading(false)
+                    })
+                    .catch(err=>{
+                        setChoice('')
+                        setLoading(false)
+                    })
+                })
+            }
+        }
+    },[choice])
+
+    function AddNewExercise(e) {
+        e.preventDefault()
+
+    }   
 
     return(
         <div className='grid grid-cols-3 lg:flex lg:justify-between rounded-md px-3 py-2 items-center bg-neutral-200 bg-opacity-80'>
@@ -102,9 +121,10 @@ export default function PostExercise({username, currentWorkoutIndex, currentWork
             <>
                 <p>Add Exercise</p>
                 <select className='border border-gray-400 rounded-md p-1 bg-stone-50 col-span-2'
-                    onChange={(e)=>AddExercise(e)} defaultValue=''
+                    onChange={(e)=>setChoice(e.target.value)} value={choice}
                 >
                     <option value='' disabled>Select Exercise</option>
+                    <option value='custom'>Custom Exercise</option>
                     {groupedEx.map((group,id)=>
                         <>
                             <optgroup label={muscleGroups[id]}>
@@ -121,7 +141,23 @@ export default function PostExercise({username, currentWorkoutIndex, currentWork
                 <div className="animate-pulse rounded-full bg-gray-200 h-4 w-full"></div>
             </>
             }
-            
+            <Dialog open={addNew} onClose={()=>setAddNew(false)}>
+                <div className='px-4 py-3'>
+                    <p className='font-semibold'>Add Custom Exercise</p>
+                    <form onSubmit={(e)=>AddNewExercise(e)} className='grid grid-cols-2 gap-4 items-center'>
+                        <p className='text-sm'>Name</p>
+                        <input id="name" name="name" className='px-2 py-1 border border-neutral-300 rounded-md'/>
+                        <p className='text-sm'>Muscle Group(s)</p>
+                        <input id="name" name="name" className='px-2 py-1 border border-neutral-300 rounded-md'/>
+                        {/* <p className='text-sm'>Compound/Accessory</p> */}
+                        <button type="submit"
+                            className='block ml-auto col-span-2 w-max bg-green-600 px-3 py-1.5 rounded-md shadow-md text-white'
+                        >
+                            Create Custom Exercise
+                        </button>
+                    </form>
+                </div>
+            </Dialog>
         </div>
     )
 }

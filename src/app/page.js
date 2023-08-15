@@ -280,14 +280,14 @@ export default function Home() {
         { currentWorkout ?
             currentWorkout.exercises.length > 0 ?
                 <button onClick={StartWorkout}
-                  className='w-full lg:w-[10vw] shadow-md py-3 my-4 lg:my-2 mx-auto lg:ml-auto lg:mr-0 block px-5 rounded-full bg-green-600 hover:bg-opacity-80
-                    text-white hover:scale-105 transition duration-300'
+                  className='w-full lg:w-[10vw] shadow-md py-3 my-4 lg:my-2 mx-auto lg:ml-auto lg:mr-0 block px-5 rounded-full bg-green-600 lg:hover:bg-opacity-80
+                    text-white lg:hover:scale-105 transition duration-300'
                   
                 >Start Workout</button>    
             :
               <button onClick={CompleteWorkout}
-                className='w-full lg:w-[10vw] shadow-md py-3 my-4 lg:my-2 mx-auto lg:ml-auto lg:mr-0 block px-5 rounded-full bg-green-600 hover:bg-opacity-80
-                  text-white hover:scale-105 transition duration-300'
+                className='w-full lg:w-[10vw] shadow-md py-3 my-4 lg:my-2 mx-auto lg:ml-auto lg:mr-0 block px-5 rounded-full bg-green-600 lg:hover:bg-opacity-80
+                  text-white lg:hover:scale-105 transition duration-300'
                 
               >Complete Workout</button>  
           :
