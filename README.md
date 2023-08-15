@@ -22,7 +22,7 @@ To Do:
 <p>✅ User flow and auth
   ✅ User associated data
 </p>
-<p>⬜ Add exercises and assign attributes (back/pull/etc.)</p>
+<p>✅ Add exercises and assign attributes (back/pull/etc.)</p>
 <p>⬜ AI workout progressions, plans and exercise recommendations</p>
 <p>⬜ duration tracking of exercises and workouts</p>
 </p>
