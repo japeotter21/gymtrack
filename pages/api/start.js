@@ -23,7 +23,7 @@ export default function handler(req, res) {
                 },
                 "update": {
                     "$set": {
-                        [`inProgress.name`]: req.query.name,
+                        [`inProgress.title`]: req.query.name,
                         [`inProgress.results`]: req.body,
                         [`inProgress.date`]: timeNow
                     }

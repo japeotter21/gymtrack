@@ -2,7 +2,7 @@ export const repConstant = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20
 export const setConstant = [1,2,3,4,5,6,7,8,9,10]
 
 export const inProgressObj = {
-    name: "",
+    title: "",
     notes: "",
     rpe: 0,
     sets: [{reps: 0, weight:0}]
@@ -45,15 +45,7 @@ export const userEx = {
                 "sets": [{"reps": 0, "weight": 0, "id": 0}],
                 "notes": "",
                 "reminder": ""
-            },
-            "results": [
-                {
-                    "sets": [{"reps": 0, "weight": 0, "id": 0}],
-                    "notes": "",
-                    "reminder": "",
-                    "date": 1690308275631
-                }
-            ]
+            }
         },
         {
             "id": 1,
@@ -67,15 +59,7 @@ export const userEx = {
                 "sets": [{"reps": 0, "weight": 0, "id": 0}],
                 "notes": "",
                 "reminder": ""
-            },
-            "results": [
-                {
-                    "sets": [{"reps": 0, "weight": 0, "id": 0}],
-                    "notes": "",
-                    "reminder": "",
-                    "date": 1690308275631
-                }
-            ]
+            }
         },
         {
             "id": 2,
@@ -89,15 +73,7 @@ export const userEx = {
                 "sets": [{"reps": 0, "weight": 0, "id": 0}],
                 "notes": "",
                 "reminder": ""
-            },
-            "results": [
-                {
-                    "sets": [{"reps": 0, "weight": 0, "id": 0}],
-                    "notes": "",
-                    "reminder": "",
-                    "date": 1690308275631
-                }
-            ]
+            }
         },
         {
             "id": 3,
@@ -111,15 +87,7 @@ export const userEx = {
                 "sets": [{"reps": 0, "weight": 0, "id": 0}],
                 "notes": "",
                 "reminder": ""
-            },
-            "results": [
-                {
-                    "sets": [{"reps": 0, "weight": 0, "id": 0}],
-                    "notes": "",
-                    "reminder": "",
-                    "date": 1690308275631
-                }
-            ]
+            }
         },
         {
             "id": 4,
@@ -133,15 +101,7 @@ export const userEx = {
                 "sets": [{"reps": 0, "weight": 0, "id": 0}],
                 "notes": "",
                 "reminder": ""
-            },
-            "results": [
-                {
-                    "sets": [{"reps": 0, "weight": 0, "id": 0}],
-                    "notes": "",
-                    "reminder": "",
-                    "date": 1690308275631
-                }
-            ]
+            }
         },
         {
             "id": 5,
@@ -154,15 +114,7 @@ export const userEx = {
                 "sets": [{"reps": 0, "weight": 0, "id": 0}],
                 "notes": "",
                 "reminder": ""
-            },
-            "results": [
-                {
-                    "sets": [{"reps": 0, "weight": 0, "id": 0}],
-                    "notes": "",
-                    "reminder": "",
-                    "date": 1690308275631
-                }
-            ]
+            }
         },
         {
             "id": 6,
@@ -175,15 +127,7 @@ export const userEx = {
                 "sets": [{"reps": 0, "weight": 0, "id": 0}],
                 "notes": "",
                 "reminder": ""
-            },
-            "results": [
-                {
-                    "sets": [{"reps": 0, "weight": 0, "id": 0}],
-                    "notes": "",
-                    "reminder": "",
-                    "date": 1690308275631
-                }
-            ]
+            }
         },
         {
             "id": 7,
@@ -197,15 +141,7 @@ export const userEx = {
                 "sets": [{"reps": 0, "weight": 0, "id": 0}],
                 "notes": "",
                 "reminder": ""
-            },
-            "results": [
-                {
-                    "sets": [{"reps": 0, "weight": 0, "id": 0}],
-                    "notes": "",
-                    "reminder": "",
-                    "date": 1690308275631
-                }
-            ]
+            }
         },
         {
             "id": 8,
@@ -218,15 +154,7 @@ export const userEx = {
                 "sets": [{"reps": 0, "weight": 0, "id": 0}],
                 "notes": "",
                 "reminder": ""
-            },
-            "results": [
-                {
-                    "sets": [{"reps": 0, "weight": 0, "id": 0}],
-                    "notes": "",
-                    "reminder": "",
-                    "date": 1690308275631
-                }
-            ]
+            }
         },
         {
             "id": 9,
@@ -239,15 +167,7 @@ export const userEx = {
                 "sets": [{"reps": 0, "weight": 0, "id": 0}],
                 "notes": "",
                 "reminder": ""
-            },
-            "results": [
-                {
-                    "sets": [{"reps": 0, "weight": 0, "id": 0}],
-                    "notes": "",
-                    "reminder": "",
-                    "date": 1690308275631
-                }
-            ]
+            }
         },
         {
             "id": 10,
@@ -260,15 +180,7 @@ export const userEx = {
                 "sets": [{"reps": 0, "weight": 0, "id": 0}],
                 "notes": "",
                 "reminder": ""
-            },
-            "results": [
-                {
-                    "sets": [{"reps": 0, "weight": 0, "id": 0}],
-                    "notes": "",
-                    "reminder": "",
-                    "date": 1690308275631
-                }
-            ]
+            }
         },
         {
             "id": 11,
@@ -281,15 +193,7 @@ export const userEx = {
                 "sets": [{"reps": 0, "weight": 0, "id": 0}],
                 "notes": "",
                 "reminder": ""
-            },
-            "results": [
-                {
-                    "sets": [{"reps": 0, "weight": 0, "id": 0}],
-                    "notes": "",
-                    "reminder": "",
-                    "date": 1690308275631
-                }
-            ]
+            }
         },
         {
             "id": 12,
@@ -302,15 +206,7 @@ export const userEx = {
                 "sets": [{"reps": 0, "weight": 0, "id": 0}],
                 "notes": "",
                 "reminder": ""
-            },
-            "results": [
-                {
-                    "sets": [{"reps": 0, "weight": 0, "id": 0}],
-                    "notes": "",
-                    "reminder": "",
-                    "date": 1690308275631
-                }
-            ]
+            }
         },
         {
             "id": 13,
@@ -323,15 +219,7 @@ export const userEx = {
                 "sets": [{"reps": 0, "weight": 0, "id": 0}],
                 "notes": "",
                 "reminder": ""
-            },
-            "results": [
-                {
-                    "sets": [{"reps": 0, "weight": 0, "id": 0}],
-                    "notes": "",
-                    "reminder": "",
-                    "date": 1690308275631
-                }
-            ]
+            }
         },
         {
             "id": 14,
@@ -345,15 +233,7 @@ export const userEx = {
                 "sets": [{"reps": 0, "weight": 0, "id": 0}],
                 "notes": "",
                 "reminder": ""
-            },
-            "results": [
-                {
-                    "sets": [{"reps": 0, "weight": 0, "id": 0}],
-                    "notes": "",
-                    "reminder": "",
-                    "date": 1690308275631
-                }
-            ]
+            }
         },
         {
             "id": 15,
@@ -366,15 +246,7 @@ export const userEx = {
                 "sets": [{"reps": 0, "weight": 0, "id": 0}],
                 "notes": "",
                 "reminder": ""
-            },
-            "results": [
-                {
-                    "sets": [{"reps": 0, "weight": 0, "id": 0}],
-                    "notes": "",
-                    "reminder": "",
-                    "date": 1690308275631
-                }
-            ]
+            }
         },
         {
             "id": 16,
@@ -387,15 +259,7 @@ export const userEx = {
                 "sets": [{"reps": 0, "weight": 0, "id": 0}],
                 "notes": "",
                 "reminder": ""
-            },
-            "results": [
-                {
-                    "sets": [{"reps": 0, "weight": 0, "id": 0}],
-                    "notes": "",
-                    "reminder": "",
-                    "date": 1690308275631
-                }
-            ]
+            }
         },
         {
             "id": 17,
@@ -408,15 +272,7 @@ export const userEx = {
                 "sets": [{"reps": 0, "weight": 0, "id": 0}],
                 "notes": "",
                 "reminder": ""
-            },
-            "results": [
-                {
-                    "sets": [{"reps": 0, "weight": 0, "id": 0}],
-                    "notes": "",
-                    "reminder": "",
-                    "date": 1690308275631
-                }
-            ]
+            }
         },
         {
             "id": 18,
@@ -429,15 +285,7 @@ export const userEx = {
                 "sets": [{"reps": 0, "weight": 0, "id": 0}],
                 "notes": "",
                 "reminder": ""
-            },
-            "results": [
-                {
-                    "sets": [{"reps": 0, "weight": 0, "id": 0}],
-                    "notes": "",
-                    "reminder": "",
-                    "date": 1690308275631
-                }
-            ]
+            }
         },
         {
             "id": 19,
@@ -450,15 +298,7 @@ export const userEx = {
                 "sets": [{"reps": 0, "weight": 0, "id": 0}],
                 "notes": "",
                 "reminder": ""
-            },
-            "results": [
-                {
-                    "sets": [{"reps": 0, "weight": 0, "id": 0}],
-                    "notes": "",
-                    "reminder": "",
-                    "date": 1690308275631
-                }
-            ]
+            }
         },
         {
             "id": 20,
@@ -472,15 +312,7 @@ export const userEx = {
                 "sets": [{"reps": 0, "weight": 0, "id": 0}],
                 "notes": "",
                 "reminder": ""
-            },
-            "results": [
-                {
-                    "sets": [{"reps": 0, "weight": 0, "id": 0}],
-                    "notes": "",
-                    "reminder": "",
-                    "date": 1690308275631
-                }
-            ]
+            }
         },
         {
             "id": 21,
@@ -493,15 +325,7 @@ export const userEx = {
                 "sets": [{"reps": 0, "weight": 0, "id": 0}],
                 "notes": "",
                 "reminder": ""
-            },
-            "results": [
-                {
-                    "sets": [{"reps": 0, "weight": 0, "id": 0}],
-                    "notes": "",
-                    "reminder": "",
-                    "date": 1690308275631
-                }
-            ]
+            }
         },
         {
             "id": 22,
@@ -514,15 +338,7 @@ export const userEx = {
                 "sets": [{"reps": 0, "weight": 0, "id": 0}],
                 "notes": "",
                 "reminder": ""
-            },
-            "results": [
-                {
-                    "sets": [{"reps": 0, "weight": 0, "id": 0}],
-                    "notes": "",
-                    "reminder": "",
-                    "date": 1690308275631
-                }
-            ]
+            }
         },
         {
             "id": 23,
@@ -536,15 +352,7 @@ export const userEx = {
                 "sets": [{"reps": 0, "weight": 0, "id": 0}],
                 "notes": "",
                 "reminder": ""
-            },
-            "results": [
-                {
-                    "sets": [{"reps": 0, "weight": 0, "id": 0}],
-                    "notes": "",
-                    "reminder": "",
-                    "date": 1690308275631
-                }
-            ]
+            }
         },
         {
             "id": 24,
@@ -557,15 +365,7 @@ export const userEx = {
                 "sets": [{"reps": 0, "weight": 0, "id": 0}],
                 "notes": "",
                 "reminder": ""
-            },
-            "results": [
-                {
-                    "sets": [{"reps": 0, "weight": 0, "id": 0}],
-                    "notes": "",
-                    "reminder": "",
-                    "date": 1690308275631
-                }
-            ]
+            }
         },
         {
             "id": 25,
@@ -578,15 +378,7 @@ export const userEx = {
                 "sets": [{"reps": 0, "weight": 0, "id": 0}],
                 "notes": "",
                 "reminder": ""
-            },
-            "results": [
-                {
-                    "sets": [{"reps": 0, "weight": 0, "id": 0}],
-                    "notes": "",
-                    "reminder": "",
-                    "date": 1690308275631
-                }
-            ]
+            }
         },
         {
             "id": 26,
@@ -599,15 +391,7 @@ export const userEx = {
                 "sets": [{"reps": 0, "weight": 0, "id": 0}],
                 "notes": "",
                 "reminder": ""
-            },
-            "results": [
-                {
-                    "sets": [{"reps": 0, "weight": 0, "id": 0}],
-                    "notes": "",
-                    "reminder": "",
-                    "date": 1690308275631
-                }
-            ]
+            }
         },
         {
             "id": 27,
@@ -620,15 +404,7 @@ export const userEx = {
                 "sets": [{"reps": 0, "weight": 0, "id": 0}],
                 "notes": "",
                 "reminder": ""
-            },
-            "results": [
-                {
-                    "sets": [{"reps": 0, "weight": 0, "id": 0}],
-                    "notes": "",
-                    "reminder": "",
-                    "date": 1690308275631
-                }
-            ]
+            }
         },
         {
             "id": 28,
@@ -641,15 +417,7 @@ export const userEx = {
                 "sets": [{"reps": 0, "weight": 0, "id": 0}],
                 "notes": "",
                 "reminder": ""
-            },
-            "results": [
-                {
-                    "sets": [{"reps": 0, "weight": 0, "id": 0}],
-                    "notes": "",
-                    "reminder": "",
-                    "date": 1690308275631
-                }
-            ]
+            }
         },
         {
             "id": 29,
@@ -662,15 +430,7 @@ export const userEx = {
                 "sets": [{"reps": 0, "weight": 0, "id": 0}],
                 "notes": "",
                 "reminder": ""
-            },
-            "results": [
-                {
-                    "sets": [{"reps": 0, "weight": 0, "id": 0}],
-                    "notes": "",
-                    "reminder": "",
-                    "date": 1690308275631
-                }
-            ]
+            }
         },
         {
             "id": 30,
@@ -684,15 +444,7 @@ export const userEx = {
                 "sets": [{"reps": 0, "weight": 0, "id": 0}],
                 "notes": "",
                 "reminder": ""
-            },
-            "results": [
-                {
-                    "sets": [{"reps": 0, "weight": 0, "id": 0}],
-                    "notes": "",
-                    "reminder": "",
-                    "date": 1690308275631
-                }
-            ]
+            }
         },
         {
             "id": 31,
@@ -706,15 +458,7 @@ export const userEx = {
                 "sets": [{"reps": 0, "weight": 0, "id": 0}],
                 "notes": "",
                 "reminder": ""
-            },
-            "results": [
-                {
-                    "sets": [{"reps": 0, "weight": 0, "id": 0}],
-                    "notes": "",
-                    "reminder": "",
-                    "date": 1690308275631
-                }
-            ]
+            }
         },
         {
             "id": 32,
@@ -727,15 +471,7 @@ export const userEx = {
                 "sets": [{"reps": 0, "weight": 0, "id": 0}],
                 "notes": "",
                 "reminder": ""
-            },
-            "results": [
-                {
-                    "sets": [{"reps": 0, "weight": 0, "id": 0}],
-                    "notes": "",
-                    "reminder": "",
-                    "date": 1690308275631
-                }
-            ]
+            }
         },
         {
             "id": 33,
@@ -748,15 +484,7 @@ export const userEx = {
                 "sets": [{"reps": 0, "weight": 0, "id": 0}],
                 "notes": "",
                 "reminder": ""
-            },
-            "results": [
-                {
-                    "sets": [{"reps": 0, "weight": 0, "id": 0}],
-                    "notes": "",
-                    "reminder": "",
-                    "date": 1690308275631
-                }
-            ]
+            }
         },
         {
             "id": 34,
@@ -769,15 +497,7 @@ export const userEx = {
                 "sets": [{"reps": 0, "weight": 0, "id": 0}],
                 "notes": "",
                 "reminder": ""
-            },
-            "results": [
-                {
-                    "sets": [{"reps": 0, "weight": 0, "id": 0}],
-                    "notes": "",
-                    "reminder": "",
-                    "date": 1690308275631
-                }
-            ]
+            }
         },
         {
             "id": 35,
@@ -790,15 +510,7 @@ export const userEx = {
                 "sets": [{"reps": 0, "weight": 0, "id": 0}],
                 "notes": "",
                 "reminder": ""
-            },
-            "results": [
-                {
-                    "sets": [{"reps": 0, "weight": 0, "id": 0}],
-                    "notes": "",
-                    "reminder": "",
-                    "date": 1690308275631
-                }
-            ]
+            }
         },
         {
             "id": 36,
@@ -812,15 +524,7 @@ export const userEx = {
                 "sets": [{"reps": 0, "weight": 0, "id": 0}],
                 "notes": "",
                 "reminder": ""
-            },
-            "results": [
-                {
-                    "sets": [{"reps": 0, "weight": 0, "id": 0}],
-                    "notes": "",
-                    "reminder": "",
-                    "date": 1690308275631
-                }
-            ]
+            }
         },
         {
             "id": 37,
@@ -833,15 +537,7 @@ export const userEx = {
                 "sets": [{"reps": 0, "weight": 0, "id": 0}],
                 "notes": "",
                 "reminder": ""
-            },
-            "results": [
-                {
-                    "sets": [{"reps": 0, "weight": 0, "id": 0}],
-                    "notes": "",
-                    "reminder": "",
-                    "date": 1690308275631
-                }
-            ]
+            }
         },
         {
             "id": 38,
@@ -854,15 +550,7 @@ export const userEx = {
                 "sets": [{"reps": 0, "weight": 0, "id": 0}],
                 "notes": "",
                 "reminder": ""
-            },
-            "results": [
-                {
-                    "sets": [{"reps": 0, "weight": 0, "id": 0}],
-                    "notes": "",
-                    "reminder": "",
-                    "date": 1690308275631
-                }
-            ]
+            }
         },
         {
             "id": 39,
@@ -875,15 +563,7 @@ export const userEx = {
                 "sets": [{"reps": 0, "weight": 0, "id": 0}],
                 "notes": "",
                 "reminder": ""
-            },
-            "results": [
-                {
-                    "sets": [{"reps": 0, "weight": 0, "id": 0}],
-                    "notes": "",
-                    "reminder": "",
-                    "date": 1690308275631
-                }
-            ]
+            }
         },
         {
             "id": 40,
@@ -897,15 +577,7 @@ export const userEx = {
                 "sets": [{"reps": 0, "weight": 0, "id": 0}],
                 "notes": "",
                 "reminder": ""
-            },
-            "results": [
-                {
-                    "sets": [{"reps": 0, "weight": 0, "id": 0}],
-                    "notes": "",
-                    "reminder": "",
-                    "date": 1690308275631
-                }
-            ]
+            }
         },
         {
             "id": 41,
@@ -918,15 +590,7 @@ export const userEx = {
                 "sets": [{"reps": 0, "weight": 0, "id": 0}],
                 "notes": "",
                 "reminder": ""
-            },
-            "results": [
-                {
-                    "sets": [{"reps": 0, "weight": 0, "id": 0}],
-                    "notes": "",
-                    "reminder": "",
-                    "date": 1690308275631
-                }
-            ]
+            }
         },
         {
             "id": 42,
@@ -939,15 +603,7 @@ export const userEx = {
                 "sets": [{"reps": 0, "weight": 0, "id": 0}],
                 "notes": "",
                 "reminder": ""
-            },
-            "results": [
-                {
-                    "sets": [{"reps": 0, "weight": 0, "id": 0}],
-                    "notes": "",
-                    "reminder": "",
-                    "date": 1690308275631
-                }
-            ]
+            }
         },
         {
             "id": 43,
@@ -960,15 +616,7 @@ export const userEx = {
                 "sets": [{"reps": 0, "weight": 0, "id": 0}],
                 "notes": "",
                 "reminder": ""
-            },
-            "results": [
-                {
-                    "sets": [{"reps": 0, "weight": 0, "id": 0}],
-                    "notes": "",
-                    "reminder": "",
-                    "date": 1690308275631
-                }
-            ]
+            }
         },
         {
             "id": 44,
@@ -981,15 +629,7 @@ export const userEx = {
                 "sets": [{"reps": 0, "weight": 0, "id": 0}],
                 "notes": "",
                 "reminder": ""
-            },
-            "results": [
-                {
-                    "sets": [{"reps": 0, "weight": 0, "id": 0}],
-                    "notes": "",
-                    "reminder": "",
-                    "date": 1690308275631
-                }
-            ]
+            }
         },
         {
             "id": 45,
@@ -1002,15 +642,7 @@ export const userEx = {
                 "sets": [{"reps": 0, "weight": 0, "id": 0}],
                 "notes": "",
                 "reminder": ""
-            },
-            "results": [
-                {
-                    "sets": [{"reps": 0, "weight": 0, "id": 0}],
-                    "notes": "",
-                    "reminder": "",
-                    "date": 1690308275631
-                }
-            ]
+            }
         },
         {
             "id": 46,
@@ -1023,15 +655,7 @@ export const userEx = {
                 "sets": [{"reps": 0, "weight": 0, "id": 0}],
                 "notes": "",
                 "reminder": ""
-            },
-            "results": [
-                {
-                    "sets": [{"reps": 0, "weight": 0, "id": 0}],
-                    "notes": "",
-                    "reminder": "",
-                    "date": 1690308275631
-                }
-            ]
+            }
         },
         {
             "id": 47,
@@ -1044,15 +668,7 @@ export const userEx = {
                 "sets": [{"reps": 0, "weight": 0, "id": 0}],
                 "notes": "",
                 "reminder": ""
-            },
-            "results": [
-                {
-                    "sets": [{"reps": 0, "weight": 0, "id": 0}],
-                    "notes": "",
-                    "reminder": "",
-                    "date": 1690308275631
-                }
-            ]
+            }
         },
         {
             "id": 48,
@@ -1065,15 +681,7 @@ export const userEx = {
                 "sets": [{"reps": 0, "weight": 0, "id": 0}],
                 "notes": "",
                 "reminder": ""
-            },
-            "results": [
-                {
-                    "sets": [{"reps": 0, "weight": 0, "id": 0}],
-                    "notes": "",
-                    "reminder": "",
-                    "date": 1690308275631
-                }
-            ]
+            }
         },
         {
             "id": 49,
@@ -1086,15 +694,7 @@ export const userEx = {
                 "sets": [{"reps": 0, "weight": 0, "id": 0}],
                 "notes": "",
                 "reminder": ""
-            },
-            "results": [
-                {
-                    "sets": [{"reps": 0, "weight": 0, "id": 0}],
-                    "notes": "",
-                    "reminder": "",
-                    "date": 1690308275631
-                }
-            ]
+            }
         },
         {
             "id": 50,
@@ -1107,15 +707,7 @@ export const userEx = {
                 "sets": [{"reps": 0, "weight": 0, "id": 0}],
                 "notes": "",
                 "reminder": ""
-            },
-            "results": [
-                {
-                    "sets": [{"reps": 0, "weight": 0, "id": 0}],
-                    "notes": "",
-                    "reminder": "",
-                    "date": 1690308275631
-                }
-            ]
+            }
         },
         {
             "id": 51,
@@ -1128,15 +720,7 @@ export const userEx = {
                 "sets": [{"reps": 0, "weight": 0, "id": 0}],
                 "notes": "",
                 "reminder": ""
-            },
-            "results": [
-                {
-                    "sets": [{"reps": 0, "weight": 0, "id": 0}],
-                    "notes": "",
-                    "reminder": "",
-                    "date": 1690308275631
-                }
-            ]
+            }
         },
         {
             "id": 52,
@@ -1149,15 +733,7 @@ export const userEx = {
                 "sets": [{"reps": 0, "weight": 0, "id": 0}],
                 "notes": "",
                 "reminder": ""
-            },
-            "results": [
-                {
-                    "sets": [{"reps": 0, "weight": 0, "id": 0}],
-                    "notes": "",
-                    "reminder": "",
-                    "date": 1690308275631
-                }
-            ]
+            }
         },
         {
             "id": 53,
@@ -1170,15 +746,7 @@ export const userEx = {
                 "sets": [{"reps": 0, "weight": 0, "id": 0}],
                 "notes": "",
                 "reminder": ""
-            },
-            "results": [
-                {
-                    "sets": [{"reps": 0, "weight": 0, "id": 0}],
-                    "notes": "",
-                    "reminder": "",
-                    "date": 1690308275631
-                }
-            ]
+            }
         },
         {
             "id": 54,
@@ -1191,15 +759,7 @@ export const userEx = {
                 "sets": [{"reps": 0, "weight": 0, "id": 0}],
                 "notes": "",
                 "reminder": ""
-            },
-            "results": [
-                {
-                    "sets": [{"reps": 0, "weight": 0, "id": 0}],
-                    "notes": "",
-                    "reminder": "",
-                    "date": 1690308275631
-                }
-            ]
+            }
         },
         {
             "id": 55,
@@ -1212,15 +772,7 @@ export const userEx = {
                 "sets": [{"reps": 0, "weight": 0, "id": 0}],
                 "notes": "",
                 "reminder": ""
-            },
-            "results": [
-                {
-                    "sets": [{"reps": 0, "weight": 0, "id": 0}],
-                    "notes": "",
-                    "reminder": "",
-                    "date": 1690308275631
-                }
-            ]
+            }
         },
         {
             "id": 56,
@@ -1233,15 +785,7 @@ export const userEx = {
                 "sets": [{"reps": 0, "weight": 0, "id": 0}],
                 "notes": "",
                 "reminder": ""
-            },
-            "results": [
-                {
-                    "sets": [{"reps": 0, "weight": 0, "id": 0}],
-                    "notes": "",
-                    "reminder": "",
-                    "date": 1690308275631
-                }
-            ]
+            }
         },
         {
             "id": 57,
@@ -1254,15 +798,7 @@ export const userEx = {
                 "sets": [{"reps": 0, "weight": 0, "id": 0}],
                 "notes": "",
                 "reminder": ""
-            },
-            "results": [
-                {
-                    "sets": [{"reps": 0, "weight": 0, "id": 0}],
-                    "notes": "",
-                    "reminder": "",
-                    "date": 1690308275631
-                }
-            ]
+            }
         },
         {
             "id": 58,
@@ -1275,15 +811,7 @@ export const userEx = {
                 "sets": [{"reps": 0, "weight": 0, "id": 0}],
                 "notes": "",
                 "reminder": ""
-            },
-            "results": [
-                {
-                    "sets": [{"reps": 0, "weight": 0, "id": 0}],
-                    "notes": "",
-                    "reminder": "",
-                    "date": 1690308275631
-                }
-            ]
+            }
         },
         {
             "id": 59,
@@ -1296,15 +824,7 @@ export const userEx = {
                 "sets": [{"reps": 0, "weight": 0, "id": 0}],
                 "notes": "",
                 "reminder": ""
-            },
-            "results": [
-                {
-                    "sets": [{"reps": 0, "weight": 0, "id": 0}],
-                    "notes": "",
-                    "reminder": "",
-                    "date": 1690308275631
-                }
-            ]
+            }
         }
     ]
 }
@@ -1367,7 +887,7 @@ export const userWork = {
     "currentDay": 0,
     "record": [
         {
-            "name": "Push Day",
+            "title": "",
             "results": [
                 {
                     "sets": [
@@ -1385,7 +905,7 @@ export const userWork = {
         }
     ],
     "inProgress": {
-        "name": "Push Day",
+        "title": "",
         "results": [
             {
                 "sets": [

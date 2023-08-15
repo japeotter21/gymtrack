@@ -18,6 +18,7 @@ export default function Stats() {
     const [data, setData] = useState(null)
     const [results, setResults] = useState([])
     const [yMax, setYMax] = useState(200)
+    const [choice, setChoice] = useState('')
     const maxPercent = [0, 1, 0.95, 0.93, 0.9, 0.87, 0.85, 0.83, 0.8, 0.77, 0.75, 0.7, 0.67, 0.65]
     const {activeUser} = useContext(AppContext)
 
@@ -44,12 +45,12 @@ export default function Stats() {
         {
             let labelsTemp = []
             let weightsTemp = []
-            current.results.forEach((item,id)=>{
-                const dateObj = new Date(item.date)
+            current.forEach((item,id)=>{
+                const dateObj = new Date(parseInt(item.date))
                 const month = dateObj.getMonth() +1
                 labelsTemp.push(month+'-'+dateObj.getDate())
                 let maxWeightArr = []
-                item.sets.forEach((set,index)=>{
+                item.results.sets.forEach((set,index)=>{
                     if(set.reps < 1)
                     {
                         maxWeightArr.push(0)
@@ -84,6 +85,16 @@ export default function Stats() {
     },[current])
 
     useEffect(()=>{
+        if(choice !== '')
+        {
+            axios.get('/api/exerciseHistory', { params: { user: activeUser, name: results[choice].name } })
+            .then(res=>{
+              setCurrent(res.data)
+            })
+        }
+    },[choice])
+
+    useEffect(()=>{
         if(labelData.length > 0 && chartData.length > 0)
         {
             let dataTemp = []
@@ -103,7 +114,7 @@ export default function Stats() {
     },[chartData,labelData])
 
     function ChartExercise(e) {
-        setCurrent(results[e.target.value])
+        setChoice(e.target.value)
     }
 
     return (
@@ -169,11 +180,11 @@ export default function Stats() {
                                 <p className='col-span-1 text-gray-400 text-sm'>Date</p>
                                 <p className='col-span-4 text-gray-400 text-sm'>Results</p>
                             </div>
-                            { current.results.slice(0).reverse().map((item,id)=>
+                            { current.map((item,id)=>
                                 <div key={id} className='grid grid-cols-5 items-center'>
-                                    <p className='col-span-1 text-sm'>{new Date(item.date).getMonth()+1}-{new Date(item.date).getDate()}</p>
+                                    <p className='col-span-1 text-sm'>{new Date(parseInt(item.date)).getMonth()+1}-{new Date(parseInt(item.date)).getDate()}</p>
                                     <div className='flex gap-3 text-sm col-span-4'>
-                                    { item.sets.map((set,index)=>
+                                    { item.results.sets.map((set,index)=>
                                         <p key={index}>{set.weight}x{set.reps}</p>
                                     )}
                                     </div>

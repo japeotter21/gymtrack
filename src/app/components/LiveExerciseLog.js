@@ -17,7 +17,7 @@ export default function LiveExerciseLog({complete, lift, id, setComplete, curren
         {
             if(complete.length > 0 )
             {
-                complete[id].name !== "" ? setCompleted(true) : setCompleted(false)
+                complete[id].rpe > 0 ? setCompleted(true) : setCompleted(false)
             }
             else
             {
@@ -32,10 +32,7 @@ export default function LiveExerciseLog({complete, lift, id, setComplete, curren
         const exerciseIndex = e.target.id.split('-')[1]
         const currentExercise = exercises[exerciseIndex]
         const postLength = currentExercise.target.sets.length
-        //needed to edit results after saving
-        const lastIndex = exercises[lift].results.length-1
-        console.log(lastIndex)
-        const formLength = !completed ? currentExercise.target.sets : currentExercise.results[lastIndex].sets
+        const formLength = !completed ? currentExercise.target.sets : complete[id].sets
         const extraLength = addSet.length
         const extraFormLength = addSet.flat()
         let postArr = []
@@ -65,22 +62,20 @@ export default function LiveExerciseLog({complete, lift, id, setComplete, curren
         }
         if(completed && editing)
         {
-            axios.put('/api/exercise',postObj,{ params: { workout:currentWorkoutIndex, log:1, exercise: exerciseIndex, user: username, index:lastIndex}})
+            axios.put('/api/history',resultObj,{ params: { user: username, index: id }})
             .then(res=>{
                 axios.get('/api/workouts',{ params: {user: username}})
                 .then(r=>{
                     setFinishObj(r.data.inProgress)
+                    setComplete(r.data.inProgress.results)
                     setEditing(false)
                     setAddSet([])
                 })
             }) 
-            axios.put('/api/history',resultObj,{ params: { user: username, index: id }})
-            .then(res=>{
-            }) 
         }
         else
         {
-            axios.post('/api/exercise',postObj,{ params: { workout:currentWorkoutIndex, log:1, exercise: exerciseIndex, user: username}})
+            axios.put('/api/history',resultObj,{ params: { user: username, index: id }})
             .then(res=>{
                 axios.get('/api/workouts',{ params: {user: username}})
                 .then(r=>{
@@ -89,9 +84,6 @@ export default function LiveExerciseLog({complete, lift, id, setComplete, curren
                     setAddSet([])
                     setFinishObj(r.data.inProgress)
                 })
-            })
-            axios.put('/api/history',resultObj,{ params: { user: username, index: id }})
-            .then(res=>{
             }) 
         }
     }
@@ -138,7 +130,7 @@ export default function LiveExerciseLog({complete, lift, id, setComplete, curren
             <></>
         )
     }
-
+    console.log(completed)
     return (
         <div className={`w-5/6 lg:w-1/2 flex-col gap-3 items-center border border-gray-300 rounded-lg ${completed && !editing ? 'bg-neutral-200' : 'bg-stone-50'} px-4 py-1 shadow-md`} key={id}>
             <p className='text-lg font-semibold text-center'>{exercises[lift].name}</p>

@@ -11,6 +11,7 @@ export default function PostExercise({username, currentWorkoutIndex, currentWork
     const [addNew, setAddNew] = useState(false)
     const [addedNew, setAddedNew] = useState(false)
     const [attributes, setAttributes] = useState([])
+    const [newName, setNewName] = useState('')
     const muscleGroups = ['Chest', 'Shoulders', 'Triceps', 'Back', 'Biceps', 'Legs', 'Accessory']
 
     useEffect(()=>{
@@ -104,12 +105,16 @@ export default function PostExercise({username, currentWorkoutIndex, currentWork
                         setChoice('')
                         setLoading(false)
                         setAddNew(false)
+                        setNewName('')
+                        setAttributes([])
                         setAddedNew(false)
                     })
                     .catch(err=>{
                         setChoice('')
                         setLoading(false)
                         setAddNew(false)
+                        setNewName('')
+                        setAttributes([])
                         setAddedNew(false)
                     })
                 })
@@ -117,10 +122,9 @@ export default function PostExercise({username, currentWorkoutIndex, currentWork
         }
     },[choice])
 
-    function AddNewExercise(e) {
-        e.preventDefault()
+    function AddNewExercise() {
         const postObj = {
-            name: e.target[0].value,
+            name: newName,
             attributes: attributes,
             id: exercises.length,
             target: targetObj
@@ -181,12 +185,12 @@ export default function PostExercise({username, currentWorkoutIndex, currentWork
             <Dialog open={addNew} onClose={()=>setAddNew(false)}>
                 <div className='px-4 py-3'>
                     <p className='font-semibold mb-2'>Add Custom Exercise</p>
-                    <form onSubmit={(e)=>AddNewExercise(e)} className='grid grid-cols-3 gap-4 items-center'>
+                    <div className='grid grid-cols-3 gap-4 items-center'>
                         <p className='text-sm'>Name</p>
-                        <input id="name" name="name" className='col-span-2 px-2 py-1 border border-neutral-300 rounded-md' required/>
+                        <input value={newName} onChange={(e)=>setNewName(e.target.value)} className='col-span-2 px-2 py-1 border border-neutral-300 rounded-md' required/>
                         <p className='text-sm col-span-3'>Muscle Group(s)</p>
                         <div className='col-span-3 flex gap-1 flex-wrap'>
-                            {['Chest','Shoulder','Tricep','Back','Bicep','Legs','Mobility'].map((item,id)=>
+                            {['chest','shoulder','tricep','back','bicep','legs','mobility'].map((item,id)=>
                                 attributes.includes(item) ?
                                 <button onClick={()=>RemoveAttribute(id)} type="button"
                                     className='rounded-full bg-blue-500 text-gray-200 px-2 py-1 shadow-md'
@@ -207,20 +211,20 @@ export default function PostExercise({username, currentWorkoutIndex, currentWork
                         </div>
                         {attributes.length < 1 ? <p className='text-xs text-red-500 col-span-3 text-center'>Please select at least 1 muscle group</p> : <></>}
                         {/* <p className='text-sm'>Compound/Accessory</p> */}
-                        <button type="submit" disabled={addedNew || attributes.length < 1}
+                        <button type="button" disabled={addedNew || attributes.length < 1} onClick={AddNewExercise}
                             className={`block mx-auto mb-2 col-span-3 w-max ${addedNew || attributes.length < 1 ? 'bg-gray-300' : 'bg-green-600'} px-3 py-1.5 rounded-md shadow-md text-white`}
                         >
                             Create Custom Exercise
                         </button>
-                    </form>
+                    </div>
                     { addedNew ?
                         <div className='w-1/2 mx-auto text-center'>
                                 <p>New Exercise Added!</p>
                                 <p className='text-sm'>Add to this workout?</p>
                             <div className='flex justify-between'>
-                                <button className='px-3 py-1 rounded-md shadow-md border border-neutral-300' onClick={()=>{setAddNew(false);setAddedNew(false)}}
+                                <button type="button" className='px-3 py-1 rounded-md shadow-md border border-neutral-300' onClick={()=>{setAddNew(false);setAddedNew(false)}}
                                 >No</button>
-                                <button className='px-3 py-1 rounded-md shadow-md bg-green-600 text-white' onClick={()=>setChoice(exercises.length-1)}
+                                <button type="button" className='px-3 py-1 rounded-md shadow-md bg-green-600 text-white' onClick={()=>setChoice(exercises.length-1)}
                                 >Yes</button>
                             </div>
                         </div>

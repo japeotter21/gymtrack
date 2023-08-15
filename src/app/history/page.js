@@ -51,18 +51,21 @@ export default function Schedule() {
         <main className="flex min-h-screen flex-col items-center py-6 lg:pt-12 px-2 lg:p-12 gap-4">
             { workouts.map((item,id)=>
                 <div className='shadow-md bg-stone-50 rounded-md w-3/4 p-2' key={id}>
-                    <p className='font-semibold px-2 mb-1'>{item.name}</p>
-                    <div className='border border-neutral-200 rounded-md p-2'>
+                    <div className='flex justify-between items-center px-1 mb-1'>
+                        <p className='font-semibold'>{item.title}</p>
+                        <p className='text-sm'>{new Date(parseInt(item.date)).toDateString()}</p>
+                    </div>
+                    <div>
                         { item.results.map((ex,ind)=>
-                            ex.name !== "" ?
-                            <div key={`${id}-${ind}`}>
-                                <p>{ex.name}</p>
-                                <hr className='my-2' />
+                            ex.rpe > 0 ?
+                            <div className='border border-neutral-200 border-b-0 rounded-sm' key={`${id}-${ind}`}>
+                                <p className='text-sm font-semibold p-1 bg-slate-100'>{ex.name}</p>
+                                <hr className='mb-2' />
+                                <div className='flex divide-x divide-gray-400'>
                                 {ex.sets.map((set,index)=>
-                                    <div className='flex' key={`${id}-${ind}-${index}`}>
-                                        <p className='text-sm'>{set.weight}&nbsp;x&nbsp;{set.reps}</p>
-                                    </div>
+                                    <p className='text-sm px-2 pb-1' key={`${id}-${ind}-${index}`}>{set.weight}&nbsp;x&nbsp;{set.reps}</p>
                                 )}
+                                </div>
                             </div>    
                             :
                             <></>

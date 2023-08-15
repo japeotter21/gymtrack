@@ -1,5 +1,6 @@
 ## Workout/Progress Tracking
 App for tracking workout attendance and progress, emphasis on mobile layout
+React/Nextjs/GraphQL/MongoDB
 
 Core Features:
 - Choose exercises to perform and select weight/rep range
