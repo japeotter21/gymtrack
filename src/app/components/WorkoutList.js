@@ -204,7 +204,7 @@ export default function WorkoutList({exercises, setExercises, currentWorkout, se
                         )}
                         </Droppable>
                         <PostExercise currentWorkout={workouts[day]} currentWorkoutIndex={day} setCurrentWorkout={setCurrentWorkout} setCurrentProgram={setCurrentProgram}
-                            username={activeUser} exercises={exercises} setPrograms={setPrograms} setWorkouts={setWorkouts} homepage={false}
+                            username={activeUser} exercises={exercises} setPrograms={setPrograms} setWorkouts={setWorkouts} homepage={false} setExercises={setExercises}
                         />
                     </div>
             </form>

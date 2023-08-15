@@ -2,12 +2,15 @@ import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import { BsTrash } from 'react-icons/bs'
 import { Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material'
+import { targetObj } from '@/globals'
 
-export default function PostExercise({username, currentWorkoutIndex, currentWorkout, setCurrentWorkout, exercises, homepage, setWorkouts, setPrograms, setCurrentProgram, setCurrentWorkoutIndex}) {
+export default function PostExercise({username, currentWorkoutIndex, currentWorkout, setCurrentWorkout, exercises, setExercises, homepage, setWorkouts, setPrograms, setCurrentProgram, setCurrentWorkoutIndex}) {
     const [loading, setLoading] = useState(false)
     const [groupedEx, setGroupedEx] = useState([])
     const [choice, setChoice] = useState('')
     const [addNew, setAddNew] = useState(false)
+    const [addedNew, setAddedNew] = useState(false)
+    const [attributes, setAttributes] = useState([])
     const muscleGroups = ['Chest', 'Shoulders', 'Triceps', 'Back', 'Biceps', 'Legs', 'Accessory']
 
     useEffect(()=>{
@@ -100,10 +103,14 @@ export default function PostExercise({username, currentWorkoutIndex, currentWork
                         }
                         setChoice('')
                         setLoading(false)
+                        setAddNew(false)
+                        setAddedNew(false)
                     })
                     .catch(err=>{
                         setChoice('')
                         setLoading(false)
+                        setAddNew(false)
+                        setAddedNew(false)
                     })
                 })
             }
@@ -112,8 +119,38 @@ export default function PostExercise({username, currentWorkoutIndex, currentWork
 
     function AddNewExercise(e) {
         e.preventDefault()
-
+        const postObj = {
+            name: e.target[0].value,
+            attributes: attributes,
+            id: exercises.length,
+            target: targetObj
+        }
+        axios.post('api/exerciseList',postObj,{params: {user: username} })
+        .then(res=>{
+            axios.get('/api/exercise',{ params: { user:username }})
+            .then(r=>{
+                setExercises(r.data.exercises)
+                setAddedNew(true)
+            })
+        })
     }   
+
+    function AddAttribute(value) {
+        setAttributes([...attributes,value])
+    }
+
+    function RemoveAttribute(index) {
+        const arrTemp = [...attributes]
+        if(arrTemp.length <= 1)
+        {
+            setAttributes([])
+        }
+        else
+        {
+            arrTemp.splice(index,1)
+            setAttributes(arrTemp)
+        }
+    }
 
     return(
         <div className='grid grid-cols-3 lg:flex lg:justify-between rounded-md px-3 py-2 items-center bg-neutral-200 bg-opacity-80'>
@@ -143,19 +180,53 @@ export default function PostExercise({username, currentWorkoutIndex, currentWork
             }
             <Dialog open={addNew} onClose={()=>setAddNew(false)}>
                 <div className='px-4 py-3'>
-                    <p className='font-semibold'>Add Custom Exercise</p>
-                    <form onSubmit={(e)=>AddNewExercise(e)} className='grid grid-cols-2 gap-4 items-center'>
+                    <p className='font-semibold mb-2'>Add Custom Exercise</p>
+                    <form onSubmit={(e)=>AddNewExercise(e)} className='grid grid-cols-3 gap-4 items-center'>
                         <p className='text-sm'>Name</p>
-                        <input id="name" name="name" className='px-2 py-1 border border-neutral-300 rounded-md'/>
-                        <p className='text-sm'>Muscle Group(s)</p>
-                        <input id="name" name="name" className='px-2 py-1 border border-neutral-300 rounded-md'/>
+                        <input id="name" name="name" className='col-span-2 px-2 py-1 border border-neutral-300 rounded-md' required/>
+                        <p className='text-sm col-span-3'>Muscle Group(s)</p>
+                        <div className='col-span-3 flex gap-1 flex-wrap'>
+                            {['Chest','Shoulder','Tricep','Back','Bicep','Legs','Mobility'].map((item,id)=>
+                                attributes.includes(item) ?
+                                <button onClick={()=>RemoveAttribute(id)} type="button"
+                                    className='rounded-full bg-blue-500 text-gray-200 px-2 py-1 shadow-md'
+                                    key={id}
+                                    value={item}
+                                >
+                                    {item}
+                                </button>
+                                :
+                                <button onClick={()=>AddAttribute(item)} type="button"
+                                    className='rounded-full bg-gray-100 px-2 py-1 shadow-md'
+                                    key={id}
+                                    value={item}
+                                >
+                                    {item}
+                                </button>
+                            )}
+                        </div>
+                        {attributes.length < 1 ? <p className='text-xs text-red-500 col-span-3 text-center'>Please select at least 1 muscle group</p> : <></>}
                         {/* <p className='text-sm'>Compound/Accessory</p> */}
-                        <button type="submit"
-                            className='block ml-auto col-span-2 w-max bg-green-600 px-3 py-1.5 rounded-md shadow-md text-white'
+                        <button type="submit" disabled={addedNew || attributes.length < 1}
+                            className={`block mx-auto mb-2 col-span-3 w-max ${addedNew || attributes.length < 1 ? 'bg-gray-300' : 'bg-green-600'} px-3 py-1.5 rounded-md shadow-md text-white`}
                         >
                             Create Custom Exercise
                         </button>
                     </form>
+                    { addedNew ?
+                        <div className='w-1/2 mx-auto text-center'>
+                                <p>New Exercise Added!</p>
+                                <p className='text-sm'>Add to this workout?</p>
+                            <div className='flex justify-between'>
+                                <button className='px-3 py-1 rounded-md shadow-md border border-neutral-300' onClick={()=>{setAddNew(false);setAddedNew(false)}}
+                                >No</button>
+                                <button className='px-3 py-1 rounded-md shadow-md bg-green-600 text-white' onClick={()=>setChoice(exercises.length-1)}
+                                >Yes</button>
+                            </div>
+                        </div>
+                        :
+                        <></>
+                    }
                 </div>
             </Dialog>
         </div>

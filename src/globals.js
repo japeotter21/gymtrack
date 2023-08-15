@@ -8,6 +8,12 @@ export const inProgressObj = {
     sets: [{reps: 0, weight:0}]
   }
 
+export const targetObj = {
+    notes: "",
+    reminder: "",
+    sets: [{reps: 0, weight:0}]
+  }
+
 export const userProfile = {
     "key": "profile",
     "profile": {

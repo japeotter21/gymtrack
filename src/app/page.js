@@ -274,7 +274,7 @@ export default function Home() {
               </Droppable>
             </DragDropContext>
             <PostExercise currentWorkout={currentWorkout} currentWorkoutIndex={currentWorkoutIndex} setCurrentWorkout={setCurrentWorkout}
-              username={activeUser} exercises={exercises} homepage={true} setCurrentWorkoutIndex={setCurrentWorkoutIndex}
+              username={activeUser} exercises={exercises} homepage={true} setCurrentWorkoutIndex={setCurrentWorkoutIndex} setExercises={setExercises}
             />
         </div>
         { currentWorkout ?
