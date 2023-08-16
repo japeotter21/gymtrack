@@ -18,13 +18,14 @@ To Do:
 <p>✅ Create and edit workouts</p>
 <p>✅ Show workout history</p>
 <p>✅ Create and ✅ edit programs</p>
-<p>⬜ Configure progression to set target weights</p>
 <p>✅ User flow and auth
   ✅ User associated data
 </p>
 <p>✅ Add exercises and assign attributes (back/pull/etc.)</p>
-<p>⬜ AI workout progressions, plans and exercise recommendations</p>
+<p>⬜ Create workout routine templates</p>
 <p>⬜ duration tracking of exercises and workouts</p>
+<p>⬜ Configure progression to set target weights</p>
+<p>⬜ AI workout progressions, plans and exercise recommendations</p>
 </p>
 
 Future: 

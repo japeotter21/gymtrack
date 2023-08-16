@@ -20,7 +20,7 @@ export default function PostExercise({username, currentWorkoutIndex, currentWork
             const grouped = Array.from({length: muscleGroups.length},i=>[])
             const filteredTemp = [...exercises]
             filteredTemp.forEach((item,id)=>{
-                const key = item.attributes[0]
+                const key = item.attributes[0].toLowerCase()
                 switch(key) {
                     case ('chest'):
                         grouped[0].push({name:item.name, id: id})
@@ -39,6 +39,9 @@ export default function PostExercise({username, currentWorkoutIndex, currentWork
                         break
                     case ('tricep'):
                         grouped[2].push({name:item.name, id: id})
+                        break
+                    case ('back'):
+                        grouped[3].push({name:item.name, id: id})
                         break
                     case ('lat'):
                         grouped[3].push({name:item.name, id: id})
@@ -190,7 +193,7 @@ export default function PostExercise({username, currentWorkoutIndex, currentWork
                         <input value={newName} onChange={(e)=>setNewName(e.target.value)} className='col-span-2 px-2 py-1 border border-neutral-300 rounded-md' required/>
                         <p className='text-sm col-span-3'>Muscle Group(s)</p>
                         <div className='col-span-3 flex gap-1 flex-wrap'>
-                            {['chest','shoulder','tricep','back','bicep','legs','mobility'].map((item,id)=>
+                            {['Chest','Shoulder','Tricep','Back','Bicep','Legs','Mobility'].map((item,id)=>
                                 attributes.includes(item) ?
                                 <button onClick={()=>RemoveAttribute(id)} type="button"
                                     className='rounded-full bg-blue-500 text-gray-200 px-2 py-1 shadow-md'

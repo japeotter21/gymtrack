@@ -208,7 +208,7 @@ export default function Workouts() {
                     <form id='newProgram' onSubmit={(e)=>AddProgram(e)} className='w-full flex flex-col items-center gap-2'>
                         <input id="name" name="name" type="text" placeholder='Name' className='border border-gray-400 rounded-md p-1'
                         />
-                        <input id="description" name="description" type="text" placeholder='Description' className='border border-gray-400 rounded-md p-1'
+                        <textarea id="description" name="description" type="text" placeholder='Description' className='w-full border border-gray-400 rounded-md p-1'
                         />
                         <p className='text-xs'>Choose from Template</p>
                         <select disabled id="template" name="template" className='border border-gray-400 rounded-md p-1'>

@@ -11,27 +11,26 @@ import { redirect } from 'next/navigation'
 
 export default function Schedule() {
     const [loading, setLoading] = useState(true)
-    const [current, setCurrent] = useState(null)
-    const [programs, setPrograms] = useState([])
     const [workouts, setWorkouts] = useState([])
+    const [filter,setFilter] = useState('All')
+    const [titles, setTitles] = useState([])
     const {activeUser} = useContext(AppContext)
 
     useEffect(()=>{
         if (activeUser)
         {
-            axios.get('/api/workouts',{params:{user:activeUser}})
-            .then(res=>{
-            setLoading(false)
-            setPrograms(res.data.programs)
-            const currentIndex = res.data.currentProgram
-            setCurrent(res.data.programs[currentIndex])
-            })
-            .catch(err=>{
-            console.error(err.message)
-            })
             axios.post('api/history',null,{params:{user:activeUser}})
             .then(res=>{
-                setWorkouts(res.data)
+                const resTemp = res.data
+                const temptitles = []
+                resTemp.forEach((item,id)=>temptitles.push(item.title))
+                const titleArr = [...new Set(temptitles)]
+                setTitles(titleArr)
+                setWorkouts(resTemp.reverse())
+                setLoading(false)
+            })
+            .catch(err=>{
+                console.error(err.message)
             })
         }
         else
@@ -49,16 +48,23 @@ export default function Schedule() {
 
     return (
         <main className="flex min-h-screen flex-col items-center py-6 lg:pt-12 px-2 lg:p-12 gap-4">
+            <select value={filter} onChange={(e)=>setFilter(e.target.value)}>
+                <option value="All">All</option>
+                {titles.map((item,id)=>
+                    <option value={item} key={id}>{item}</option>
+                )}
+            </select>
             { workouts.map((item,id)=>
-                <div className='shadow-md bg-stone-50 rounded-md w-3/4 p-2' key={id}>
+                filter === 'All' || item.title === filter ?
+                <div className='shadow-md bg-stone-50 rounded-md w-full p-2' key={id}>
                     <div className='flex justify-between items-center px-1 mb-1'>
                         <p className='font-semibold'>{item.title}</p>
                         <p className='text-sm'>{new Date(parseInt(item.date)).toDateString()}</p>
                     </div>
-                    <div>
+                    <div className='border border-neutral-200 border-b-0 rounded-sm'>
                         { item.results.map((ex,ind)=>
                             ex.rpe > 0 ?
-                            <div className='border border-neutral-200 border-b-0 rounded-sm' key={`${id}-${ind}`}>
+                            <div key={`${id}-${ind}`}>
                                 <p className='text-sm font-semibold p-1 bg-slate-100'>{ex.name}</p>
                                 <hr className='mb-2' />
                                 <div className='flex divide-x divide-gray-400'>
@@ -72,6 +78,8 @@ export default function Schedule() {
                         )}
                     </div>
                 </div>
+                :
+                <></>
             )}
             <Pagenav page='history' />
         </main>
