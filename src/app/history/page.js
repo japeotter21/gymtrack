@@ -54,33 +54,35 @@ export default function Schedule() {
                     <option value={item} key={id}>{item}</option>
                 )}
             </select>
-            { workouts.map((item,id)=>
-                filter === 'All' || item.title === filter ?
-                <div className='shadow-md bg-stone-50 rounded-md w-full p-2' key={id}>
-                    <div className='flex justify-between items-center px-1 mb-1'>
-                        <p className='font-semibold'>{item.title}</p>
-                        <p className='text-sm'>{new Date(parseInt(item.date)).toDateString()}</p>
+            <div className='max-h-[70vh] overflow-y-auto w-11/12'>
+                { workouts.map((item,id)=>
+                    filter === 'All' || item.title === filter ?
+                    <div className='shadow-md bg-stone-50 rounded-md w-full p-2 my-2' key={id}>
+                        <div className='flex justify-between items-center px-1 mb-1'>
+                            <p className='font-semibold'>{item.title}</p>
+                            <p className='text-sm'>{new Date(parseInt(item.date)).toDateString()}</p>
+                        </div>
+                        <div className='border border-neutral-200 border-b-0 rounded-sm'>
+                            { item.results.map((ex,ind)=>
+                                ex.rpe > 0 ?
+                                <div key={`${id}-${ind}`}>
+                                    <p className='text-sm font-semibold p-1 bg-slate-100'>{ex.name}</p>
+                                    <hr className='mb-2' />
+                                    <div className='flex divide-x divide-gray-400'>
+                                    {ex.sets.map((set,index)=>
+                                        <p className='text-sm px-2 pb-1' key={`${id}-${ind}-${index}`}>{set.weight}&nbsp;x&nbsp;{set.reps}</p>
+                                    )}
+                                    </div>
+                                </div>    
+                                :
+                                <></>
+                            )}
+                        </div>
                     </div>
-                    <div className='border border-neutral-200 border-b-0 rounded-sm'>
-                        { item.results.map((ex,ind)=>
-                            ex.rpe > 0 ?
-                            <div key={`${id}-${ind}`}>
-                                <p className='text-sm font-semibold p-1 bg-slate-100'>{ex.name}</p>
-                                <hr className='mb-2' />
-                                <div className='flex divide-x divide-gray-400'>
-                                {ex.sets.map((set,index)=>
-                                    <p className='text-sm px-2 pb-1' key={`${id}-${ind}-${index}`}>{set.weight}&nbsp;x&nbsp;{set.reps}</p>
-                                )}
-                                </div>
-                            </div>    
-                            :
-                            <></>
-                        )}
-                    </div>
-                </div>
-                :
-                <></>
-            )}
+                    :
+                    <></>
+                )}
+            </div>
             <Pagenav page='history' />
         </main>
     )

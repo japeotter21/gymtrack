@@ -3,6 +3,7 @@ import axios from 'axios'
 import { BsTrash } from 'react-icons/bs'
 import { Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material'
 import { targetObj } from '@/globals'
+import DialogButton from './DialogButton'
 
 export default function PostExercise({username, currentWorkoutIndex, currentWorkout, setCurrentWorkout, exercises, setExercises, homepage, setWorkouts, setPrograms, setCurrentProgram, setCurrentWorkoutIndex}) {
     const [loading, setLoading] = useState(false)
@@ -10,6 +11,7 @@ export default function PostExercise({username, currentWorkoutIndex, currentWork
     const [choice, setChoice] = useState('')
     const [addNew, setAddNew] = useState(false)
     const [addedNew, setAddedNew] = useState(false)
+    const [addCustom, setAddCustom] = useState(false)
     const [attributes, setAttributes] = useState([])
     const [newName, setNewName] = useState('')
     const muscleGroups = ['Chest', 'Shoulders', 'Triceps', 'Back', 'Biceps', 'Legs', 'Accessory']
@@ -105,20 +107,10 @@ export default function PostExercise({username, currentWorkoutIndex, currentWork
                             setCurrentProgram(r.data.programs[currentIndex])
                             setWorkouts(r.data.workouts)
                         }
-                        setChoice('')
-                        setLoading(false)
-                        setAddNew(false)
-                        setNewName('')
-                        setAttributes([])
-                        setAddedNew(false)
+                        HandleClose()
                     })
                     .catch(err=>{
-                        setChoice('')
-                        setLoading(false)
-                        setAddNew(false)
-                        setNewName('')
-                        setAttributes([])
-                        setAddedNew(false)
+                        HandleClose()
                     })
                 })
             }
@@ -126,6 +118,7 @@ export default function PostExercise({username, currentWorkoutIndex, currentWork
     },[choice])
 
     function AddNewExercise() {
+        setAddCustom(true)
         const postObj = {
             name: newName,
             attributes: attributes,
@@ -138,6 +131,7 @@ export default function PostExercise({username, currentWorkoutIndex, currentWork
             .then(r=>{
                 setExercises(r.data.exercises)
                 setAddedNew(true)
+                setAddCustom(false)
             })
         })
     }   
@@ -146,7 +140,7 @@ export default function PostExercise({username, currentWorkoutIndex, currentWork
         setAttributes([...attributes,value])
     }
 
-    function RemoveAttribute(index) {
+    function RemoveAttribute(item) {
         const arrTemp = [...attributes]
         if(arrTemp.length <= 1)
         {
@@ -154,9 +148,20 @@ export default function PostExercise({username, currentWorkoutIndex, currentWork
         }
         else
         {
+            const index = arrTemp.findIndex((attr) => attr === item)
             arrTemp.splice(index,1)
             setAttributes(arrTemp)
         }
+    }
+
+    function HandleClose() {
+        setChoice('')
+        setLoading(false)
+        setAddNew(false)
+        setNewName('')
+        setAttributes([])
+        setAddedNew(false)
+        setAddCustom(false)
     }
 
     return(
@@ -185,7 +190,7 @@ export default function PostExercise({username, currentWorkoutIndex, currentWork
                 <div className="animate-pulse rounded-full bg-gray-200 h-4 w-full"></div>
             </>
             }
-            <Dialog open={addNew} onClose={()=>setAddNew(false)}>
+            <Dialog open={addNew} onClose={HandleClose}>
                 <div className='px-4 py-3'>
                     <p className='font-semibold mb-2'>Add Custom Exercise</p>
                     <div className='grid grid-cols-3 gap-4 items-center'>
@@ -194,17 +199,8 @@ export default function PostExercise({username, currentWorkoutIndex, currentWork
                         <p className='text-sm col-span-3'>Muscle Group(s)</p>
                         <div className='col-span-3 flex gap-1 flex-wrap'>
                             {['Chest','Shoulder','Tricep','Back','Bicep','Legs','Mobility'].map((item,id)=>
-                                attributes.includes(item) ?
-                                <button onClick={()=>RemoveAttribute(id)} type="button"
-                                    className='rounded-full bg-blue-500 text-gray-200 px-2 py-1 shadow-md'
-                                    key={id}
-                                    value={item}
-                                >
-                                    {item}
-                                </button>
-                                :
-                                <button onClick={()=>AddAttribute(item)} type="button"
-                                    className='rounded-full bg-gray-100 px-2 py-1 shadow-md'
+                                <button onClick={()=>attributes.includes(item) ? RemoveAttribute(item) : AddAttribute(item)} type="button"
+                                    className={`rounded-full ${attributes.includes(item) ? 'bg-blue-500 text-gray-100' : 'bg-gray-100'} px-2 py-1 shadow-md`}
                                     key={id}
                                     value={item}
                                 >
@@ -215,9 +211,10 @@ export default function PostExercise({username, currentWorkoutIndex, currentWork
                         {attributes.length < 1 ? <p className='text-xs text-red-500 col-span-3 text-center'>Please select at least 1 muscle group</p> : <></>}
                         {/* <p className='text-sm'>Compound/Accessory</p> */}
                         <button type="button" disabled={addedNew || attributes.length < 1} onClick={AddNewExercise}
-                            className={`block mx-auto mb-2 col-span-3 w-max ${addedNew || attributes.length < 1 ? 'bg-gray-300' : 'bg-green-600'} px-3 py-1.5 rounded-md shadow-md text-white`}
+                            className={`block mx-auto mb-2 col-span-3 w-max ${addCustom ? 'animate-pulse' : ''}
+                                ${addedNew || attributes.length < 1 ? 'bg-gray-300' : 'bg-green-600'} px-3 py-1.5 rounded-md shadow-md text-white`}
                         >
-                            Create Custom Exercise
+                           {addCustom ? 'Creating...' : 'Create Custom Exercise'}
                         </button>
                     </div>
                     { addedNew ?
@@ -225,10 +222,9 @@ export default function PostExercise({username, currentWorkoutIndex, currentWork
                                 <p>New Exercise Added!</p>
                                 <p className='text-sm'>Add to this workout?</p>
                             <div className='flex justify-between'>
-                                <button type="button" className='px-3 py-1 rounded-md shadow-md border border-neutral-300' onClick={()=>{setAddNew(false);setAddedNew(false)}}
+                                <button type="button" className='px-3 py-1 rounded-md shadow-md border border-neutral-300' onClick={HandleClose}
                                 >No</button>
-                                <button type="button" className='px-3 py-1 rounded-md shadow-md bg-green-600 text-white' onClick={()=>setChoice(exercises.length-1)}
-                                >Yes</button>
+                                <DialogButton text="Yes" type="button" loadingText="Adding..." loading={loading} action={()=>setChoice(exercises.length-1)} />
                             </div>
                         </div>
                         :
@@ -297,7 +293,7 @@ export function DeleteExercise ({item, id, currentWorkout, setCurrentWorkout, cu
                   <button className='border border-gray-400 py-1 px-3 rounded-xl hover:bg-red-100 hover:border-red-200 hover:text-red-500 hover:scale-105 transition duration-200'
                     onClick={()=>setDeleting(null)}
                   >Cancel</button>
-                  <button className='block shadow-md py-1 px-3 rounded-xl bg-red-600 hover:bg-opacity-80 text-white hover:scale-105 transition duration-200'
+                  <button className={`block shadow-md py-1 px-3 rounded-xl bg-red-600 hover:bg-opacity-80 text-white hover:scale-105 transition duration-200 ${loading ? 'animate-pulse' : ''}`}
                     onClick={HandleDelete}
                   >{loading ? <>Removing...</>: <>Remove</>}</button>
               </div>

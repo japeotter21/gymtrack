@@ -14,6 +14,9 @@ import { inProgressObj, repConstant, setConstant } from '@/globals'
 import AppContext from './AppContext'
 import { redirect, useRouter } from 'next/navigation'
 import { FinishWorkout } from '@/services/services'
+import LiveButton from './components/LiveButton'
+import StartButton from './components/StartButton'
+import DialogButton from './components/DialogButton'
 
 export default function Home() {
   const [day, setDay] = useState(0)
@@ -33,6 +36,8 @@ export default function Home() {
   const [updating, setUpdating] = useState(false)
   const [changeDay, setChangeDay] = useState(false)
   const [inProgress, setInProgress] = useState(null)
+  const [starting, setStarting] = useState(false)
+
   const {activeUser} = useContext(AppContext)
   const router = useRouter()
   useEffect(()=>{
@@ -147,8 +152,9 @@ export default function Home() {
       })
   }
 
-  function UpdateCurrentDay() {
-    const postObj = {newDay: currentDay}
+  function UpdateCurrentDay(newDay) {
+    setUpdating(true)
+    const postObj = {newDay: newDay}
     const resultsLength = Array.from({length:currentWorkout.exercises.length},x=>inProgressObj)
     axios.post('api/start',resultsLength,{params: {user:activeUser, name:currentWorkout.name}})
     axios.put('/api/workouts', postObj, { params: {user:activeUser}})
@@ -161,6 +167,7 @@ export default function Home() {
             setCurrentDay(dayIndex)
             setCurrentWorkout(res.data.workouts[workoutIndex])
             setChangeDay(false)
+            setUpdating(false)
         })
     })
   }
@@ -196,6 +203,7 @@ export default function Home() {
   })
 
   function StartWorkout() {
+      setStarting(true)
       router.prefetch('workout')
       if(inProgress)
       {
@@ -220,7 +228,6 @@ export default function Home() {
   
   return (
     <main className="flex min-h-screen flex-col items-center py-6 px-2 gap-1">
-      
       <div className='w-full lg:w-1/2 flex-col gap-2 items-center'>
         <div className='flex items-baseline'>
           <p className='text-gray-600 text-lg my-2'>Today's Workout:&nbsp;</p>
@@ -279,17 +286,9 @@ export default function Home() {
         </div>
         { currentWorkout ?
             currentWorkout.exercises.length > 0 ?
-                <button onClick={StartWorkout}
-                  className='w-full lg:w-[10vw] shadow-md py-3 my-4 lg:my-2 mx-auto lg:ml-auto lg:mr-0 block px-5 rounded-full bg-green-600 lg:hover:bg-opacity-80
-                    text-white lg:hover:scale-105 transition duration-300'
-                  
-                >Start Workout</button>    
+              <StartButton text={'Start Workout'} loading={starting} loadingText={'Starting Workout...'} action={StartWorkout} />
             :
-              <button onClick={CompleteWorkout}
-                className='w-full lg:w-[10vw] shadow-md py-3 my-4 lg:my-2 mx-auto lg:ml-auto lg:mr-0 block px-5 rounded-full bg-green-600 lg:hover:bg-opacity-80
-                  text-white lg:hover:scale-105 transition duration-300'
-                
-              >Complete Workout</button>  
+              <StartButton text={'Complete Workout'} loading={starting} loadingText={'Completing Workout...'} action={CompleteWorkout} />
           :
           <></>
         }
@@ -328,16 +327,7 @@ export default function Home() {
               <button className='border border-gray-400 py-1 px-3 rounded-xl hover:bg-red-100 hover:border-red-200 hover:text-red-500 hover:scale-105 transition duration-200'
                 onClick={HandleClose}
               >Cancel</button>
-              { updating ? 
-                <button className='block shadow-md py-1 px-3 rounded-xl bg-green-700 bg-opacity-60 text-gray-200 hover:scale-105 transition duration-200'
-                  disabled
-                >Updating...</button>
-              :
-                <button className='block shadow-md py-1 px-3 rounded-xl bg-green-700 hover:bg-opacity-80 text-white hover:scale-105 transition duration-200'
-                  onClick={HandleEdit}
-                >Update</button>
-              }
-              
+              <DialogButton disabled={updating} loading={updating} action={HandleEdit} text={'Update'} loadingText={'Updating...'} type="button"/>
           </div>
         </Dialog>
         :
@@ -349,7 +339,7 @@ export default function Home() {
             { currentProgram && workouts.length > 0 ? 
               <>
                 <p>Name</p>
-                <select value={currentDay} className='text-md border rounded-lg w-full py-1 px-2' onChange={(e)=>setCurrentDay(e.target.value)}>
+                <select defaultValue={currentDay} className='text-md border rounded-lg w-full py-1 px-2' onChange={(e)=>UpdateCurrentDay(e.target.value)}>
                     { currentProgram.schedule.map((index,i)=>
                         <option key={i} value={i}>{workouts[index].name}</option>
                     )}
@@ -362,17 +352,7 @@ export default function Home() {
             <button className='shadow-md border border-neutral-500 rounded-md py-1 px-3'
               onClick={()=>setChangeDay(false)}
             >Cancel</button>
-            { updating ?
-              <button disabled className='shadow-md bg-green-600 text-white rounded-md py-1 px-4'
-              >Saving...
-              </button>
-            :
-              <button className='shadow-md bg-green-600 text-white rounded-md py-1 px-4'
-                onClick={UpdateCurrentDay}
-              >Save
-              </button>
-            }
-            
+            <DialogButton disabled={updating} loading={updating} action={UpdateCurrentDay} text={'Save'} loadingText={'Saving...'} type="button"/>
           </div>
         </div>
       </Dialog>

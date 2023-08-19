@@ -91,7 +91,7 @@ export default function Workout() {
         FinishWorkout(dayNum, activeUser, false, finishObj)
         .then(r=>{
             console.log('done')
-            router.push('/')
+            router.push('/history')
         })
     }
 

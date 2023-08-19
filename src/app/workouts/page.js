@@ -7,6 +7,7 @@ import { Checkbox, Dialog } from '@mui/material'
 import WorkoutList from '../components/WorkoutList'
 import AppContext from '../AppContext'
 import { redirect } from 'next/navigation'
+import DialogButton from '../components/DialogButton'
 
 export default function Workouts() {
     const [profile, setProfile] = useState(null)
@@ -20,6 +21,7 @@ export default function Workouts() {
     const [addingWorkout, setAddingWorkout] = useState(false)
     const [workoutName, setWorkoutName] = useState('')
     const [newProgram, setNewProgram] = useState(false)
+    const [updating, setUpdating] = useState(false)
     const {activeUser} = useContext(AppContext)
 
     useEffect(()=>{
@@ -45,10 +47,12 @@ export default function Workouts() {
     },[])
 
     function HandleClose() {
+        setUpdating(false)
         setAddingWorkout(false)
     }
 
     function AddWorkout() {
+        setUpdating(true)
         const postObj = {
             name: workoutName,
             exercises: []
@@ -102,6 +106,7 @@ export default function Workouts() {
 
     function AddProgram(e) {
         e.preventDefault()
+        setUpdating(true)
         const postObj = {
             name: e.target[0].value,
             description: e.target[1].value,
@@ -116,6 +121,7 @@ export default function Workouts() {
                 setPrograms(r.data.programs)
                 setWorkouts(r.data.workouts)
                 setNewProgram(false)
+                HandleClose()
             })
         })
     }
@@ -196,9 +202,7 @@ export default function Workouts() {
                         <button className='px-3 py-2 rounded-lg shadow-md bg-opacity-90 bg-gray-300'
                             onClick={HandleClose}
                         >Cancel</button>
-                        <button className='px-3 py-2 rounded-lg shadow-md bg-opacity-90 bg-green-600'
-                            onClick={AddWorkout}
-                        >Add</button>
+                        <DialogButton text="Add" loading={updating} loadingText="Adding..." type="button" action={AddWorkout} disabled={false} />
                     </div>
                 </div>
             </Dialog>
@@ -221,8 +225,7 @@ export default function Workouts() {
                             <button className='px-3 py-2 rounded-lg shadow-md bg-opacity-90 bg-gray-300' type='button'
                                 onClick={()=>setNewProgram(false)}
                             >Cancel</button>
-                            <button className='px-3 py-2 rounded-lg shadow-md bg-opacity-90 bg-green-600' type="submit"
-                            >Add</button>
+                            <DialogButton text="Add" loading={updating} loadingText="Adding..." type="submit" action={null} disabled={false} />
                         </div>
                     </form>
                 </div>

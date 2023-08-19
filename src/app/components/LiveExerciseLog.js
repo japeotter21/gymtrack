@@ -3,25 +3,37 @@ import React, { useState, useEffect } from 'react'
 import { BsPause, BsPauseBtn, BsPlay, BsPlus, BsTrash } from 'react-icons/bs'
 import axios from 'axios'
 import { useRouter } from 'next/navigation';
-import { FormControl, RadioGroup, FormControlLabel, Radio } from '@mui/material';
+import { FormControl, RadioGroup, FormControlLabel, Radio, Slider } from '@mui/material';
 import { repConstant } from '@/globals';
+import LiveButton from './LiveButton.js'
 
 export default function LiveExerciseLog({complete, lift, id, setComplete, currentWorkout, profile, currentWorkoutIndex, exercises, setExercises, username, setFinishObj}) {
+    const [targetSets, setTargetSets] = useState([])
     const [radioVal, setRadioVal] = useState(6)
     const [addSet, setAddSet] = useState([])
     const [editing, setEditing] = useState(false)
-    const [completed, setCompleted] = useState(false)
+    const [completed, setCompleted] = useState(null)
     const [loading, setLoading] = useState(true)
+    const [saving, setSaving] = useState(false)
+    const [updating, setUpdating] = useState(false)
+
+    useEffect(()=>{
+        if(exercises.length > 0)
+        {
+            setTargetSets(exercises[lift].target.sets)
+        }
+    },[lift, exercises])
+
     useEffect(()=>{
         if(complete)
         {
             if(complete.length > 0 )
             {
-                complete[id].rpe > 0 ? setCompleted(true) : setCompleted(false)
+                complete[id].rpe > 0 ? setCompleted(complete[id]) : setCompleted(null)
             }
             else
             {
-                setCompleted(false)
+                setCompleted(null)
             }
             setLoading(false)
         }
@@ -31,15 +43,14 @@ export default function LiveExerciseLog({complete, lift, id, setComplete, curren
         e.preventDefault()
         const exerciseIndex = e.target.id.split('-')[1]
         const currentExercise = exercises[exerciseIndex]
-        const postLength = currentExercise.target.sets.length
-        const formLength = !completed ? currentExercise.target.sets : complete[id].sets
-        const extraLength = addSet.length
+        const formLength = !completed ? targetSets : completed.sets
         const extraFormLength = addSet.flat()
         let postArr = []
         formLength.forEach((item,id)=>{
-            const newResult = {reps: parseInt(e.target[2*id].value),weight: parseInt(e.target[2*id+1].value)}
+            const newResult = {reps: parseInt(e.target[3*id + 1].value),weight: parseInt(e.target[3*id + 2].value)}
             postArr.push(newResult)
         })
+        console.log(e.target)
         extraFormLength.forEach((item,id)=>{
             if(id % 2 === 1)
             {
@@ -62,6 +73,7 @@ export default function LiveExerciseLog({complete, lift, id, setComplete, curren
         }
         if(completed && editing)
         {
+            setUpdating(true)
             axios.put('/api/history',resultObj,{ params: { user: username, index: id }})
             .then(res=>{
                 axios.get('/api/workouts',{ params: {user: username}})
@@ -70,33 +82,59 @@ export default function LiveExerciseLog({complete, lift, id, setComplete, curren
                     setComplete(r.data.inProgress.results)
                     setEditing(false)
                     setAddSet([])
+                    setUpdating(false)
+                })
+                .catch(err=>{
+                    console.error(err)
+                    setUpdating(false)
                 })
             }) 
+            .catch(err=>{
+                console.error(err)
+                setUpdating(false)
+            })
         }
         else
         {
+            setSaving(true)
             axios.put('/api/history',resultObj,{ params: { user: username, index: id }})
             .then(res=>{
                 axios.get('/api/workouts',{ params: {user: username}})
                 .then(r=>{
                     setComplete(r.data.inProgress.results)
-                    setCompleted(true)
+                    setCompleted(r.data.inProgress.results[id])
                     setAddSet([])
                     setFinishObj(r.data.inProgress)
+                    setSaving(false)
+                })
+                .catch(err=>{
+                    console.error(err)
+                    setSaving(false)
                 })
             }) 
+            .catch(err=>{
+                console.error(err)
+                setSaving(false)
+            })
         }
-    }
-
-    function RPEForm(e) {
-        e.preventDefault()
-        setRadioVal(parseInt(e.target.value))
     }
 
     function RemoveExtraSet() {
         const setTemp = [...addSet]
         setTemp.pop()
         setAddSet(setTemp)
+    }
+
+    function RemoveTargetSet(index) {
+        const setTemp = [...targetSets]
+        setTemp.splice(index,1)
+        setTargetSets(setTemp)
+    }
+
+    function RemoveCompletedSet(index) {
+        const setTemp = Object.assign({},completed)
+        setTemp.sets.splice(index,1)
+        setCompleted(setTemp)
     }
 
     function UpdateAddSet(e, index, target) {
@@ -130,7 +168,7 @@ export default function LiveExerciseLog({complete, lift, id, setComplete, curren
             <></>
         )
     }
-    console.log(completed)
+
     return (
         <div className={`w-5/6 lg:w-1/2 flex-col gap-3 items-center border border-gray-300 rounded-lg ${completed && !editing ? 'bg-neutral-200' : 'bg-stone-50'} px-4 py-1 shadow-md`} key={id}>
             <p className='text-lg font-semibold text-center'>{exercises[lift].name}</p>
@@ -141,9 +179,19 @@ export default function LiveExerciseLog({complete, lift, id, setComplete, curren
             </div>
             <form id={`lift-${lift}`} onSubmit={(e)=>SubmitSetForm(e)}>
                 { !completed ? 
-                    exercises[lift].target.sets.map((set,index)=>
+                    targetSets.map((set,index)=>
                         <div key={index} className='grid grid-cols-3 my-1 gap-2 items-center'>
-                            <p className='text-sm'>{index+1}</p>
+                            <div className='flex gap-3 items-center'>
+                                <p className='text-sm'>{index+1}</p>
+                                { index === 0 ?
+                                    <button type="button"></button>
+                                :
+                                    <button className='text-red-500 text-xs border border-red-200 rounded-md px-1' disabled={completed && !editing}
+                                        type="button"
+                                        onClick={()=>RemoveTargetSet(index)}
+                                    >Remove</button>
+                                }
+                            </div>
                             <select type="number" id={`${exercises[lift].name}set${index+1}`} name={`${exercises[lift].name}set${index+1}`} defaultValue={set.reps || ''}
                                 className='border border-gray-400 rounded-md px-2'
                             >
@@ -157,9 +205,19 @@ export default function LiveExerciseLog({complete, lift, id, setComplete, curren
                         </div>
                     )
                 :
-                complete[id].sets.map((set,index)=>
-                    <div key={index} className='grid grid-cols-3 my-1 gap-2 items-center'>
-                        <p className='text-sm'>{index+1}</p>
+                completed.sets.map((set,index)=>
+                    <div key={`${completed.name}${index}`} className='grid grid-cols-3 my-1 gap-2 items-center'>
+                        <div className='flex gap-3 items-center'>
+                            <p className='text-sm'>{index+1}</p>
+                            { index === 0 ?
+                                <button type="button"></button>
+                            :
+                                <button className='text-red-500 text-xs border border-red-200 rounded-md px-1' disabled={completed && !editing}
+                                    type="button"
+                                    onClick={()=>RemoveCompletedSet(index)}
+                                >Remove</button>
+                            }
+                        </div>
                         <select disabled={completed && !editing} type="number" id={`${exercises[lift].name}set${index+1}`} name={`${exercises[lift].name}set${index+1}`} defaultValue={set.reps || ''}
                             className='border border-gray-400 rounded-md px-2'
                         >
@@ -176,7 +234,7 @@ export default function LiveExerciseLog({complete, lift, id, setComplete, curren
                 {addSet.map((set,index)=>
                     <div key={index} className='grid grid-cols-3 my-1 gap-2 items-center'>
                         <div className='flex gap-3 items-center'>
-                            <p className='text-sm'>{exercises[lift].target.sets.length+index+1}</p>
+                            <p className='text-sm'>{targetSets.length+index+1}</p>
                             <button className='text-red-500 text-xs border border-red-200 rounded-md px-1' disabled={completed && !editing}
                                 type="button"
                                 onClick={RemoveExtraSet}
@@ -205,34 +263,31 @@ export default function LiveExerciseLog({complete, lift, id, setComplete, curren
                     <input disabled className='border border-gray-200 rounded-md px-2 bg-gray-100' />
                     <input disabled className='border border-gray-200 rounded-md px-2 bg-gray-100' />
                 </div>
-                <FormControl onChange={(e)=>RPEForm(e)} sx={{mx: 'auto', w:'max-content', display:'grid', placeItems:'center'}}>
-                    <RadioGroup row sx={{display:"flex", alignItems:'center', flexWrap:'wrap', marginX:'auto'}}>
-                        <div className='flex items-center'>
-                            <Radio disabled={completed && !editing}
-                                checked={radioVal === 3}
-                                value={3}
-                                name="rpe"
-                            />
-                            <p className='text-sm'>Easy</p>
-                        </div>
-                        <div className='flex items-center'>
-                            <Radio disabled={completed && !editing}
-                                checked={radioVal === 6}
-                                value={6}
-                                name="rpe"
-                            />
-                            <p className='text-sm'>Challenging</p>
-                        </div>
-                        <div className='flex items-center'>
-                            <Radio disabled={completed && !editing}
-                                checked={radioVal === 9}
-                                value={9}
-                                name="rpe"
-                            />
-                            <p className='text-sm'>Hard</p>
-                        </div>
-                    </RadioGroup>
-                </FormControl>
+                <Slider
+                    disabled={completed && !editing}
+                    onChange={(e)=>setRadioVal(e.target.value)}
+                    track={false}
+                    defaultValue={6}
+                    step={null}
+                    min={2}
+                    max={10}
+                    marks={
+                        [
+                            {
+                            value: 3,
+                            label: "Too Easy"   
+                            },
+                            {
+                                value: 6,
+                                label: "Challenging"   
+                            },
+                            {
+                                value: 9,
+                                label:'Too Hard'
+                            }
+                        ]
+                    }
+                />
                 { completed ? 
                 <div className='mt-4 mb-2 flex justify-between'>
                     { !editing ? 
@@ -248,26 +303,12 @@ export default function LiveExerciseLog({complete, lift, id, setComplete, curren
                             Cancel
                         </button>
                     }
-                    <button type="submit" disabled={!editing && radioVal < 1}
-                        className={`${editing && radioVal > 0 ? 'bg-gradient-to-r to-green-500 from-green-600' : 'bg-neutral-400' } rounded-full px-5 py-1 mt-4 mb-2 text-white`}
-                    >
-                        Update
-                    </button>
+                    <div className='w-1/2'>
+                        <LiveButton disabled={!editing || radioVal < 1} text={'Update'} loading={updating} loadingText={'Updating...'} />
+                    </div>
                 </div>
                 :
-                radioVal > 0 ?
-                <button type="submit" 
-                    className='bg-gradient-to-r to-green-500 from-green-600 rounded-full px-5 py-1 w-full block mx-auto mt-4 mb-2 text-white'
-                >
-                    Save
-                </button>
-                :
-                <button type="button" 
-                    className='bg-neutral-400 bg-opacity-80 rounded-full px-5 py-1 w-full block mx-auto mt-4 mb-2 text-gray-200'
-                    disabled
-                >
-                    Save
-                </button>
+                    <LiveButton disabled={!(radioVal > 0)} text={'Save'} loading={saving} loadingText={'Saving...'} />
                 }
             </form>
         </div>
