@@ -1,20 +1,29 @@
 "use client"
 import React, { useState, useEffect, useContext } from 'react'
-import Image from 'next/image'
-import { Avatar, Paper } from '@mui/material'
-import { BsCalendar, BsGraphUp, BsPencil } from 'react-icons/bs'
-import { BiDumbbell} from 'react-icons/bi'
 import axios from 'axios'
 import Pagenav from '../components/Pagenav'
 import AppContext from '../AppContext'
 import { redirect } from 'next/navigation'
+import { ViewState } from '@devexpress/dx-react-scheduler';
+import {
+  Scheduler,
+  MonthView,
+  Appointments,
+  Resources,
+  Toolbar,
+  DateNavigator,
+  TodayButton
+} from '@devexpress/dx-react-scheduler-material-ui';
 
-export default function Schedule() {
+export default function History() {
     const [loading, setLoading] = useState(true)
     const [workouts, setWorkouts] = useState([])
     const [filter,setFilter] = useState('All')
     const [titles, setTitles] = useState([])
+    const [appointments, setAppointments] = useState([])
+    const [view, setView] = useState(null)
     const {activeUser} = useContext(AppContext)
+    const currentDate = new Date()
 
     useEffect(()=>{
         if (activeUser)
@@ -23,7 +32,18 @@ export default function Schedule() {
             .then(res=>{
                 const resTemp = res.data
                 const temptitles = []
-                resTemp.forEach((item,id)=>temptitles.push(item.title))
+                const appointstemp = []
+                resTemp.forEach((item,id)=>{
+                    temptitles.push(item.title)
+                    const appointObj = {
+                        title: item.title,
+                        ind: id,
+                        startDate: new Date(parseInt(item.date)).toISOString(),
+                        endDate: new Date(parseInt(item.date)+60*60*1000).toISOString()
+                    }
+                    appointstemp.push(appointObj)
+                })
+                setAppointments(appointstemp)
                 const titleArr = [...new Set(temptitles)]
                 setTitles(titleArr)
                 setWorkouts(resTemp.reverse())
@@ -38,6 +58,65 @@ export default function Schedule() {
             redirect('/login')
         }
     },[])
+
+    useEffect(()=>{
+        if (filter !== 'All')
+        {
+            const appointstemp = []
+            let workoutsTemp = [...workouts]
+            workoutsTemp.reverse().forEach((item,id)=>{
+                if(filter === item.title)
+                {
+                    const appointObj = {
+                        title: item.title,
+                        ind: id,
+                        startDate: new Date(parseInt(item.date)).toISOString(),
+                        endDate: new Date(parseInt(item.date)+60*60*1000).toISOString()
+                    }
+                    appointstemp.push(appointObj)
+                    setAppointments(appointstemp)
+                }
+            })
+        }
+        else
+        {
+            const appointstemp = []
+            let workoutsTemp = [...workouts]
+            workoutsTemp.reverse().forEach((item,id)=>{
+                {
+                    const appointObj = {
+                        title: item.title,
+                        ind: id,
+                        startDate: new Date(parseInt(item.date)).toISOString(),
+                        endDate: new Date(parseInt(item.date)+60*60*1000).toISOString()
+                    }
+                    appointstemp.push(appointObj)
+                    setAppointments(appointstemp)
+                }
+            })
+        }
+
+    },[filter])
+
+    const Appointment = ({
+        children, style, onClick, onMouseEnter, onMouseLeave, ...restProps
+      }) => (
+        <Appointments.Appointment
+            {...restProps}
+            onClick={(e)=>{ view === e.data.startDate ? setView(null) : setView(e.data.startDate)
+            }}
+            style={
+                    {
+                        ...style,
+                        background: 'linear-gradient(to left,#16a34a, #22c55e)',
+                        borderRadius: '8px',
+                        border: 'none'
+                    }
+                }
+        >
+            {children}
+        </Appointments.Appointment>
+    );
 
     if(loading)
     {
@@ -54,15 +133,30 @@ export default function Schedule() {
                     <option value={item} key={id}>{item}</option>
                 )}
             </select>
-            <div className='max-h-[70vh] overflow-y-auto w-11/12'>
+            <div className='w-11/12 bg-stone-50 h-[60vh]'>
+                <Scheduler
+                        data={appointments}
+                    >
+                        <ViewState
+                            defaultCurrentDate={currentDate}
+                        />
+                        <MonthView />
+                        <Toolbar />
+                        <DateNavigator />
+                        <TodayButton />
+                        <Appointments appointmentComponent={Appointment} />
+                        <Resources resources={appointments} />
+                </Scheduler>
+            </div>
+            <div className='w-11/12'>
                 { workouts.map((item,id)=>
-                    filter === 'All' || item.title === filter ?
+                    new Date(parseInt(item.date)).toISOString() === view ?
                     <div className='shadow-md bg-stone-50 rounded-md w-full p-2 my-2' key={id}>
                         <div className='flex justify-between items-center px-1 mb-1'>
                             <p className='font-semibold'>{item.title}</p>
                             <p className='text-sm'>{new Date(parseInt(item.date)).toDateString()}</p>
                         </div>
-                        <div className='border border-neutral-200 border-b-0 rounded-sm'>
+                        <div className='border border-neutral-200 rounded-sm'>
                             { item.results.map((ex,ind)=>
                                 ex.rpe > 0 ?
                                 <div key={`${id}-${ind}`}>
