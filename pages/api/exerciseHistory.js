@@ -55,7 +55,7 @@ export default async function handler(req, res) {
                 res.status(200).json(workoutsTemp);
             })
             .catch(function (error) {
-                console.log(error.message)
+                console.error(error.message)
                 res.status(400).json({data: 'request failed'})
             });
         }

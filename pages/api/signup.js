@@ -97,22 +97,22 @@ export default function handler(req, res) {
                                 res.status(200).json({data:true});
                             })
                             .catch(function (error) {
-                                console.log(error.message)
+                                console.error(error.message)
                                 res.status(400).json({data: 'failed to create user exercises'})
                             });
                         })
                         .catch(function (error) {
-                            console.log(error.message)
+                            console.error(error.message)
                             res.status(400).json({data: 'failed to create user workouts'})
                         });
                     })
                     .catch(function (error) {
-                        console.log(error.message)
+                        console.error(error.message)
                         res.status(400).json({data: 'failed to create user account'})
                     });
                 })
                 .catch(function (error) {
-                    console.log(error.message)
+                    console.error(error.message)
                     res.status(400).json({data: 'failed to create user data'})
                 });
                 

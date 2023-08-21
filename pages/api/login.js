@@ -29,7 +29,7 @@ export default function handler(req, res) {
             res.status(200).json(response.data)
         })
         .catch(function (error) {
-            console.log(error.message)
+            console.error(error.message)
             res.status(403).json({data: 'Username not found'})
         });
     }
@@ -70,7 +70,7 @@ export default function handler(req, res) {
             });
         })
         .catch(function (error) {
-            console.log(error.message)
+            console.error(error.message)
             res.status(403).json({data: 'login failed. please check username and password'})
         });
     }

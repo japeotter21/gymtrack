@@ -22,7 +22,7 @@ export default function Workouts() {
     const [workoutName, setWorkoutName] = useState('')
     const [newProgram, setNewProgram] = useState(false)
     const [updating, setUpdating] = useState(false)
-    const {activeUser} = useContext(AppContext)
+    const {activeUser, Refresh} = useContext(AppContext)
 
     useEffect(()=>{
         if(activeUser)
@@ -42,9 +42,9 @@ export default function Workouts() {
         }
         else
         {
-            redirect('/login')
+          Refresh()
         }
-    },[])
+    },[activeUser])
 
     function HandleClose() {
         setUpdating(false)

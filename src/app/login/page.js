@@ -58,6 +58,7 @@ export default function Schedule() {
                                 setNewUser(false)
                                 setLoggingIn(false)
                                 setActiveUser(username)
+                                sessionStorage.setItem('user',username)
                                 router.push('/')
                             }
                         })
@@ -92,6 +93,7 @@ export default function Schedule() {
                 if(res.data)
                 {
                     setActiveUser(username)
+                    sessionStorage.setItem('user',username)
                     setSuccess('Logged In successfully!')
                     router.push('/')
                 }

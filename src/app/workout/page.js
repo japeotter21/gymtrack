@@ -8,6 +8,7 @@ import AppContext from '../AppContext'
 import { redirect } from 'next/navigation'
 import { FinishWorkout } from '@/services/services';
 import { Dialog } from '@mui/material';
+import DialogButton from '../components/DialogButton';
 
 export default function Workout() {
     const [profile, setProfile] = useState({})
@@ -19,9 +20,10 @@ export default function Workout() {
     const [exercises, setExercises] = useState([])
     const [complete, setComplete] = useState(null)
     const [workoutComplete, setWorkoutComplete] = useState(false)
+    const [finishing, setFinishing] = useState(false)
     const [finishObj, setFinishObj] = useState(null)
     const router = useRouter()
-    const {activeUser} = useContext(AppContext)
+    const {activeUser, Refresh} = useContext(AppContext)
 
     useEffect(()=>{
         if(activeUser)
@@ -51,9 +53,9 @@ export default function Workout() {
         }
         else
         {
-            redirect('/login')
+          Refresh()
         }
-    },[])    
+    },[activeUser])    
 
     useEffect(()=>{
         
@@ -84,13 +86,16 @@ export default function Workout() {
 
     function SaveWorkout() {
         let dayNum = 0 
+        setFinishing(true)
         if (currentDay !== currentProgram.schedule.length - 1)
         {
             dayNum = currentDay + 1
         }
-        FinishWorkout(dayNum, activeUser, false, finishObj)
+        const endTime = new Date().getTime()
+        const postObj = Object.assign({end: endTime},finishObj)
+        FinishWorkout(dayNum, activeUser, false, postObj)
         .then(r=>{
-            console.log('done')
+            setFinishing(false)
             router.push('/history')
         })
     }
@@ -145,9 +150,7 @@ export default function Workout() {
                             <button className='border border-neutral-300 shadow-md rounded-md px-3 py-1'
                                 onClick={()=>setWorkoutComplete(false)}
                             >Cancel</button>
-                            <button className='shadow-md rounded-md px-3 py-1 bg-green-600 text-white'
-                                onClick={SaveWorkout}
-                            >Finish Workout</button>
+                            <DialogButton text='Finish Workout' loading={finishing} loadingText='Saving...' type='button' action={SaveWorkout} />
                         </div>
                     </>
                     :

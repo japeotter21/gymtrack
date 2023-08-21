@@ -50,7 +50,6 @@ export default function LiveExerciseLog({complete, lift, id, setComplete, curren
             const newResult = {reps: parseInt(e.target[3*id + 1].value),weight: parseInt(e.target[3*id + 2].value)}
             postArr.push(newResult)
         })
-        console.log(e.target)
         extraFormLength.forEach((item,id)=>{
             if(id % 2 === 1)
             {
@@ -199,7 +198,7 @@ export default function LiveExerciseLog({complete, lift, id, setComplete, curren
                                     <option value={rep} key={number}>{rep}</option>
                                 )}
                             </select>
-                            <input type="number" id={`${exercises[lift].name}set${index+1}`} name={`${exercises[lift].name}set${index+1}`} defaultValue={set.weight || ''}
+                            <input type="number" step="0.5" id={`${exercises[lift].name}set${index+1}`} name={`${exercises[lift].name}set${index+1}`} defaultValue={set.weight || ''}
                                 className='border border-gray-400 rounded-md px-2' required
                             />
                         </div>
@@ -225,7 +224,7 @@ export default function LiveExerciseLog({complete, lift, id, setComplete, curren
                                 <option value={rep} key={number}>{rep}</option>
                             )}
                         </select>
-                        <input disabled={completed && !editing} type="number" id={`${exercises[lift].name}set${index+1}`} name={`${exercises[lift].name}set${index+1}`} defaultValue={set.weight || ''}
+                        <input disabled={completed && !editing} type="number" step="0.5" id={`${exercises[lift].name}set${index+1}`} name={`${exercises[lift].name}set${index+1}`} defaultValue={set.weight || ''}
                             className='border border-gray-400 rounded-md px-2' required
                         />
                     </div>
@@ -248,7 +247,7 @@ export default function LiveExerciseLog({complete, lift, id, setComplete, curren
                                 <option value={rep} key={number}>{rep}</option>
                             )}
                         </select>
-                        <input type="number" id={`extraset${index+1}`} name={`extraset${index+1}`} defaultValue={0} disabled={completed && !editing}
+                        <input type="number" step="0.5" id={`extraset${index+1}`} name={`extraset${index+1}`} defaultValue={0} disabled={completed && !editing}
                             className='border border-gray-400 rounded-md px-2'
                             onChange={(e)=>UpdateAddSet(e, index, 'weight')} required
                         />
@@ -268,6 +267,7 @@ export default function LiveExerciseLog({complete, lift, id, setComplete, curren
                     onChange={(e)=>setRadioVal(e.target.value)}
                     track={false}
                     defaultValue={6}
+                    sx={{color:"#64748b"}}
                     step={null}
                     min={2}
                     max={10}

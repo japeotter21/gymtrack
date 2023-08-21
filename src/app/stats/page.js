@@ -20,7 +20,7 @@ export default function Stats() {
     const [yMax, setYMax] = useState(200)
     const [choice, setChoice] = useState('')
     const maxPercent = [0, 1, 0.95, 0.93, 0.9, 0.87, 0.85, 0.83, 0.8, 0.77, 0.75, 0.7, 0.67, 0.65]
-    const {activeUser} = useContext(AppContext)
+    const {activeUser, Refresh} = useContext(AppContext)
 
     useEffect(()=>{
         if(activeUser)
@@ -36,9 +36,9 @@ export default function Stats() {
         }
         else
         {
-            redirect('/login')
+          Refresh()
         }
-    },[])
+    },[activeUser])
 
     useEffect(()=>{
         if(current !== null)

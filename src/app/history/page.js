@@ -22,7 +22,8 @@ export default function History() {
     const [titles, setTitles] = useState([])
     const [appointments, setAppointments] = useState([])
     const [view, setView] = useState(null)
-    const {activeUser} = useContext(AppContext)
+    const [displayTime, setDisplayTime] = useState('')
+    const {activeUser, Refresh} = useContext(AppContext)
     const currentDate = new Date()
 
     useEffect(()=>{
@@ -39,7 +40,7 @@ export default function History() {
                         title: item.title,
                         ind: id,
                         startDate: new Date(parseInt(item.date)).toISOString(),
-                        endDate: new Date(parseInt(item.date)+60*60*1000).toISOString()
+                        endDate: item.end ? new Date(parseInt(item.end)).toISOString() : new Date(parseInt(item.date)+60*60*1000).toISOString()
                     }
                     appointstemp.push(appointObj)
                 })
@@ -55,9 +56,9 @@ export default function History() {
         }
         else
         {
-            redirect('/login')
+            Refresh()
         }
-    },[])
+    },[activeUser])
 
     useEffect(()=>{
         if (filter !== 'All')
@@ -71,7 +72,7 @@ export default function History() {
                         title: item.title,
                         ind: id,
                         startDate: new Date(parseInt(item.date)).toISOString(),
-                        endDate: new Date(parseInt(item.date)+60*60*1000).toISOString()
+                        endDate: item.end ? new Date(parseInt(item.end)).toISOString() : new Date(parseInt(item.date)+60*60*1000).toISOString()
                     }
                     appointstemp.push(appointObj)
                     setAppointments(appointstemp)
@@ -97,6 +98,26 @@ export default function History() {
         }
 
     },[filter])
+
+    useEffect(()=>{
+        if(view)
+        {
+            const viewObj = workouts.find((item,id) => new Date(parseInt(item.date)).toISOString() === view)
+            const endTime = parseInt(viewObj.end)
+            const startTime = parseInt(viewObj.date)
+            const duration = (endTime - startTime) / 1000
+            if(duration !== NaN)
+            {
+                const hours = Math.floor(duration / 3600)
+                const minutes = Math.floor(duration / 60)
+                setDisplayTime(`${hours}:${minutes.toLocaleString('en-US',{minimumIntegerDigits:2})}`)
+            }
+            else
+            {
+                setDisplayTime('')
+            }
+        }
+    },[view])
 
     const Appointment = ({
         children, style, onClick, onMouseEnter, onMouseLeave, ...restProps
@@ -156,6 +177,11 @@ export default function History() {
                             <p className='font-semibold'>{item.title}</p>
                             <p className='text-sm'>{new Date(parseInt(item.date)).toDateString()}</p>
                         </div>
+                        { item.end ? 
+                        <p className='text-sm px-1 text-neutral-500 mb-1 text-right w-full'>Duration: {displayTime}</p>
+                        :
+                        <></>
+                        }
                         <div className='border border-neutral-200 rounded-sm'>
                             { item.results.map((ex,ind)=>
                                 ex.rpe > 0 ?

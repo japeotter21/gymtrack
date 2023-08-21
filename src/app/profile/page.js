@@ -16,7 +16,7 @@ export default function Schedule() {
     const [newGoal, setNewGoal] = useState('')
     const [editProfile, setEditProfile] = useState(false)
     const [updating, setUpdating] = useState(false)
-    const {activeUser} = useContext(AppContext)
+    const {activeUser, Refresh} = useContext(AppContext)
 
     useEffect(()=>{
         if (activeUser)
@@ -32,9 +32,9 @@ export default function Schedule() {
         }
         else
         {
-            redirect('/login')
+          Refresh()
         }
-    },[])
+    },[activeUser])
     
     useEffect(()=>{
         if(editProfile)

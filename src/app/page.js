@@ -38,7 +38,7 @@ export default function Home() {
   const [inProgress, setInProgress] = useState(null)
   const [starting, setStarting] = useState(false)
 
-  const {activeUser} = useContext(AppContext)
+  const {activeUser, Refresh} = useContext(AppContext)
   const router = useRouter()
   useEffect(()=>{
     if (activeUser)
@@ -67,9 +67,9 @@ export default function Home() {
     }
     else
     {
-        redirect( '/login')
+      Refresh()
     }
-  },[])
+  },[activeUser])
   
   useEffect(()=>{
     if(editing !== null)
@@ -348,11 +348,10 @@ export default function Home() {
               :
               <></>
             }
-          <div className='flex justify-between mt-4'>
-            <button className='shadow-md border border-neutral-500 rounded-md py-1 px-3'
+          <div className='flex justify-between mt-8'>
+            <button className={`shadow-md border ${updating ? 'text-gray-200 border-gray-200' : ' border-neutral-500'} rounded-md py-1 px-3`} disabled={updating}
               onClick={()=>setChangeDay(false)}
             >Cancel</button>
-            <DialogButton disabled={updating} loading={updating} action={UpdateCurrentDay} text={'Save'} loadingText={'Saving...'} type="button"/>
           </div>
         </div>
       </Dialog>
