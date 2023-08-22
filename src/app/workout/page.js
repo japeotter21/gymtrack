@@ -134,7 +134,7 @@ export default function Workout() {
             </div>
             { currentWorkout.exercises.map((lift,id)=>
                 <>
-                    <LiveExerciseLog lift={lift} id={id} complete={complete} setComplete={setComplete} currentWorkout={currentWorkout} currentWorkoutIndex={currentWorkoutIndex}
+                    <LiveExerciseLog lift={lift.exercise} id={id} complete={complete} setComplete={setComplete} currentWorkout={currentWorkout} currentWorkoutIndex={currentWorkoutIndex}
                         profile={profile} exercises={exercises} username={activeUser} setExercises={setExercises} setFinishObj={setFinishObj}
                     />
                 </>

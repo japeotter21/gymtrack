@@ -35,13 +35,13 @@ export default function WorkoutList({exercises, setExercises, currentWorkout, se
         for (let index = startIndex; index < endIndex; index += 3)
         {
             const setTemp = Array.from({length:e.target[index].value}, i => 0)
-            setTemp.forEach((item,id)=>setTemp[id] = ({reps: parseInt(e.target[index+1].value), weight: parseInt(e.target[index+2].value)}))
+            setTemp.forEach((item,id)=>setTemp[id] = ({reps: parseInt(e.target[index+1].value), weight: e.target[index+2].value}))
             targetObj.push(setTemp)
         }
         let exercisesTemp = [...exercises]
         let workoutObj = currentWorkout
         workoutObj.exercises.forEach((w,id)=>{
-            exercisesTemp[w].target.sets = targetObj[id]
+            exercisesTemp[w.exercise].target.sets = targetObj[id]
         })
         const postObj = exercisesTemp
         setLoading(true)
@@ -75,7 +75,7 @@ export default function WorkoutList({exercises, setExercises, currentWorkout, se
     const reorder = (list, startIndex, endIndex) => {
         const result = list
         const [removed] = result.splice(startIndex, 1);
-        result.splice(endIndex, 0, parseInt(removed));
+        result.splice(endIndex, 0, removed);
         return result;
     };
 
@@ -147,7 +147,7 @@ export default function WorkoutList({exercises, setExercises, currentWorkout, se
                                 {...provided.droppableProps}
                             >
                                 { workouts[day].exercises.map((ex,ind)=>
-                                    <Draggable key={exercises[ex].name} draggableId={exercises[ex].name} index={ind}>
+                                    <Draggable key={exercises[ex.exercise].name} draggableId={exercises[ex.exercise].name} index={ind}>
                                         {(provided, snapshot)=>(
                                             <div className={`text-sm flex items-stretch ${!show ? 'h-[0px]' : 'h-max'}`}
                                                 ref={provided.innerRef}
@@ -158,7 +158,7 @@ export default function WorkoutList({exercises, setExercises, currentWorkout, se
                                             >
                                                 <div className='w-full border-l-2 p-2'>
                                                     <div className='flex items-center justify-between'>
-                                                        <p>{exercises[ex].name}</p>
+                                                        <p>{exercises[ex.exercise].name}</p>
                                                         <DeleteExercise currentWorkout={workouts[day]} currentWorkoutIndex={day}
                                                             setPrograms={setPrograms} setCurrentProgram={setCurrentProgram} homepage={false}
                                                             username={activeUser} item={ex} id={ind} setWorkouts={setWorkouts} exercises={exercises}
@@ -169,7 +169,7 @@ export default function WorkoutList({exercises, setExercises, currentWorkout, se
                                                             <p>Sets</p>
                                                             <p>Reps</p>
                                                             <p>Weight</p>
-                                                            <select defaultValue={exercises[ex].target.sets.length} className='border border-gray-400 rounded-md'
+                                                            <select defaultValue={exercises[ex.exercise].target.sets.length} className='border border-gray-400 rounded-md'
                                                                 onChange={()=>setEdited(true)}
                                                                 name={`set-${ind}`} id={`set-${ind}`}
                                                             >
@@ -177,7 +177,7 @@ export default function WorkoutList({exercises, setExercises, currentWorkout, se
                                                                     <option value={num} key={setNum}>{num}</option>
                                                                 )}
                                                             </select>
-                                                            <select defaultValue={exercises[ex].target.sets[0].reps} className='border border-gray-400 rounded-md'
+                                                            <select defaultValue={exercises[ex.exercise].target.sets[0].reps} className='border border-gray-400 rounded-md'
                                                                 onChange={()=>setEdited(true)}
                                                                 name={`rep-${ind}`} id={`rep-${ind}`}
                                                             >
@@ -185,7 +185,7 @@ export default function WorkoutList({exercises, setExercises, currentWorkout, se
                                                                     <option value={num} key={setNum}>{num}</option>
                                                                 )}
                                                             </select>
-                                                            <input type="number" defaultValue={exercises[ex].target.sets[0].weight} className='border border-gray-400 rounded-md px-1'
+                                                            <input type="number" step="0.5" defaultValue={exercises[ex.exercise].target.sets[0].weight} className='border border-gray-400 rounded-md px-1'
                                                                 onChange={()=>setEdited(true)}
                                                                 name={`weight-${ind}`} id={`weight-${ind}`}
                                                             />

@@ -35,6 +35,7 @@ export default async function handler(req, res) {
             .then(function (response) {
                 const responseTemp = response.data
                 const workoutsTemp = []
+                console.log(responseTemp)
                 responseTemp.data.workouts[0].record.forEach((item,id)=>{
                     if(item.date > 0)
                     {

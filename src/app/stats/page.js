@@ -58,7 +58,7 @@ export default function Stats() {
                     else if(set.reps < maxPercent.length)
                     {
                         //max weight quantized to multiples of 5
-                        const calcMax = Math.round((set.weight/maxPercent[set.reps])/5)*5
+                        const calcMax = Math.round((parseFloat(set.weight)/maxPercent[set.reps])/5)*5
                         maxWeightArr.push(calcMax)
                     }
                     else

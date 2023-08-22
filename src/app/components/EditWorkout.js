@@ -84,7 +84,9 @@ export default function PostExercise({username, currentWorkoutIndex, currentWork
             }
             else
             {
-                const newExercise = parseInt(choice)
+                const newExercise = {exercise:parseInt(choice),
+                    superset: []
+                }
                 const newWorkout = currentWorkout.exercises
                 newWorkout.push(newExercise)
                 const postObj = newWorkout

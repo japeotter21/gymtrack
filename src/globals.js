@@ -5,13 +5,13 @@ export const inProgressObj = {
     title: "",
     notes: "",
     rpe: 0,
-    sets: [{reps: 0, weight:0}]
+    sets: [{reps: 0, weight:"0"}]
   }
 
 export const targetObj = {
     notes: "",
     reminder: "",
-    sets: [{reps: 0, weight:0}]
+    sets: [{reps: 0, weight:"0"}]
   }
 
 export const userProfile = {
@@ -42,7 +42,7 @@ export const userEx = {
                 "primary"
             ],
             "target": {
-                "sets": [{"reps": 0, "weight": 0, "id": 0}],
+                "sets": [{"reps": 0, "weight": "0", "id": 0}],
                 "notes": "",
                 "reminder": ""
             }
@@ -56,7 +56,7 @@ export const userEx = {
                 "primary"
             ],
             "target": {
-                "sets": [{"reps": 0, "weight": 0, "id": 0}],
+                "sets": [{"reps": 0, "weight": "0", "id": 0}],
                 "notes": "",
                 "reminder": ""
             }
@@ -70,7 +70,7 @@ export const userEx = {
                 "primary"
             ],
             "target": {
-                "sets": [{"reps": 0, "weight": 0, "id": 0}],
+                "sets": [{"reps": 0, "weight": "0", "id": 0}],
                 "notes": "",
                 "reminder": ""
             }
@@ -84,7 +84,7 @@ export const userEx = {
                 "primary"
             ],
             "target": {
-                "sets": [{"reps": 0, "weight": 0, "id": 0}],
+                "sets": [{"reps": 0, "weight": "0", "id": 0}],
                 "notes": "",
                 "reminder": ""
             }
@@ -98,7 +98,7 @@ export const userEx = {
                 "primary"
             ],
             "target": {
-                "sets": [{"reps": 0, "weight": 0, "id": 0}],
+                "sets": [{"reps": 0, "weight": "0", "id": 0}],
                 "notes": "",
                 "reminder": ""
             }
@@ -111,7 +111,7 @@ export const userEx = {
                 "secondary"
             ],
             "target": {
-                "sets": [{"reps": 0, "weight": 0, "id": 0}],
+                "sets": [{"reps": 0, "weight": "0", "id": 0}],
                 "notes": "",
                 "reminder": ""
             }
@@ -124,7 +124,7 @@ export const userEx = {
                 "secondary"
             ],
             "target": {
-                "sets": [{"reps": 0, "weight": 0, "id": 0}],
+                "sets": [{"reps": 0, "weight": "0", "id": 0}],
                 "notes": "",
                 "reminder": ""
             }
@@ -138,7 +138,7 @@ export const userEx = {
                 "primary"
             ],
             "target": {
-                "sets": [{"reps": 0, "weight": 0, "id": 0}],
+                "sets": [{"reps": 0, "weight": "0", "id": 0}],
                 "notes": "",
                 "reminder": ""
             }
@@ -151,7 +151,7 @@ export const userEx = {
                 "primary"
             ],
             "target": {
-                "sets": [{"reps": 0, "weight": 0, "id": 0}],
+                "sets": [{"reps": 0, "weight": "0", "id": 0}],
                 "notes": "",
                 "reminder": ""
             }
@@ -164,7 +164,7 @@ export const userEx = {
                 "primary"
             ],
             "target": {
-                "sets": [{"reps": 0, "weight": 0, "id": 0}],
+                "sets": [{"reps": 0, "weight": "0", "id": 0}],
                 "notes": "",
                 "reminder": ""
             }
@@ -177,7 +177,7 @@ export const userEx = {
                 "secondary"
             ],
             "target": {
-                "sets": [{"reps": 0, "weight": 0, "id": 0}],
+                "sets": [{"reps": 0, "weight": "0", "id": 0}],
                 "notes": "",
                 "reminder": ""
             }
@@ -190,7 +190,7 @@ export const userEx = {
                 "primary"
             ],
             "target": {
-                "sets": [{"reps": 0, "weight": 0, "id": 0}],
+                "sets": [{"reps": 0, "weight": "0", "id": 0}],
                 "notes": "",
                 "reminder": ""
             }
@@ -203,7 +203,7 @@ export const userEx = {
                 "secondary"
             ],
             "target": {
-                "sets": [{"reps": 0, "weight": 0, "id": 0}],
+                "sets": [{"reps": 0, "weight": "0", "id": 0}],
                 "notes": "",
                 "reminder": ""
             }
@@ -216,7 +216,7 @@ export const userEx = {
                 "primary"
             ],
             "target": {
-                "sets": [{"reps": 0, "weight": 0, "id": 0}],
+                "sets": [{"reps": 0, "weight": "0", "id": 0}],
                 "notes": "",
                 "reminder": ""
             }
@@ -230,7 +230,7 @@ export const userEx = {
                 "secondary"
             ],
             "target": {
-                "sets": [{"reps": 0, "weight": 0, "id": 0}],
+                "sets": [{"reps": 0, "weight": "0", "id": 0}],
                 "notes": "",
                 "reminder": ""
             }
@@ -243,7 +243,7 @@ export const userEx = {
                 "secondary"
             ],
             "target": {
-                "sets": [{"reps": 0, "weight": 0, "id": 0}],
+                "sets": [{"reps": 0, "weight": "0", "id": 0}],
                 "notes": "",
                 "reminder": ""
             }
@@ -256,7 +256,7 @@ export const userEx = {
                 "primary"
             ],
             "target": {
-                "sets": [{"reps": 0, "weight": 0, "id": 0}],
+                "sets": [{"reps": 0, "weight": "0", "id": 0}],
                 "notes": "",
                 "reminder": ""
             }
@@ -269,7 +269,7 @@ export const userEx = {
                 "primary"
             ],
             "target": {
-                "sets": [{"reps": 0, "weight": 0, "id": 0}],
+                "sets": [{"reps": 0, "weight": "0", "id": 0}],
                 "notes": "",
                 "reminder": ""
             }
@@ -282,7 +282,7 @@ export const userEx = {
                 "secondary"
             ],
             "target": {
-                "sets": [{"reps": 0, "weight": 0, "id": 0}],
+                "sets": [{"reps": 0, "weight": "0", "id": 0}],
                 "notes": "",
                 "reminder": ""
             }
@@ -295,7 +295,7 @@ export const userEx = {
                 "primary"
             ],
             "target": {
-                "sets": [{"reps": 0, "weight": 0, "id": 0}],
+                "sets": [{"reps": 0, "weight": "0", "id": 0}],
                 "notes": "",
                 "reminder": ""
             }
@@ -309,7 +309,7 @@ export const userEx = {
                 "secondary"
             ],
             "target": {
-                "sets": [{"reps": 0, "weight": 0, "id": 0}],
+                "sets": [{"reps": 0, "weight": "0", "id": 0}],
                 "notes": "",
                 "reminder": ""
             }
@@ -322,7 +322,7 @@ export const userEx = {
                 "primary"
             ],
             "target": {
-                "sets": [{"reps": 0, "weight": 0, "id": 0}],
+                "sets": [{"reps": 0, "weight": "0", "id": 0}],
                 "notes": "",
                 "reminder": ""
             }
@@ -335,7 +335,7 @@ export const userEx = {
                 "secondary"
             ],
             "target": {
-                "sets": [{"reps": 0, "weight": 0, "id": 0}],
+                "sets": [{"reps": 0, "weight": "0", "id": 0}],
                 "notes": "",
                 "reminder": ""
             }
@@ -349,7 +349,7 @@ export const userEx = {
                 "secondary"
             ],
             "target": {
-                "sets": [{"reps": 0, "weight": 0, "id": 0}],
+                "sets": [{"reps": 0, "weight": "0", "id": 0}],
                 "notes": "",
                 "reminder": ""
             }
@@ -362,7 +362,7 @@ export const userEx = {
                 "primary"
             ],
             "target": {
-                "sets": [{"reps": 0, "weight": 0, "id": 0}],
+                "sets": [{"reps": 0, "weight": "0", "id": 0}],
                 "notes": "",
                 "reminder": ""
             }
@@ -375,7 +375,7 @@ export const userEx = {
                 "primary"
             ],
             "target": {
-                "sets": [{"reps": 0, "weight": 0, "id": 0}],
+                "sets": [{"reps": 0, "weight": "0", "id": 0}],
                 "notes": "",
                 "reminder": ""
             }
@@ -388,7 +388,7 @@ export const userEx = {
                 "primary"
             ],
             "target": {
-                "sets": [{"reps": 0, "weight": 0, "id": 0}],
+                "sets": [{"reps": 0, "weight": "0", "id": 0}],
                 "notes": "",
                 "reminder": ""
             }
@@ -401,7 +401,7 @@ export const userEx = {
                 "secondary"
             ],
             "target": {
-                "sets": [{"reps": 0, "weight": 0, "id": 0}],
+                "sets": [{"reps": 0, "weight": "0", "id": 0}],
                 "notes": "",
                 "reminder": ""
             }
@@ -414,7 +414,7 @@ export const userEx = {
                 "secondary"
             ],
             "target": {
-                "sets": [{"reps": 0, "weight": 0, "id": 0}],
+                "sets": [{"reps": 0, "weight": "0", "id": 0}],
                 "notes": "",
                 "reminder": ""
             }
@@ -427,7 +427,7 @@ export const userEx = {
                 "primary"
             ],
             "target": {
-                "sets": [{"reps": 0, "weight": 0, "id": 0}],
+                "sets": [{"reps": 0, "weight": "0", "id": 0}],
                 "notes": "",
                 "reminder": ""
             }
@@ -441,7 +441,7 @@ export const userEx = {
                 "secondary"
             ],
             "target": {
-                "sets": [{"reps": 0, "weight": 0, "id": 0}],
+                "sets": [{"reps": 0, "weight": "0", "id": 0}],
                 "notes": "",
                 "reminder": ""
             }
@@ -455,7 +455,7 @@ export const userEx = {
                 "secondary"
             ],
             "target": {
-                "sets": [{"reps": 0, "weight": 0, "id": 0}],
+                "sets": [{"reps": 0, "weight": "0", "id": 0}],
                 "notes": "",
                 "reminder": ""
             }
@@ -468,7 +468,7 @@ export const userEx = {
                 "primary"
             ],
             "target": {
-                "sets": [{"reps": 0, "weight": 0, "id": 0}],
+                "sets": [{"reps": 0, "weight": "0", "id": 0}],
                 "notes": "",
                 "reminder": ""
             }
@@ -481,7 +481,7 @@ export const userEx = {
                 "secondary"
             ],
             "target": {
-                "sets": [{"reps": 0, "weight": 0, "id": 0}],
+                "sets": [{"reps": 0, "weight": "0", "id": 0}],
                 "notes": "",
                 "reminder": ""
             }
@@ -494,7 +494,7 @@ export const userEx = {
                 "secondary"
             ],
             "target": {
-                "sets": [{"reps": 0, "weight": 0, "id": 0}],
+                "sets": [{"reps": 0, "weight": "0", "id": 0}],
                 "notes": "",
                 "reminder": ""
             }
@@ -507,7 +507,7 @@ export const userEx = {
                 "secondary"
             ],
             "target": {
-                "sets": [{"reps": 0, "weight": 0, "id": 0}],
+                "sets": [{"reps": 0, "weight": "0", "id": 0}],
                 "notes": "",
                 "reminder": ""
             }
@@ -521,7 +521,7 @@ export const userEx = {
                 "secondary"
             ],
             "target": {
-                "sets": [{"reps": 0, "weight": 0, "id": 0}],
+                "sets": [{"reps": 0, "weight": "0", "id": 0}],
                 "notes": "",
                 "reminder": ""
             }
@@ -534,7 +534,7 @@ export const userEx = {
                 "primary"
             ],
             "target": {
-                "sets": [{"reps": 0, "weight": 0, "id": 0}],
+                "sets": [{"reps": 0, "weight": "0", "id": 0}],
                 "notes": "",
                 "reminder": ""
             }
@@ -547,7 +547,7 @@ export const userEx = {
                 "secondary"
             ],
             "target": {
-                "sets": [{"reps": 0, "weight": 0, "id": 0}],
+                "sets": [{"reps": 0, "weight": "0", "id": 0}],
                 "notes": "",
                 "reminder": ""
             }
@@ -560,7 +560,7 @@ export const userEx = {
                 "secondary"
             ],
             "target": {
-                "sets": [{"reps": 0, "weight": 0, "id": 0}],
+                "sets": [{"reps": 0, "weight": "0", "id": 0}],
                 "notes": "",
                 "reminder": ""
             }
@@ -574,7 +574,7 @@ export const userEx = {
                 "secondary"
             ],
             "target": {
-                "sets": [{"reps": 0, "weight": 0, "id": 0}],
+                "sets": [{"reps": 0, "weight": "0", "id": 0}],
                 "notes": "",
                 "reminder": ""
             }
@@ -587,7 +587,7 @@ export const userEx = {
                 "secondary"
             ],
             "target": {
-                "sets": [{"reps": 0, "weight": 0, "id": 0}],
+                "sets": [{"reps": 0, "weight": "0", "id": 0}],
                 "notes": "",
                 "reminder": ""
             }
@@ -600,7 +600,7 @@ export const userEx = {
                 "primary"
             ],
             "target": {
-                "sets": [{"reps": 0, "weight": 0, "id": 0}],
+                "sets": [{"reps": 0, "weight": "0", "id": 0}],
                 "notes": "",
                 "reminder": ""
             }
@@ -613,7 +613,7 @@ export const userEx = {
                 "secondary"
             ],
             "target": {
-                "sets": [{"reps": 0, "weight": 0, "id": 0}],
+                "sets": [{"reps": 0, "weight": "0", "id": 0}],
                 "notes": "",
                 "reminder": ""
             }
@@ -626,7 +626,7 @@ export const userEx = {
                 "primary"
             ],
             "target": {
-                "sets": [{"reps": 0, "weight": 0, "id": 0}],
+                "sets": [{"reps": 0, "weight": "0", "id": 0}],
                 "notes": "",
                 "reminder": ""
             }
@@ -639,7 +639,7 @@ export const userEx = {
                 "primary"
             ],
             "target": {
-                "sets": [{"reps": 0, "weight": 0, "id": 0}],
+                "sets": [{"reps": 0, "weight": "0", "id": 0}],
                 "notes": "",
                 "reminder": ""
             }
@@ -652,7 +652,7 @@ export const userEx = {
                 "primary"
             ],
             "target": {
-                "sets": [{"reps": 0, "weight": 0, "id": 0}],
+                "sets": [{"reps": 0, "weight": "0", "id": 0}],
                 "notes": "",
                 "reminder": ""
             }
@@ -665,7 +665,7 @@ export const userEx = {
                 "secondary"
             ],
             "target": {
-                "sets": [{"reps": 0, "weight": 0, "id": 0}],
+                "sets": [{"reps": 0, "weight": "0", "id": 0}],
                 "notes": "",
                 "reminder": ""
             }
@@ -678,7 +678,7 @@ export const userEx = {
                 "secondary"
             ],
             "target": {
-                "sets": [{"reps": 0, "weight": 0, "id": 0}],
+                "sets": [{"reps": 0, "weight": "0", "id": 0}],
                 "notes": "",
                 "reminder": ""
             }
@@ -691,7 +691,7 @@ export const userEx = {
                 "primary"
             ],
             "target": {
-                "sets": [{"reps": 0, "weight": 0, "id": 0}],
+                "sets": [{"reps": 0, "weight": "0", "id": 0}],
                 "notes": "",
                 "reminder": ""
             }
@@ -704,7 +704,7 @@ export const userEx = {
                 "primary"
             ],
             "target": {
-                "sets": [{"reps": 0, "weight": 0, "id": 0}],
+                "sets": [{"reps": 0, "weight": "0", "id": 0}],
                 "notes": "",
                 "reminder": ""
             }
@@ -717,7 +717,7 @@ export const userEx = {
                 "secondary"
             ],
             "target": {
-                "sets": [{"reps": 0, "weight": 0, "id": 0}],
+                "sets": [{"reps": 0, "weight": "0", "id": 0}],
                 "notes": "",
                 "reminder": ""
             }
@@ -730,7 +730,7 @@ export const userEx = {
                 "secondary"
             ],
             "target": {
-                "sets": [{"reps": 0, "weight": 0, "id": 0}],
+                "sets": [{"reps": 0, "weight": "0", "id": 0}],
                 "notes": "",
                 "reminder": ""
             }
@@ -743,7 +743,7 @@ export const userEx = {
                 "secondary"
             ],
             "target": {
-                "sets": [{"reps": 0, "weight": 0, "id": 0}],
+                "sets": [{"reps": 0, "weight": "0", "id": 0}],
                 "notes": "",
                 "reminder": ""
             }
@@ -756,7 +756,7 @@ export const userEx = {
                 "secondary"
             ],
             "target": {
-                "sets": [{"reps": 0, "weight": 0, "id": 0}],
+                "sets": [{"reps": 0, "weight": "0", "id": 0}],
                 "notes": "",
                 "reminder": ""
             }
@@ -769,7 +769,7 @@ export const userEx = {
                 "secondary"
             ],
             "target": {
-                "sets": [{"reps": 0, "weight": 0, "id": 0}],
+                "sets": [{"reps": 0, "weight": "0", "id": 0}],
                 "notes": "",
                 "reminder": ""
             }
@@ -782,7 +782,7 @@ export const userEx = {
                 "secondary"
             ],
             "target": {
-                "sets": [{"reps": 0, "weight": 0, "id": 0}],
+                "sets": [{"reps": 0, "weight": "0", "id": 0}],
                 "notes": "",
                 "reminder": ""
             }
@@ -795,7 +795,7 @@ export const userEx = {
                 "secondary"
             ],
             "target": {
-                "sets": [{"reps": 0, "weight": 0, "id": 0}],
+                "sets": [{"reps": 0, "weight": "0", "id": 0}],
                 "notes": "",
                 "reminder": ""
             }
@@ -808,7 +808,7 @@ export const userEx = {
                 "secondary"
             ],
             "target": {
-                "sets": [{"reps": 0, "weight": 0, "id": 0}],
+                "sets": [{"reps": 0, "weight": "0", "id": 0}],
                 "notes": "",
                 "reminder": ""
             }
@@ -821,7 +821,7 @@ export const userEx = {
                 "secondary"
             ],
             "target": {
-                "sets": [{"reps": 0, "weight": 0, "id": 0}],
+                "sets": [{"reps": 0, "weight": "0", "id": 0}],
                 "notes": "",
                 "reminder": ""
             }
@@ -853,33 +853,84 @@ export const userWork = {
         {
             "name": "Push Day",
             "exercises": [
-                8,
-                6,
-                0,
-                11,
-                36,
-                40
+                {
+                    "exercise": 8,
+                    "superset": []
+                },
+                {
+                    "exercise": 6,
+                    "superset": []
+                },
+                {
+                    "exercise": 0,
+                    "superset": []
+                },
+                {
+                    "exercise": 11,
+                    "superset": []
+                },
+                {
+                    "exercise": 36,
+                    "superset": []
+                },
+                {
+                    "exercise": 40,
+                    "superset": []
+                }
             ]
         },
         {
             "name": "Pull Day",
             "exercises": [
-                16,
-                15,
-                19,
-                24,
-                31,
-                33
+                {
+                    "exercise": 16,
+                    "superset": []
+                },
+                {
+                    "exercise": 15,
+                    "superset": []
+                },
+                {
+                    "exercise": 19,
+                    "superset": []
+                },
+                {
+                    "exercise": 24,
+                    "superset": []
+                },
+                {
+                    "exercise": 31,
+                    "superset": []
+                },
+                {
+                    "exercise": 33,
+                    "superset": []
+                }
             ]
         },
         {
             "name": "Leg Day",
             "exercises": [
-                49,
-                52,
-                51,
-                53,
-                54
+                {
+                    "exercise": 49,
+                    "superset": []
+                },
+                {
+                    "exercise": 52,
+                    "superset": []
+                },
+                {
+                    "exercise": 51,
+                    "superset": []
+                },
+                {
+                    "exercise": 53,
+                    "superset": []
+                },
+                {
+                    "exercise": 54,
+                    "superset": []
+                }
             ]
         }
     ],
@@ -893,7 +944,7 @@ export const userWork = {
                     "sets": [
                         {
                             "reps": 0,
-                            "weight": 0
+                            "weight": "0"
                         }
                     ],
                     "notes": "",
@@ -911,7 +962,7 @@ export const userWork = {
                 "sets": [
                     {
                         "reps": 0,
-                        "weight": 0
+                        "weight": "0"
                     }
                 ],
                 "notes": "",

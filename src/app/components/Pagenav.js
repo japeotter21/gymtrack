@@ -22,7 +22,7 @@ export default function Pagenav({page}) {
                 className='w-full lg:w-1/2 flex justify-between items-center gap-3 px-2'>
                 {page === 'stats' ?
                     <div
-                        className='cursor-pointer hover:scale-105 hover:bg-opacity-80 transition duration-300 shadow-md rounded-lg w-full bg-zinc-500 px-4 py-3 text-white'
+                        className='cursor-pointer hover:scale-105 hover:bg-opacity-80 transition duration-300 shadow-md rounded-lg w-full bg-green-700 px-4 py-3 text-white'
                         onClick={()=>Navigate('/')}
                     >
                         <BsHouse />
@@ -39,7 +39,7 @@ export default function Pagenav({page}) {
                 }
                 {page === 'workouts' ?
                     <div
-                        className='cursor-pointer hover:scale-105 hover:bg-opacity-80 transition duration-300 shadow-md rounded-lg w-full bg-zinc-500 px-4 py-3 text-white'
+                        className='cursor-pointer hover:scale-105 hover:bg-opacity-80 transition duration-300 shadow-md rounded-lg w-full bg-green-700 px-4 py-3 text-white'
                         onClick={()=>Navigate('/')}
                     >
                         <BsHouse />
@@ -56,7 +56,7 @@ export default function Pagenav({page}) {
                 }
                 {page === 'history' ?
                     <div
-                        className='cursor-pointer hover:scale-105 hover:bg-opacity-80 transition duration-300 shadow-md rounded-lg w-full bg-zinc-500 px-4 py-3 text-white'
+                        className='cursor-pointer hover:scale-105 hover:bg-opacity-80 transition duration-300 shadow-md rounded-lg w-full bg-green-700 px-4 py-3 text-white'
                         onClick={()=>Navigate('/')}
                     >
                         <BsHouse />
@@ -73,7 +73,7 @@ export default function Pagenav({page}) {
                 }
                 {page === 'profile' ?
                     <div
-                        className='cursor-pointer hover:scale-105 hover:bg-opacity-80 transition duration-300 shadow-md rounded-lg w-full bg-zinc-500 px-4 py-3 text-white'
+                        className='cursor-pointer hover:scale-105 hover:bg-opacity-80 transition duration-300 shadow-md rounded-lg w-full bg-green-700 px-4 py-3 text-white'
                         onClick={()=>Navigate('/')}
                     >
                         <BsHouse />

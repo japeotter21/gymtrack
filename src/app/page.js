@@ -9,7 +9,8 @@ import Link from 'next/link'
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd'
 import PostExercise from './components/EditWorkout'
 import { DeleteExercise } from './components/EditWorkout'
-import { HiChevronUpDown } from 'react-icons/hi2'
+import { HiChevronUpDown, HiLink } from 'react-icons/hi2'
+import { CiDumbbell } from 'react-icons/ci'
 import { inProgressObj, repConstant, setConstant } from '@/globals'
 import AppContext from './AppContext'
 import { redirect, useRouter } from 'next/navigation'
@@ -17,6 +18,7 @@ import { FinishWorkout } from '@/services/services'
 import LiveButton from './components/LiveButton'
 import StartButton from './components/StartButton'
 import DialogButton from './components/DialogButton'
+import { BiDumbbell } from 'react-icons/bi'
 
 export default function Home() {
   const [day, setDay] = useState(0)
@@ -103,7 +105,7 @@ export default function Home() {
   function HandleEdit() {
     const newSets = parseInt(editSets)
     const newReps = parseInt(editReps)
-    const newWeight = parseInt(editWeight)
+    const newWeight = editWeight
     let newPostArr = Array.from({length: newSets}, x=>0)
     newPostArr.forEach((item,id)=>newPostArr[id]={reps:newReps, weight:newWeight})
     const postObj = {
@@ -127,7 +129,7 @@ export default function Home() {
   const reorder = (list, startIndex, endIndex) => {
     const result = list
     const [removed] = result.splice(startIndex, 1);
-    result.splice(endIndex, 0, parseInt(removed));
+    result.splice(endIndex, 0, removed);
     return result;
   };
 
@@ -253,9 +255,9 @@ export default function Home() {
                         {...provided.droppableProps}
                     >
                       { currentWorkout.exercises.map((item,id)=>
-                        <Draggable key={exercises[item].name} draggableId={exercises[item].name} index={id}>
+                        <Draggable key={exercises[item.exercise].name} draggableId={exercises[item.exercise].name} index={id}>
                           {(provided, snapshot)=>(
-                              <div className='text-sm grid grid-cols-7 border border-t-0'
+                              <div className={`text-sm grid grid-cols-7 border border-t-0`}
                                   ref={provided.innerRef}
                                   style={getItemStyle(snapshot.isDragging,
                                       provided.draggableProps.style)}
@@ -264,13 +266,30 @@ export default function Home() {
                               >
                                 <div className='p-2 col-span-3 flex items-center relative'
                                 {...provided.dragHandleProps}
-                                ><HiChevronUpDown size={18} className='absolute ml-[-8px] text-gray-500' /><span className='ml-[12px]'>{exercises[item].name}</span></div>
-                                <div className='p-2' onClick={()=>setEditing(item)}>{exercises[item].target.sets.length}</div>
-                                <div className='p-2' onClick={()=>setEditing(item)}>{exercises[item].target.sets[0].reps}</div>
-                                <div className='p-2' onClick={()=>setEditing(item)}>{exercises[item].target.sets[0].weight}</div>
+                                >
+                                  <HiChevronUpDown size={18} className='absolute ml-[-8px] text-gray-500' />
+                                  <span className='ml-[12px]'>{exercises[item.exercise].name}</span>
+                                </div>
+                                <div className='p-2' onClick={()=>setEditing(item.exercise)}>{exercises[item.exercise].target.sets.length}</div>
+                                <div className='p-2' onClick={()=>setEditing(item.exercise)}>{exercises[item.exercise].target.sets[0].reps}</div>
+                                <div className='p-2' onClick={()=>setEditing(item.exercise)}>{exercises[item.exercise].target.sets[0].weight}</div>
                                 <DeleteExercise currentWorkout={currentWorkout} currentWorkoutIndex={currentWorkoutIndex} setCurrentWorkout={setCurrentWorkout}
-                                  username={activeUser} item={item} id={id} homepage={true} exercises={exercises}
+                                  username={activeUser} item={item.exercise} id={id} homepage={true} exercises={exercises}
                                 />
+                                {item.superset.length > 0 ?
+                                <>
+                                  {item.superset.map((ex,index)=>
+                                    <div className='flex items-center col-span-7 grid grid-cols-7'>
+                                      <div className='col-span-3 ml-4 gap-2 flex items-center text-blue-400'> <BiDumbbell size={20} /> <p className='text-neutral-800'>{exercises[ex].name}</p></div>
+                                      <div className='p-2' onClick={()=>setEditing(ex)}>{exercises[ex].target.sets.length}</div>
+                                      <div className='p-2' onClick={()=>setEditing(ex)}>{exercises[ex].target.sets[0].reps}</div>
+                                      <div className='p-2' onClick={()=>setEditing(ex)}>{exercises[ex].target.sets[0].weight}</div>
+                                    </div>
+                                  )}
+                                </>
+                                :
+                                <></>
+                                }
                           </div>
                           )}
                         </Draggable>

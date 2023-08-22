@@ -47,13 +47,13 @@ export default function LiveExerciseLog({complete, lift, id, setComplete, curren
         const extraFormLength = addSet.flat()
         let postArr = []
         formLength.forEach((item,id)=>{
-            const newResult = {reps: parseInt(e.target[3*id + 1].value),weight: parseInt(e.target[3*id + 2].value)}
+            const newResult = {reps: parseInt(e.target[3*id + 1].value),weight: e.target[3*id + 2].value}
             postArr.push(newResult)
         })
         extraFormLength.forEach((item,id)=>{
             if(id % 2 === 1)
             {
-                const newResult = {reps:parseInt(extraFormLength[id-1]),weight:parseInt(item)}
+                const newResult = {reps:parseInt(extraFormLength[id-1]),weight: item}
                 postArr.push(newResult)
             }
         })
@@ -144,7 +144,7 @@ export default function LiveExerciseLog({complete, lift, id, setComplete, curren
         }
         else if (target==="weight")
         {
-            addTemp[index][1] = parseInt(e.target.value)
+            addTemp[index][1] = e.target.value
         }
         setAddSet(addTemp)
     }
