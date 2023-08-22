@@ -279,7 +279,7 @@ export default function Home() {
                                 {item.superset.length > 0 ?
                                 <>
                                   {item.superset.map((ex,index)=>
-                                    <div className='flex items-center col-span-7 grid grid-cols-7'>
+                                    <div className='flex items-center col-span-7 grid grid-cols-7' key={`supserset-${index}`}>
                                       <div className='col-span-3 ml-4 gap-2 flex items-center text-blue-400'> <BiDumbbell size={20} /> <p className='text-neutral-800'>{exercises[ex].name}</p></div>
                                       <div className='p-2' onClick={()=>setEditing(ex)}>{exercises[ex].target.sets.length}</div>
                                       <div className='p-2' onClick={()=>setEditing(ex)}>{exercises[ex].target.sets[0].reps}</div>
