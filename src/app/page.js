@@ -19,6 +19,7 @@ import LiveButton from './components/LiveButton'
 import StartButton from './components/StartButton'
 import DialogButton from './components/DialogButton'
 import { BiDumbbell } from 'react-icons/bi'
+import GroupExercises from './components/GroupExercises'
 
 export default function Home() {
   const [day, setDay] = useState(0)
@@ -35,10 +36,13 @@ export default function Home() {
   const [editReps, setEditReps] = useState(0)
   const [editWeight, setEditWeight] = useState(0)
   const [editNotes, setEditNotes] = useState('')
+  const [editSS, setEditSS] = useState(false)
   const [updating, setUpdating] = useState(false)
   const [changeDay, setChangeDay] = useState(false)
   const [inProgress, setInProgress] = useState(null)
   const [starting, setStarting] = useState(false)
+  const [superset, setSuperset] = useState('')
+  const [currentSS, setCurrentSS] = useState([])
 
   const {activeUser, Refresh} = useContext(AppContext)
   const router = useRouter()
@@ -80,26 +84,19 @@ export default function Home() {
         setEditReps(exercises[editing].target.sets[0].reps)
         setEditWeight(exercises[editing].target.sets[0].weight)
         setEditNotes(exercises[editing].target.notes)
+        setSuperset(currentSS[0])
     }
   },[editing])
 
-
-  // useEffect(()=>{
-  //   if(day > 0)
-  //   {
-  //     const weekTemp = [...week]
-  //     const reorderWeek = [weekTemp.slice(day), weekTemp.slice(0,day)]
-  //     const newWeek = reorderWeek[0].concat(reorderWeek[1])
-  //     setWeek(newWeek)
-  //   }
-  // },[day])
-  
   function HandleClose() {
     setEditSets(0)
     setEditReps(0)
     setEditWeight(0)
+    setCurrentSS([])
+    setSuperset('')
     setEditNotes('')
     setEditing(null)
+    setEditSS(false)
   }
 
   function HandleEdit() {
@@ -240,11 +237,11 @@ export default function Home() {
         </div>
         <p className='text-sm text-gray-600'>from {currentProgram.name}</p>
         <div className='border border-gray-300 rounded-md pt-1 mt-4 mb-4 bg-stone-50 shadow-lg cursor-pointer'>
-            <div className='text-sm font-semibold grid grid-cols-7 border-b-2'>
-                <div className='p-2 col-span-3 ml-[12px]'>Exercise</div>
-                <div className='p-2'>Sets</div>
-                <div className='p-2'>Reps</div>
-                <div className='p-2'>Weight</div>
+            <div className='text-sm font-semibold grid grid-cols-9 border-b-2'>
+                <div className='p-1 col-span-5 ml-[12px]'>Exercise</div>
+                <div className='p-1'>Sets</div>
+                <div className='p-1'>Reps</div>
+                <div className='p-1'>Weight</div>
             </div>
             <DragDropContext onDragEnd={onDragEnd}>
               <Droppable droppableId={'drop'} key={0}>
@@ -257,33 +254,33 @@ export default function Home() {
                       { currentWorkout.exercises.map((item,id)=>
                         <Draggable key={exercises[item.exercise].name} draggableId={exercises[item.exercise].name} index={id}>
                           {(provided, snapshot)=>(
-                              <div className={`text-sm grid grid-cols-7 border border-t-0`}
+                              <div className={`text-sm grid grid-cols-9 border border-t-0 items-center`}
                                   ref={provided.innerRef}
                                   style={getItemStyle(snapshot.isDragging,
                                       provided.draggableProps.style)}
                                   {...provided.draggableProps}
                                   
                               >
-                                <div className='p-2 col-span-3 flex items-center relative'
+                                <div className='p-1 col-span-5 flex items-center relative'
                                 {...provided.dragHandleProps}
                                 >
                                   <HiChevronUpDown size={18} className='absolute ml-[-8px] text-gray-500' />
                                   <span className='ml-[12px]'>{exercises[item.exercise].name}</span>
                                 </div>
-                                <div className='p-2' onClick={()=>setEditing(item.exercise)}>{exercises[item.exercise].target.sets.length}</div>
-                                <div className='p-2' onClick={()=>setEditing(item.exercise)}>{exercises[item.exercise].target.sets[0].reps}</div>
-                                <div className='p-2' onClick={()=>setEditing(item.exercise)}>{exercises[item.exercise].target.sets[0].weight}</div>
+                                <div className='py-2 px-1' onClick={()=>{setEditing(item.exercise);setCurrentSS(item.superset)}}>{exercises[item.exercise].target.sets.length}</div>
+                                <div className='py-2 px-1' onClick={()=>{setEditing(item.exercise);setCurrentSS(item.superset)}}>{exercises[item.exercise].target.sets[0].reps}</div>
+                                <div className='py-2 px-1' onClick={()=>{setEditing(item.exercise);setCurrentSS(item.superset)}}>{exercises[item.exercise].target.sets[0].weight}</div>
                                 <DeleteExercise currentWorkout={currentWorkout} currentWorkoutIndex={currentWorkoutIndex} setCurrentWorkout={setCurrentWorkout}
                                   username={activeUser} item={item.exercise} id={id} homepage={true} exercises={exercises}
                                 />
                                 {item.superset.length > 0 ?
                                 <>
                                   {item.superset.map((ex,index)=>
-                                    <div className='flex items-center col-span-7 grid grid-cols-7' key={`supserset-${index}`}>
-                                      <div className='col-span-3 ml-4 gap-2 flex items-center text-blue-400'> <BiDumbbell size={20} /> <p className='text-neutral-800'>{exercises[ex].name}</p></div>
-                                      <div className='p-2' onClick={()=>setEditing(ex)}>{exercises[ex].target.sets.length}</div>
-                                      <div className='p-2' onClick={()=>setEditing(ex)}>{exercises[ex].target.sets[0].reps}</div>
-                                      <div className='p-2' onClick={()=>setEditing(ex)}>{exercises[ex].target.sets[0].weight}</div>
+                                    <div className='flex items-center col-span-9 grid grid-cols-9 bg-sky-100 bg-opacity-40' key={`supserset-${index}`}>
+                                      <div className='col-span-5 ml-4 gap-2 flex items-center text-blue-500'> <HiLink /> <p className='text-neutral-800'>{exercises[ex].name}</p></div>
+                                      <div className='py-2 px-1' onClick={()=>{setEditing(ex);setEditSS(true)}}>{exercises[ex].target.sets.length}</div>
+                                      <div className='py-2 px-1' onClick={()=>{setEditing(ex);setEditSS(true)}}>{exercises[ex].target.sets[0].reps}</div>
+                                      <div className='py-2 px-1' onClick={()=>{setEditing(ex);setEditSS(true)}}>{exercises[ex].target.sets[0].weight}</div>
                                     </div>
                                   )}
                                 </>
@@ -337,13 +334,24 @@ export default function Home() {
             <input className='text-md border rounded-lg w-full py-1 px-2' value={editWeight}
               onChange={(e)=>setEditWeight(e.target.value)}
             />
-            <p className='text-md'>Notes</p>
-            <input className='text-md border rounded-lg w-full py-1 px-2' value={editNotes}
-              onChange={(e)=>setEditNotes(e.target.value)}
-            />
+            { editSS ? 
+                <></>
+            :
+                <>
+                    <p className='text-md'>Superset?</p>
+                    <div className='flex items-center gap-4 col-span-2 lg:col-span-1'>
+                        <GroupExercises exercises={exercises} choice={superset} setChoice={setSuperset} ss={true} />
+                        { currentSS.length > 0 ?
+                        <div className='p-2 text-red-500 block ml-auto cursor-pointer'><BsTrash size={15} /></div>
+                        :
+                          <></>
+                        }
+                    </div>
+                </>
+            }
           </div>
           <div className='flex justify-end px-3 py-3 gap-3'>
-              <button className='border border-gray-400 py-1 px-3 rounded-xl hover:bg-red-100 hover:border-red-200 hover:text-red-500 hover:scale-105 transition duration-200'
+              <button className='border border-gray-400 py-1 px-3 rounded-xl lg:hover:bg-red-100 lg:hover:border-red-200 lg:hover:text-red-500 lg:hover:scale-105 transition duration-200'
                 onClick={HandleClose}
               >Cancel</button>
               <DialogButton disabled={updating} loading={updating} action={HandleEdit} text={'Update'} loadingText={'Updating...'} type="button"/>

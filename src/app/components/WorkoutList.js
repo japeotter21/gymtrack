@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { DeleteExercise } from '../components/EditWorkout'
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd'
 import axios from 'axios';
@@ -6,14 +6,30 @@ import { BsChevronDown, BsChevronExpand, BsChevronUp, BsThreeDotsVertical, BsTra
 import { RiDraggable, RiPencilLine } from 'react-icons/ri'
 import PostExercise from '../components/EditWorkout'
 import { repConstant, setConstant } from '@/globals';
-import { Dialog } from '@mui/material';
-import { HiChevronUpDown } from 'react-icons/hi2';
+import { Dialog, Tooltip } from '@mui/material';
+import { HiChevronUpDown, HiLink } from 'react-icons/hi2';
+import GroupExercises from './GroupExercises'
 
 export default function WorkoutList({exercises, setExercises, currentWorkout, setCurrentWorkout, day, i, profile, workouts, setPrograms, setCurrentProgram, setWorkouts, activeUser, currentProgram, HandleDelete}) {
     const [loading, setLoading] = useState(0)
     const [edited, setEdited] = useState(false)
     const [show, setShow] = useState(false)
     const [deleteWorkout, setDeleteWorkout] = useState(false)
+    const [showSS, setShowSS] = useState(false)
+    const [currentSS, setCurrentSS] = useState([])
+    const [superset, setSuperset] = useState('')
+
+    useEffect(()=>{
+        if(!showSS)
+        {
+            setCurrentSS([])
+            setSuperset('')
+        }
+        else
+        {
+            setSuperset(currentSS[0])
+        }
+    },[showSS])
 
     const getListStyle = isDraggingOver => ({
         // background: isDraggingOver && mode === 'light' ? 'linear-gradient(#2997ff55, white)' : isDraggingOver && mode === 'dark' ? 'linear-gradient(#010304, #2997ff55)' : 'none',
@@ -103,7 +119,8 @@ export default function WorkoutList({exercises, setExercises, currentWorkout, se
 
     return (
         <DragDropContext onDragEnd={onDragEnd}>
-            <form id={`${i}`} onSubmit={(e)=>PostExercises(e)}>
+            {/* <form id={`${i}`} onSubmit={(e)=>PostExercises(e)}> */}
+            <form id={`${i}`} onSubmit={(e)=>e.preventDefault()}>
                 <div className={`flex items-center justify-between ${show ? 'border-b-2' : ''} p-2 cursor-pointer`}>
                     <div className='flex items-center gap-2 w-full' onClick={()=>setShow(!show)}>
                         { !show ? 
@@ -118,22 +135,23 @@ export default function WorkoutList({exercises, setExercises, currentWorkout, se
                     </div>
                     { !loading && !edited && show ?
                         <div className='flex gap-2'>
-                            <button disabled className='bg-gray-300 text-white shadow-md px-3 py-0.5 rounded-md' type="button">Save</button>
-                            <button className='bg-stone-50 text-red-600 border border-red-100 shadow-md px-3 py-0.5 rounded-md' type="button"
+                            {/* <button disabled className='bg-gray-300 text-white shadow-md px-3 py-0.5 rounded-md' type="button">Save</button> */}
+                            <button className='bg-stone-50 text-red-600 px-3 py-0.5 rounded-md' type="button"
                                 onClick={()=>setDeleteWorkout(true)}
                             ><BsTrash /></button>
                         </div>
                     : !loading && show ?
                         <div className='flex gap-2'>
-                            <button className='bg-green-600 text-white shadow-md px-3 py-0.5 rounded-md' type="submit">Save</button>
-                            <button className='bg-stone-50 text-red-600 border border-red-100 shadow-md px-3 py-0.5 rounded-md' type="button"
+                            {/* <button className='bg-green-600 text-white shadow-md px-3 py-0.5 rounded-md' type="submit">Save</button> */}
+                            <button className='bg-stone-50 text-red-600 px-3 py-0.5 rounded-md' type="button"
                                 onClick={()=>setDeleteWorkout(true)}
                             ><BsTrash /></button>
                         </div>
                     : show ?
-                        <button className='bg-green-600 text-white shadow-md px-3 py-0.5 rounded-md' disabled>Saving...</button>
+                        <></>
+                        // <button className='bg-green-600 text-white shadow-md px-3 py-0.5 rounded-md' disabled>Saving...</button>
                     :
-                        <button className='bg-stone-50 text-red-600 border border-red-100 shadow-md px-3 py-0.5 rounded-md' type="button"
+                        <button className='bg-stone-50 text-red-600 px-3 py-0.5 rounded-md' type="button"
                             onClick={()=>setDeleteWorkout(true)}
                         ><BsTrash /></button>
                     }
@@ -149,51 +167,75 @@ export default function WorkoutList({exercises, setExercises, currentWorkout, se
                                 { workouts[day].exercises.map((ex,ind)=>
                                     <Draggable key={exercises[ex.exercise].name} draggableId={exercises[ex.exercise].name} index={ind}>
                                         {(provided, snapshot)=>(
-                                            <div className={`text-sm flex items-stretch ${!show ? 'h-[0px]' : 'h-max'}`}
+                                            <div className={`text-sm p-2 ${!show ? 'h-[0px]' : 'h-max'}`}
                                                 ref={provided.innerRef}
                                                 style={getItemStyle(snapshot.isDragging,
                                                     provided.draggableProps.style)}
                                                 {...provided.draggableProps}
                                                 {...provided.dragHandleProps}
                                             >
-                                                <div className='w-full border-l-2 p-2'>
-                                                    <div className='flex items-center justify-between'>
-                                                        <p>{exercises[ex.exercise].name}</p>
-                                                        <DeleteExercise currentWorkout={workouts[day]} currentWorkoutIndex={day}
-                                                            setPrograms={setPrograms} setCurrentProgram={setCurrentProgram} homepage={false}
-                                                            username={activeUser} item={ex} id={ind} setWorkouts={setWorkouts} exercises={exercises}
-                                                        />
+                                                <div className='flex items-stretch'>
+                                                    <div className='text-neutral-300 flex flex-col justify-center px-1'>
+                                                        <HiChevronUpDown size={28} />
                                                     </div>
-                                                    <div className='flex flex-col gap-1 text-sm'>
-                                                        <div className='grid grid-cols-3 gap-x-6 mb-2'>
-                                                            <p>Sets</p>
-                                                            <p>Reps</p>
-                                                            <p>Weight</p>
-                                                            <select defaultValue={exercises[ex.exercise].target.sets.length} className='border border-gray-400 rounded-md'
-                                                                onChange={()=>setEdited(true)}
-                                                                name={`set-${ind}`} id={`set-${ind}`}
-                                                            >
-                                                                {setConstant.map((num,setNum)=>
-                                                                    <option value={num} key={setNum}>{num}</option>
-                                                                )}
-                                                            </select>
-                                                            <select defaultValue={exercises[ex.exercise].target.sets[0].reps} className='border border-gray-400 rounded-md'
-                                                                onChange={()=>setEdited(true)}
-                                                                name={`rep-${ind}`} id={`rep-${ind}`}
-                                                            >
-                                                                {repConstant.map((num,setNum)=>
-                                                                    <option value={num} key={setNum}>{num}</option>
-                                                                )}
-                                                            </select>
-                                                            <input type="number" step="0.5" defaultValue={exercises[ex.exercise].target.sets[0].weight} className='border border-gray-400 rounded-md px-1'
-                                                                onChange={()=>setEdited(true)}
-                                                                name={`weight-${ind}`} id={`weight-${ind}`}
+                                                    <div className='w-full'>
+                                                        <div className='flex items-center'>
+                                                            <div className='flex items-center gap-3 justify-normal'>
+                                                                <p className='break-words w-fit'>{exercises[ex.exercise].name}</p>
+                                                                {ex.superset.length > 0 ?
+                                                                <></>
+                                                                :
+                                                                <p className="underline text-xs text-blue-500">
+                                                                    <button type='button' className='text-blue-500'
+                                                                        onClick={()=>{setShowSS(true);setCurrentSS(ex.superset)}}
+                                                                    ><HiLink /></button>
+                                                                    &nbsp;Superset
+                                                                </p>}
+                                                            </div>
+                                                            <DeleteExercise currentWorkout={workouts[day]} currentWorkoutIndex={day}
+                                                                setPrograms={setPrograms} setCurrentProgram={setCurrentProgram} homepage={false}
+                                                                username={activeUser} item={ex.exercise} id={ind} setWorkouts={setWorkouts} exercises={exercises}
                                                             />
                                                         </div>
+                                                        {/* <div className='flex flex-col gap-1 text-sm'>
+                                                            <div className='grid grid-cols-3 gap-x-6 mb-2'>
+                                                                <p>Sets</p>
+                                                                <p>Reps</p>
+                                                                <p>Weight</p>
+                                                                <select defaultValue={exercises[ex.exercise].target.sets.length} className='border border-gray-400 rounded-md'
+                                                                    onChange={()=>setEdited(true)}
+                                                                    name={`set-${ind}`} id={`set-${ind}`}
+                                                                >
+                                                                    {setConstant.map((num,setNum)=>
+                                                                        <option value={num} key={setNum}>{num}</option>
+                                                                    )}
+                                                                </select>
+                                                                <select defaultValue={exercises[ex.exercise].target.sets[0].reps} className='border border-gray-400 rounded-md'
+                                                                    onChange={()=>setEdited(true)}
+                                                                    name={`rep-${ind}`} id={`rep-${ind}`}
+                                                                >
+                                                                    {repConstant.map((num,setNum)=>
+                                                                        <option value={num} key={setNum}>{num}</option>
+                                                                    )}
+                                                                </select>
+                                                                <input type="number" step="0.5" defaultValue={exercises[ex.exercise].target.sets[0].weight} className='border border-gray-400 rounded-md px-1'
+                                                                    onChange={()=>setEdited(true)}
+                                                                    name={`weight-${ind}`} id={`weight-${ind}`}
+                                                                />
+                                                            </div>
+                                                        </div> */}
                                                     </div>
                                                 </div>
-                                                <div className='text-white bg-neutral-300 flex flex-col justify-center px-1'>
-                                                    <HiChevronUpDown size={28} />
+                                                <div className='flex items-center gap-2 ml-12'>
+                                                    {ex.superset.length > 0 ?
+                                                        <button type='button' className='text-blue-500 text-sm flex items-center gap-2'
+                                                            onClick={()=>{setShowSS(true);setCurrentSS(ex.superset)}}
+                                                        >
+                                                            <HiLink />{exercises[ex.superset[0]].name}
+                                                        </button>   
+                                                    :
+                                                        <></>
+                                                    }
                                                 </div>
                                             </div>
                                         )}
@@ -225,6 +267,19 @@ export default function WorkoutList({exercises, setExercises, currentWorkout, se
             :
                 <></>
             }
+            <Dialog open={showSS} onClose={()=>setShowSS(false)}>
+                <div className='px-4 py-3'>
+                    <p> Superset Exercise with</p>
+                    <GroupExercises exercises={exercises} choice={superset} setChoice={setSuperset} ss={true} />
+                    <div className='flex justify-between mt-4'>
+                        <button className='border border-gray-400 py-1 px-3 rounded-xl hover:bg-red-100 hover:border-red-200 hover:text-red-500 hover:scale-105 transition duration-200'
+                            onClick={()=>setShowSS(false)}
+                        >Cancel</button>
+                        <button className='block shadow-md py-1 px-3 rounded-xl bg-red-600 hover:bg-opacity-80 text-white hover:scale-105 transition duration-200'
+                        >Save</button>
+                    </div>
+                </div>
+            </Dialog>
         </DragDropContext>
     )
 }
