@@ -1,6 +1,6 @@
 ## Workout/Progress Tracking
 App for tracking workout attendance and progress, emphasis on mobile layout
-React/Nextjs/GraphQL/MongoDB
+React/Nextjs/GraphQL/MongoDB API
 
 Core Features:
 - Choose exercises to perform and select weight/rep range
@@ -23,7 +23,7 @@ To Do:
 </p>
 <p>✅ Add exercises and assign attributes (back/pull/etc.)</p>
 <p>⬜ Create workout routine templates</p>
-<p>⬜ duration tracking of exercises and workouts</p>
+<p>✅ duration tracking of exercises and workouts</p>
 <p>⬜ Configure progression to set target weights</p>
 <p>⬜ AI workout progressions, plans and exercise recommendations</p>
 </p>
