@@ -2,16 +2,18 @@ export const repConstant = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20
 export const setConstant = [1,2,3,4,5,6,7,8,9,10]
 
 export const inProgressObj = {
-    title: "",
+    name: "",
     notes: "",
     rpe: 0,
-    sets: [{reps: 0, weight:"0"}]
+    sets: [],
+    superset: []
   }
 
 export const targetObj = {
     notes: "",
     reminder: "",
-    sets: [{reps: 0, weight:"0"}]
+    sets: [],
+    superset: []
   }
 
 export const userProfile = {
@@ -854,15 +856,15 @@ export const userWork = {
             "name": "Push Day",
             "exercises": [
                 {
+                    "exercise": 0,
+                    "superset": []
+                },
+                {
                     "exercise": 8,
                     "superset": []
                 },
                 {
                     "exercise": 6,
-                    "superset": []
-                },
-                {
-                    "exercise": 0,
                     "superset": []
                 },
                 {
@@ -941,12 +943,8 @@ export const userWork = {
             "title": "",
             "results": [
                 {
-                    "sets": [
-                        {
-                            "reps": 0,
-                            "weight": "0"
-                        }
-                    ],
+                    "sets": [],
+                    "superset": [],
                     "notes": "",
                     "name": "",
                     "rpe": 0
@@ -959,12 +957,8 @@ export const userWork = {
         "title": "",
         "results": [
             {
-                "sets": [
-                    {
-                        "reps": 0,
-                        "weight": "0"
-                    }
-                ],
+                "sets": [],
+                "superset": [],
                 "notes": "",
                 "name": "",
                 "rpe": 0

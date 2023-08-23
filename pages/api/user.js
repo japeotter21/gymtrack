@@ -50,7 +50,14 @@ export default function handler(req, res) {
                     [`key`]: 'profile',
                     ['user']: user
                 },
-                "update": {
+                "update": req.body.select !== undefined ? 
+                {
+                    "$set": {
+                        [`profile.select`]: req.body.select
+                    }
+                }
+                :
+                {
                     "$set": {
                         [`profile.bio`]: req.body.bio,
                         [`profile.goal`]: req.body.goal,

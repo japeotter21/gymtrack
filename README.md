@@ -16,19 +16,23 @@ Core Features:
 To Do:
 <p>✅ Progress tracking by exercise (chart)</p>
 <p>✅ Create and edit workouts</p>
+<p>✅ Drag and drop editing</p>
+<p>✅ Reconfigure schema for GraphQL</p>
 <p>✅ Show workout history</p>
 <p>✅ Create and ✅ edit programs</p>
-<p>✅ User flow and auth
-  ✅ User associated data
-</p>
+<p>✅ User flow and auth</p>
+<p>✅ User associated data</p>
 <p>✅ Add exercises and assign attributes (back/pull/etc.)</p>
-<p>⬜ Create workout routine templates</p>
 <p>✅ duration tracking of exercises and workouts</p>
+<p>⬜ Create workout routine templates</p>
+<p>⬜ Migrate React Scheduler to custom calendar</p>
+<p>⬜ API cleanup (separate GraphQL service)</p>
 <p>⬜ Configure progression to set target weights</p>
-<p>⬜ AI workout progressions, plans and exercise recommendations</p>
-</p>
+<p>⬜ User behavior tracking</p>
+<p>⬜ Supabase for images</p>
 
 Future: 
-- Social Features?
-- Attendance Tracking -- Check-in at location?
-- Migrate to app
+<p>⬜ AI workout progressions, plans and exercise recommendations</p>
+<p>Social Features?</p>
+<p>Attendance Tracking -- Check-in at location?</p>
+<p>⬜ Migrate to Flutter</p>

@@ -7,6 +7,7 @@ import axios from 'axios'
 import Pagenav from '../components/Pagenav'
 import AppContext from '../AppContext'
 import { redirect } from 'next/navigation'
+import DialogButton from '../components/DialogButton'
 
 export default function Schedule() {
     const [loading, setLoading] = useState(true)
@@ -16,6 +17,7 @@ export default function Schedule() {
     const [newGoal, setNewGoal] = useState('')
     const [editProfile, setEditProfile] = useState(false)
     const [updating, setUpdating] = useState(false)
+    const [inputType, setInputType] = useState(true)
     const {activeUser, Refresh} = useContext(AppContext)
 
     useEffect(()=>{
@@ -23,11 +25,12 @@ export default function Schedule() {
         {
             axios.get('/api/user', {params:{user:activeUser}})
             .then(res=>{
-            setLoading(false)
-            setProfile(res.data.profile)
+                setLoading(false)
+                setProfile(res.data.profile)
+                setInputType(res.data.profile.select)
             })
             .catch(err=>{
-            console.error(err.message)
+                console.error(err.message)
             })
         }
         else
@@ -44,6 +47,29 @@ export default function Schedule() {
             setNewName(profile.name)
         }
     },[editProfile])
+
+    useEffect(()=>{
+        if(profile.select !== undefined)
+        {
+            if(inputType != profile.select)
+            {
+                const postObj = {
+                    select: inputType
+                }
+                setUpdating(true)
+                axios.put('/api/user', postObj, { params: {user:activeUser} })
+                .then(res=>{
+                    axios.get('/api/user', { params: {user:activeUser}})
+                    .then(r=>{
+                        setProfile(r.data.profile)
+                        setUpdating(false)
+                        setEditProfile(false)
+                        setInputType(r.data.profile.select)
+                    })
+                })
+            }
+        }
+    },[inputType])
         
     function UpdateProfile() {
         const postObj = {
@@ -71,8 +97,8 @@ export default function Schedule() {
     }
 
     return (
-        <main className="flex min-h-screen flex-col items-center py-6 lg:pt-12 px-2 lg:p-12 gap-4">
-            <div className='w-full gap-3 lg:w-1/2'>
+        <main className="min-h-screen py-6 lg:pt-12 px-2 lg:p-12 flex flex-col items-center">
+            <div className='w-full flex flex-col items-center gap-3 lg:w-1/2 mb-6'>
                 <div className='flex w-full items-center gap-2 lg:gap-6'>
                     <div>
                         <Avatar sx={{height:60, width:60}}>{profile.name ? profile.name.charAt(0) : activeUser.charAt(0)}</Avatar>
@@ -91,6 +117,21 @@ export default function Schedule() {
                         <p className='text-sm'>Best: {profile.streak.best}</p>
                         </div>
                         {/* <p className='text-sm'>Goal: {profile.goal}</p> */}
+                    </div>
+                </div>
+                <div className='w-full border border-gray-300 rounded-lg bg-stone-50 px-4 py-2'>
+                    <p className='font-semibold'>Settings</p>
+                    <hr className='mt-1 mb-2' />
+                    <div className='grid grid-cols-3 text-sm items-center'>
+                        <p>Input Preference</p>
+                        <div className='flex items-center gap-2 col-span-2 justify-end'>
+                            <div className='rounded-full flex items-center border border-neutral-300'
+                                onClick={()=>setInputType(!inputType)}
+                            >
+                                <p className={`px-4 py-1 rounded-full transition duration-500 ${!inputType ? 'bg-stone-200 text-green-500 shadow-md' : ''}`}>Text Box</p>
+                                <p className={`px-4 py-1 rounded-full transition duration-500 ${inputType ? 'bg-stone-200 text-green-500 shadow-md' : ''}`}>Dropdown</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -116,17 +157,7 @@ export default function Schedule() {
                     <button className='shadow-md border border-neutral-500 rounded-md py-1 px-3'
                     onClick={()=>setEditProfile(false)}
                     >Cancel</button>
-                    { updating ?
-                    <button disabled className='shadow-md bg-green-600 text-white rounded-md py-1 px-4'
-                    >Saving...
-                    </button>
-                    :
-                    <button className='shadow-md bg-green-600 text-white rounded-md py-1 px-4'
-                        onClick={UpdateProfile}
-                    >Save
-                    </button>
-                    }
-                    
+                    <DialogButton text='Save' loading={updating} loadingText='Saving...' action={UpdateProfile} type="button" />
                 </div>
                 </div>
             </Dialog>

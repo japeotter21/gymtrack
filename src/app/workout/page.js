@@ -70,7 +70,14 @@ export default function Workout() {
                 res.data.inProgress.results.forEach((item,id)=>item.name !== "" ? done = true : <></>)
                 if(done)
                 {
-                    setFinishObj(res.data.inProgress)
+                    let currentIP = res.data.inProgress
+                    if(sessionStorage.getItem('supersets') && sessionStorage.getItem('supersets') !== undefined)
+                    {
+                        const supersets = JSON.parse(sessionStorage.getItem('supersets'))
+                        const newResults = currentIP.results.concat(supersets)
+                        currentIP.results = newResults
+                    }
+                    setFinishObj(currentIP)
                 }
             })
         }
@@ -96,6 +103,7 @@ export default function Workout() {
         FinishWorkout(dayNum, activeUser, false, postObj)
         .then(r=>{
             setFinishing(false)
+            sessionStorage.removeItem('supersets')
             router.push('/history')
         })
     }
