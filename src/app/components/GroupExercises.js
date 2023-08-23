@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 
-export default function GroupExercises({exercises, setChoice, choice, ss}) {
+export default function GroupExercises({exercises, setChoice, choice, ss, disabled}) {
     const [groupedEx, setGroupedEx] = useState([])
 
     const muscleGroups = ['Chest', 'Shoulders', 'Triceps', 'Back', 'Biceps', 'Legs', 'Accessory']
@@ -65,7 +65,7 @@ export default function GroupExercises({exercises, setChoice, choice, ss}) {
 
     return (
         <select className='border border-gray-400 rounded-md p-1 bg-stone-50 w-full'
-        onChange={(e)=>setChoice(e.target.value)} value={choice}
+        onChange={(e)=>setChoice(e.target.value)} value={choice} disabled={disabled}
         >
             <option value='' disabled>Select Exercise</option>
             {ss ? 

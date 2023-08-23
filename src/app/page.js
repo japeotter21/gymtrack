@@ -84,9 +84,54 @@ export default function Home() {
         setEditReps(exercises[editing].target.sets[0].reps)
         setEditWeight(exercises[editing].target.sets[0].weight)
         setEditNotes(exercises[editing].target.notes)
-        setSuperset(currentSS[0])
+        if(currentSS.length > 0)
+        {
+          setSuperset(currentSS[0])
+        }
     }
   },[editing])
+
+  useEffect(()=>{
+    if(editing !== null && superset !== '')
+    {
+        const wTemp = currentWorkout
+        const exIndex = wTemp.exercises.findIndex((item,id)=>editing == item.exercise)
+        if(parseInt(superset) !== wTemp.exercises[exIndex].superset[0])
+        {
+          setUpdating(true)
+          wTemp.exercises[exIndex].superset = [parseInt(superset)]
+          axios.post('/api/workouts',wTemp.exercises,{params:{workout: currentWorkoutIndex, user:activeUser}})
+          .then(res=>{
+            axios.get('/api/workouts', { params: {user:activeUser}})
+            .then(r=>{
+                const currentIndex = r.data.currentProgram
+                const dayIndex = r.data.currentDay
+                const workoutIndex = r.data.programs[currentIndex].schedule[dayIndex]
+                setCurrentWorkout(r.data.workouts[workoutIndex])
+                setUpdating(false)
+            })
+          })
+        }
+    }
+  },[superset])
+
+  function DeleteSS() {
+      const wTemp = currentWorkout
+      const exIndex = wTemp.exercises.findIndex((item,id)=> editing == item.exercise)
+      wTemp.exercises[exIndex].superset = []
+      axios.post('/api/workouts',wTemp.exercises,{params:{workout: currentWorkoutIndex, user:activeUser}})
+      .then(res=>{
+        axios.get('/api/workouts', { params: {user:activeUser}})
+        .then(r=>{
+            const currentIndex = r.data.currentProgram
+            const dayIndex = r.data.currentDay
+            const workoutIndex = r.data.programs[currentIndex].schedule[dayIndex]
+            setCurrentWorkout(r.data.workouts[workoutIndex])
+            setSuperset('')
+            setCurrentSS([])
+        })
+      })
+  }
 
   function HandleClose() {
     setEditSets(0)
@@ -122,7 +167,6 @@ export default function Home() {
     })
   }
 
-  
   const reorder = (list, startIndex, endIndex) => {
     const result = list
     const [removed] = result.splice(startIndex, 1);
@@ -340,9 +384,11 @@ export default function Home() {
                 <>
                     <p className='text-md'>Superset?</p>
                     <div className='flex items-center gap-4 col-span-2 lg:col-span-1'>
-                        <GroupExercises exercises={exercises} choice={superset} setChoice={setSuperset} ss={true} />
+                        <GroupExercises exercises={exercises} choice={superset} setChoice={setSuperset} ss={true} disabled={updating} />
                         { currentSS.length > 0 ?
-                        <div className='p-2 text-red-500 block ml-auto cursor-pointer'><BsTrash size={15} /></div>
+                        <div className='p-2 text-red-500 block ml-auto cursor-pointer'>
+                          <BsTrash size={15} onClick={DeleteSS} />
+                        </div>
                         :
                           <></>
                         }
