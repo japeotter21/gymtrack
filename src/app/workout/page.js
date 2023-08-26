@@ -10,6 +10,7 @@ import { FinishWorkout } from '@/services/services';
 import { Dialog } from '@mui/material';
 import DialogButton from '../components/DialogButton';
 
+
 export default function Workout() {
     const [profile, setProfile] = useState({})
     const [loading, setLoading] = useState(true)
@@ -141,11 +142,10 @@ export default function Workout() {
                 }
             </div>
             { currentWorkout.exercises.map((lift,id)=>
-                <>
-                    <LiveExerciseLog lift={lift.exercise} id={id} complete={complete} setComplete={setComplete} currentWorkout={currentWorkout} currentWorkoutIndex={currentWorkoutIndex}
-                        profile={profile} exercises={exercises} username={activeUser} setExercises={setExercises} setFinishObj={setFinishObj}
-                    />
-                </>
+                <LiveExerciseLog key={`exercise${id}`} lift={lift.exercise} id={id} complete={complete} setComplete={setComplete} currentWorkout={currentWorkout} currentWorkoutIndex={currentWorkoutIndex}
+                    profile={profile} exercises={exercises} username={activeUser} setExercises={setExercises} setFinishObj={setFinishObj} setCurrentWorkout={setCurrentWorkout}
+                    
+                />
             )}
             <Dialog open={finishObj && workoutComplete} onClose={()=>setWorkoutComplete(false)}>
                 <div className='px-4 py-3'>

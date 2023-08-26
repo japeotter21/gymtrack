@@ -3,12 +3,18 @@ import React, { useState, useEffect } from 'react'
 import { BsPause, BsPauseBtn, BsPlay, BsPlus, BsTrash } from 'react-icons/bs'
 import axios from 'axios'
 import { useRouter } from 'next/navigation';
-import { FormControl, RadioGroup, FormControlLabel, Radio, Slider } from '@mui/material';
+import { FormControl, RadioGroup, FormControlLabel, Radio, Slider, Dialog } from '@mui/material';
 import { repConstant } from '@/globals';
 import LiveButton from './LiveButton.js'
 import { HiLink } from 'react-icons/hi2';
+import GroupExercises from './GroupExercises.js';
 
-export default function LiveExerciseLog({complete, lift, id, setComplete, currentWorkout, profile, currentWorkoutIndex, exercises, setExercises, username, setFinishObj}) {
+const textOptions = ['Machine taken?', 'Machine broken?', 'Not feeling it?', 'In a hurry?']
+
+export default function LiveExerciseLog({complete, lift, id, setComplete, currentWorkout, profile, currentWorkoutIndex, exercises, setExercises, username,
+    setFinishObj, setCurrentWorkout
+    })
+{
     const [targetSets, setTargetSets] = useState([])
     const [radioVal, setRadioVal] = useState(6)
     const [addSet, setAddSet] = useState([])
@@ -19,13 +25,22 @@ export default function LiveExerciseLog({complete, lift, id, setComplete, curren
     const [loading, setLoading] = useState(true)
     const [saving, setSaving] = useState(false)
     const [updating, setUpdating] = useState(false)
+    const [randomText, setRandomText] = useState(0)
+    const [swap, setSwap] = useState(false)
+    const [choice, setChoice] = useState(lift)
+    const [initialLift, setInitialLift] = useState(null)
+
+    useEffect(()=>{
+        setRandomText(Math.floor(Math.random()*4))
+        setInitialLift(lift)
+    },[])
 
     useEffect(()=>{
         if(exercises.length > 0)
         {
-            setTargetSets(exercises[lift].target.sets)
+            setTargetSets(exercises[choice].target.sets)
         }
-    },[lift, exercises])
+    },[choice, exercises])
 
     useEffect(()=>{
         if(complete)
@@ -66,6 +81,31 @@ export default function LiveExerciseLog({complete, lift, id, setComplete, curren
         }
     },[ssId])
 
+    useEffect(()=>{
+        if(choice != lift) {
+            const currenttemp = Object.assign({}, currentWorkout)
+            currenttemp.exercises.splice(id,1,
+                {
+                    exercise: parseInt(choice),
+                    superset: superset
+                }
+            )
+            setCurrentWorkout(currenttemp)
+            setSwap(false)
+        }
+        else if (currentWorkout.exercises[id].exercise !== initialLift && initialLift !== null)
+        {
+            const currenttemp = Object.assign({}, currentWorkout)
+            currenttemp.exercises.splice(id,1,
+                {
+                    exercise: lift,
+                    superset: superset
+                }
+            )
+            setCurrentWorkout(currenttemp)
+        }
+    },[choice])
+    
     function SubmitSetForm(e) {
         e.preventDefault()
         const exerciseIndex = e.target.id.split('-')[1]
@@ -85,7 +125,7 @@ export default function LiveExerciseLog({complete, lift, id, setComplete, curren
             }
         })
         const resultObj = {
-            name: exercises[lift].name,
+            name: exercises[choice].name,
             notes: '',
             rpe: radioVal,
             sets: postArr,
@@ -237,14 +277,21 @@ export default function LiveExerciseLog({complete, lift, id, setComplete, curren
             <></>
         )
     }
-
+    console.log(lift,choice, initialLift)
     return (
         <div className={`w-5/6 lg:w-1/2 flex-col gap-3 items-center border border-gray-300 rounded-lg ${completed && !editing ? 'bg-neutral-200' : 'bg-stone-50'} px-4 py-1 shadow-md`} key={id}>
-            <p className='text-lg font-semibold text-center'>{exercises[lift].name}</p>
+            {choice !== lift ?
+                <div className='flex justify-between items-center'>
+                    <p className='text-lg font-semibold text-center'>{exercises[choice].name}</p>
+                    <button className='text-red-500' onClick={()=>setChoice(initialLift)}>Revert</button>
+                </div>
+                :
+                <p className='text-lg font-semibold text-center'>{exercises[choice].name}</p>
+            }
             <div className='grid grid-cols-3 mt-2 gap-2 items-center'>
-                <p className='text-xs text-gray-400'>Set</p>
-                <p className='text-xs text-gray-400'>Reps</p>
-                <p className='text-xs text-gray-400'>Weight</p>
+                <p className='text-xs text-neutral-500'>Set</p>
+                <p className='text-xs text-neutral-500'>Reps</p>
+                <p className='text-xs text-neutral-500'>Weight</p>
             </div>
             <form id={`lift-${lift}`} onSubmit={(e)=>SubmitSetForm(e)}>
                 { !completed ? 
@@ -261,14 +308,14 @@ export default function LiveExerciseLog({complete, lift, id, setComplete, curren
                                     >Remove</button>
                                 }
                             </div>
-                            <select type="number" id={`${exercises[lift].name}set${index+1}`} name={`${exercises[lift].name}set${index+1}`} defaultValue={set.reps || ''}
+                            <select type="number" id={`${exercises[choice].name}set${index+1}`} name={`${exercises[choice].name}set${index+1}`} defaultValue={set.reps || ''}
                                 className='border border-gray-400 rounded-md px-2'
                             >
                                 {repConstant.map((rep,number)=>
                                     <option value={rep} key={number}>{rep}</option>
                                 )}
                             </select>
-                            <input type="number" step="0.5" id={`${exercises[lift].name}set${index+1}`} name={`${exercises[lift].name}set${index+1}`} defaultValue={set.weight || ''}
+                            <input type="number" step="0.5" id={`${exercises[choice].name}set${index+1}`} name={`${exercises[choice].name}set${index+1}`} defaultValue={set.weight || ''}
                                 className='border border-gray-400 rounded-md px-2' required
                             />
                         </div>
@@ -287,14 +334,14 @@ export default function LiveExerciseLog({complete, lift, id, setComplete, curren
                                 >Remove</button>
                             }
                         </div>
-                        <select disabled={completed && !editing} type="number" id={`${exercises[lift].name}set${index+1}`} name={`${exercises[lift].name}set${index+1}`} defaultValue={set.reps || ''}
+                        <select disabled={completed && !editing} type="number" id={`${exercises[choice].name}set${index+1}`} name={`${exercises[choice].name}set${index+1}`} defaultValue={set.reps || ''}
                             className='border border-gray-400 rounded-md px-2'
                         >
                             {repConstant.map((rep,number)=>
                                 <option value={rep} key={number}>{rep}</option>
                             )}
                         </select>
-                        <input disabled={completed && !editing} type="number" step="0.5" id={`${exercises[lift].name}set${index+1}`} name={`${exercises[lift].name}set${index+1}`} defaultValue={set.weight || ''}
+                        <input disabled={completed && !editing} type="number" step="0.5" id={`${exercises[choice].name}set${index+1}`} name={`${exercises[choice].name}set${index+1}`} defaultValue={set.weight || ''}
                             className='border border-gray-400 rounded-md px-2' required
                         />
                     </div>
@@ -425,6 +472,21 @@ export default function LiveExerciseLog({complete, lift, id, setComplete, curren
                     <LiveButton disabled={!(radioVal > 0)} text={'Save'} loading={saving} loadingText={'Saving...'} />
                 }
             </form>
+            <div className='flex justify-center mt-4 mb-2 gap-1'>
+                <p className='text-sm text-gray-400'>{textOptions[randomText]}</p>
+                <button className='text-sm text-blue-500 underline'
+                    onClick={()=>setSwap(true)}
+                >Swap Exercise</button>
+            </div>
+            <Dialog open={swap} onClose={()=>setSwap(false)}>
+                <div className='px-4 py-3'>
+                    <div className='font-semibold'>New Exercise</div>
+                    <GroupExercises exercises={exercises} setChoice={setChoice} choice={choice} ss={false} disabled={completed !== null} />
+                    <button className='border border-gray-400 py-1 px-3 mt-4 rounded-xl lg:hover:bg-red-100 lg:hover:border-red-200 lg:hover:text-red-500 lg:hover:scale-105 transition duration-200'
+                        onClick={()=>{setSwap(false);setChoice(lift)}}
+                    >Cancel</button>
+                </div>
+            </Dialog>
         </div>
     )
 }
