@@ -41,9 +41,9 @@ export default function History() {
         const blankDays = Array.from({length:startDay},x=>0)
         const endDaysLength = 6 - endDay
         const endBlankDays = Array.from({length:endDaysLength},x=>0)
-        const monthDays = Array.from({length:endDate},(x,i)=>Date.parse(`${month+1}-${i+1}-${year}`))
+        const monthDays = Array.from({length:endDate},(x,i)=>new Date(`${month+1}/${i+1}/${year}`).getTime())
         const daysTemp = blankDays.length > 0 ? blankDays.concat(monthDays) : monthDays
-        const newTemp = daysTemp.concat(endBlankDays)
+        const newTemp = endBlankDays.length > 0 ? daysTemp.concat(endBlankDays) : daysTemp
         setCalendarDays(newTemp)
     },[month])
 
@@ -159,7 +159,7 @@ export default function History() {
                 <button className='border bg-white px-2 py-1' onClick={()=>setMonth(month-1)}><BsChevronLeft /></button>
                 <button className='border bg-white px-2 py-1' onClick={()=>setMonth(month+1)}><BsChevronRight /></button>
             </div>
-            <div className='grid grid-cols-7 bg-white w-full h-[60vh] divide-x divide-y border rounded-sm shadow-md'>
+            <div className='grid grid-cols-7 bg-white w-full divide-x divide-y border rounded-sm shadow-md'>
                 {calendarDays.map((day,index)=>
                     <div key={index} className='px-0.5 pb-10 pt-1'>
                         {day > 0 ?
