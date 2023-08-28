@@ -229,7 +229,7 @@ export default function WorkoutList({exercises, setExercises, currentWorkout, se
                                                                 <p className="underline text-xs text-blue-500">
                                                                     <button type='button' className='text-blue-500 flex items-center'
                                                                         onClick={()=>{setShowSS(ind);setCurrentSS(ex.superset)}}
-                                                                    ><HiLink />&nbsp;Superset</button>
+                                                                    ><HiLink />&nbsp;Add Superset</button>
                                                                     
                                                                 </p>}
                                                             </div>

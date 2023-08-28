@@ -34,7 +34,7 @@ export default function Pagenav({page}) {
                         onClick={()=>Navigate('/stats')}
                     >
                         <BsGraphUp size={20} />
-                        <p className='text-sm mt-2'>Stats</p>
+                        <p className='text-sm mt-2'>Track</p>
                     </div>
                 }
                 {page === 'workouts' ?

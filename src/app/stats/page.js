@@ -9,6 +9,7 @@ import Pagenav from '../components/Pagenav'
 import { ResponsiveLine } from '@nivo/line'
 import AppContext from '../AppContext'
 import { redirect } from 'next/navigation'
+import LineChart from '../components/LineChart'
 
 export default function Stats() {
     const [loading, setLoading] = useState(true)
@@ -19,6 +20,7 @@ export default function Stats() {
     const [results, setResults] = useState([])
     const [yMax, setYMax] = useState(200)
     const [choice, setChoice] = useState('')
+    const [range, setRange] = useState('all')
     const maxPercent = [0, 1, 0.95, 0.93, 0.9, 0.87, 0.85, 0.83, 0.8, 0.77, 0.75, 0.7, 0.67, 0.65]
     const {activeUser, Refresh} = useContext(AppContext)
 
@@ -119,14 +121,24 @@ export default function Stats() {
 
     return (
         <main className="flex min-h-screen flex-col items-center py-6 lg:pt-12 px-2 lg:p-12 gap-4">
-            <select className='border border-gray-400 rounded-md p-1'
-                  onChange={(e)=>ChartExercise(e)} defaultValue=''
-                >
-                  <option value='' disabled>Select Exercise</option>
-                  {results.map((ex,id)=>
-                      <option value={id} key={id}>{ex.name}</option>
-                  )}
-            </select>
+            <div className='flex items-center justify-between w-11/12'>
+                <select className='border border-gray-400 rounded-md p-1'
+                    onChange={(e)=>ChartExercise(e)} defaultValue=''
+                    >
+                    <option value='' disabled>Select Exercise</option>
+                    {results.map((ex,id)=>
+                        <option value={id} key={id}>{ex.name}</option>
+                    )}
+                </select>
+                <select className='border border-gray-400 rounded-md p-1'
+                    onChange={(e)=>setRange(e.target.value)} defaultValue=''
+                    >
+                    <option value='' disabled>Range</option>
+                    <option value='all'>All</option>
+                    <option value='month'>Month</option>
+                    <option value='year'>Year</option>
+                </select>
+            </div>
             { current !== null ?
                 <>
                     <p className='mx-auto w-max'>Projected 1-Rep Max (lbs)</p>
@@ -170,7 +182,7 @@ export default function Stats() {
                                     pointLabelYOffset={-7}
                                     useMesh={false}
                                 />
-                                
+                                {/* <LineChart data={data} /> */}
                         </div>
                     </div>
                     <div className='w-full lg:w-1/2 bg-stone-50 rounded-lg px-4 py-2 max-h-[30vh] overflow-y-auto'>
@@ -180,7 +192,7 @@ export default function Stats() {
                                 <p className='col-span-1 text-gray-400 text-sm'>Date</p>
                                 <p className='col-span-4 text-gray-400 text-sm'>Results</p>
                             </div>
-                            { current.map((item,id)=>
+                            { current.slice().reverse().map((item,id)=>
                                 <div key={id} className='grid grid-cols-5 items-center'>
                                     <p className='col-span-1 text-sm'>{new Date(parseInt(item.date)).getMonth()+1}-{new Date(parseInt(item.date)).getDate()}</p>
                                     <div className='flex gap-3 text-sm col-span-4'>
