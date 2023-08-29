@@ -80,10 +80,10 @@ export default function Home() {
   useEffect(()=>{
     if(editing !== null)
     {
-        setEditSets(exercises[editing].target.sets.length)
-        setEditReps(exercises[editing].target.sets[0].reps)
-        setEditWeight(exercises[editing].target.sets[0].weight)
-        setEditNotes(exercises[editing].target.notes)
+        setEditSets(exercises[editing].target?.sets?.length || 0)
+        setEditReps(exercises[editing].target?.sets[0]?.reps || 0)
+        setEditWeight(exercises[editing].target?.sets[0]?.weight || 0)
+        setEditNotes(exercises[editing].target?.notes)
         if(currentSS.length > 0)
         {
           setSuperset(currentSS[0])
@@ -315,9 +315,9 @@ export default function Home() {
                                   <HiChevronUpDown size={18} className='absolute ml-[-8px] text-gray-500' />
                                   <span className='ml-[12px]'>{exercises[item.exercise].name}</span>
                                 </div>
-                                <div className='py-2 px-1' onClick={()=>{setEditing(item.exercise);setCurrentSS(item.superset)}}>{exercises[item.exercise].target.sets.length}</div>
-                                <div className='py-2 px-1' onClick={()=>{setEditing(item.exercise);setCurrentSS(item.superset)}}>{exercises[item.exercise].target.sets[0].reps}</div>
-                                <div className='py-2 px-1' onClick={()=>{setEditing(item.exercise);setCurrentSS(item.superset)}}>{exercises[item.exercise].target.sets[0].weight}</div>
+                                <div className='py-2 px-1' onClick={()=>{setEditing(item.exercise);setCurrentSS(item.superset)}}>{exercises[item.exercise].target?.sets?.length || 0}</div>
+                                <div className='py-2 px-1' onClick={()=>{setEditing(item.exercise);setCurrentSS(item.superset)}}>{exercises[item.exercise].target?.sets[0]?.reps || 0}</div>
+                                <div className='py-2 px-1' onClick={()=>{setEditing(item.exercise);setCurrentSS(item.superset)}}>{exercises[item.exercise].target?.sets[0]?.weight || "0"}</div>
                                 <DeleteExercise currentWorkout={currentWorkout} currentWorkoutIndex={currentWorkoutIndex} setCurrentWorkout={setCurrentWorkout}
                                   username={activeUser} item={item.exercise} id={id} homepage={true} exercises={exercises}
                                 />
@@ -326,9 +326,9 @@ export default function Home() {
                                   {item.superset.map((ex,index)=>
                                     <div className='flex items-center col-span-9 grid grid-cols-9 bg-sky-100 bg-opacity-40' key={`supserset-${index}`}>
                                       <div className='col-span-5 ml-4 gap-2 flex items-center text-blue-500'> <HiLink /> <p className='text-neutral-800'>{exercises[ex].name}</p></div>
-                                      <div className='py-2 px-1' onClick={()=>{setEditing(ex);setEditSS(true)}}>{exercises[ex].target.sets.length}</div>
-                                      <div className='py-2 px-1' onClick={()=>{setEditing(ex);setEditSS(true)}}>{exercises[ex].target.sets[0].reps}</div>
-                                      <div className='py-2 px-1' onClick={()=>{setEditing(ex);setEditSS(true)}}>{exercises[ex].target.sets[0].weight}</div>
+                                      <div className='py-2 px-1' onClick={()=>{setEditing(ex);setEditSS(true)}}>{exercises[ex].target?.sets?.length || 0}</div>
+                                      <div className='py-2 px-1' onClick={()=>{setEditing(ex);setEditSS(true)}}>{exercises[ex].target?.sets[0]?.reps || 0}</div>
+                                      <div className='py-2 px-1' onClick={()=>{setEditing(ex);setEditSS(true)}}>{exercises[ex].target?.sets[0]?.weight || "0"}</div>
                                     </div>
                                   )}
                                 </>

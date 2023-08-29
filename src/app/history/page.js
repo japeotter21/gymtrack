@@ -129,7 +129,7 @@ export default function History() {
             if(duration !== NaN)
             {
                 const hours = Math.floor(duration / 3600)
-                const minutes = Math.floor(duration / 60)
+                const minutes = Math.floor(duration % 60)
                 setDisplayTime(`${hours}:${minutes.toLocaleString('en-US',{minimumIntegerDigits:2})}`)
             }
             else
