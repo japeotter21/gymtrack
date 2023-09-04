@@ -31,12 +31,23 @@ export default function LiveExerciseLog({complete, lift, id, setComplete, curren
     const [choice, setChoice] = useState(lift)
     const [initialLift, setInitialLift] = useState(null)
     const [showDirections, setShowDirections] = useState(false)
-    const [swipe, setSwipe] = useState(false)
-
+    const [swipe, setSwipe] = useState(true)
     const handlers = useSwipeable({
         onSwipeStart: () => setShowDirections(true),
-        onSwipedLeft: swipe && activeSlide+1 >= currentWorkout?.exercises.length ? setActiveSlide(activeSlide) : () => {setActiveSlide(activeSlide+1);setShowDirections(false)},
-        onSwipedRight: swipe && activeSlide === 0 ? setActiveSlide(activeSlide) : () => {setActiveSlide(activeSlide-1);setShowDirections(false)},
+        onSwipedLeft(e) {
+            if(-e.deltaX > 200 && activeSlide < currentWorkout.exercises.length - 2 && swipe)
+            {
+                setActiveSlide(activeSlide+1)
+                setShowDirections(false)
+            }
+        },
+        onSwipedRight(e) {
+            if (e.deltaX > 200 && activeSlide > 0 && swipe)
+            {
+                setActiveSlide(activeSlide-1)
+                setShowDirections(false)
+            }
+        },
     });
 
     useEffect(()=>{
@@ -288,17 +299,18 @@ export default function LiveExerciseLog({complete, lift, id, setComplete, curren
     }
 
     return (
-        <div className={`w-5/6 lg:w-1/2 flex-col mx-auto gap-3 items-center border border-gray-300 rounded-lg ${completed && !editing ? 'bg-neutral-200' : 'bg-stone-50'} px-4 py-1 shadow-md`} key={id}
+        <div
+            className={`w-5/6 lg:w-1/2 flex-col mx-auto gap-3 items-center border border-gray-300 rounded-lg ${completed && !editing ? 'bg-neutral-200' : 'bg-stone-50'} px-4 py-3 shadow-md`} key={id}
             {...handlers} style={{preventScrollOnSwipe:true}}
         >
             <div>
                 {choice !== lift ?
-                    <div className='flex justify-between items-center my-2'>
+                    <div className='flex justify-between items-center mb-2'>
                         <p className='text-lg font-semibold text-center'>{exercises[choice].name}</p>
                         <button className='text-red-500' onClick={()=>setChoice(initialLift)}>Revert</button>
                     </div>
                     :
-                    <p className='text-lg font-semibold text-center my-2'>{exercises[choice].name}</p>
+                    <p className='text-lg font-semibold text-center mb-2'>{exercises[choice].name}</p>
                 }
                 <div className='grid grid-cols-3 mt-4 gap-2 items-center'>
                     <p className='text-xs text-neutral-500'>Set</p>
@@ -399,7 +411,7 @@ export default function LiveExerciseLog({complete, lift, id, setComplete, curren
                             <HiLink size={23} />
                             |
                         </p>
-                        <p className='text-lg font-semibold text-center'>{exercises[ssId].name}</p>
+                        <p className='text-lg font-semibold text-center my-2'>{exercises[ssId].name}</p>
                         {superset.map((ss,index)=>
                             <div key={index} className='grid grid-cols-3 my-1 gap-2 items-center'>
                                 <div className='flex gap-3 items-center'>
@@ -485,7 +497,7 @@ export default function LiveExerciseLog({complete, lift, id, setComplete, curren
                     <LiveButton disabled={!(radioVal > 0)} text={'Save'} loading={saving} loadingText={'Saving...'} />
                 }
             </form>
-            <div className='flex justify-center mt-4 mb-2 gap-1'>
+            <div className='flex justify-center mt-4 gap-1'>
                 <p className='text-sm text-gray-400'>{textOptions[randomText]}</p>
                 <button className='text-sm text-blue-500 underline'
                     onClick={()=>setSwap(true)}
