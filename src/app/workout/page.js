@@ -129,7 +129,7 @@ export default function Workout() {
                                 setActiveSlide={setActiveSlide} activeSlide={activeSlide}
                             />
                         :
-                            <div className='h-11/12'></div>
+                            <div className='h-11/12' key={id}></div>
                     }
                 </>
                 )}
@@ -143,7 +143,7 @@ export default function Workout() {
                     <button disabled className='text-neutral-400'><BsChevronLeft /></button>
                 }
                 {currentWorkout.exercises.map((item,id)=>
-                    <div>
+                    <div key={id}>
                         {id === activeSlide ?
                             <BsCircleFill size={15} style={{color:'#16a34a'}} />
                             :
