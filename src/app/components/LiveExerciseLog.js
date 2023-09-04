@@ -8,11 +8,12 @@ import { repConstant } from '@/globals';
 import LiveButton from './LiveButton.js'
 import { HiLink } from 'react-icons/hi2';
 import GroupExercises from './GroupExercises.js';
+import { useSwipeable } from 'react-swipeable';
 
 const textOptions = ['Machine taken?', 'Machine broken?', 'Not feeling it?', 'In a hurry?']
 
 export default function LiveExerciseLog({complete, lift, id, setComplete, currentWorkout, profile, currentWorkoutIndex, exercises, setExercises, username,
-    setFinishObj, setCurrentWorkout
+    setFinishObj, setCurrentWorkout, setActiveSlide, activeSlide
     })
 {
     const [targetSets, setTargetSets] = useState([])
@@ -29,6 +30,14 @@ export default function LiveExerciseLog({complete, lift, id, setComplete, curren
     const [swap, setSwap] = useState(false)
     const [choice, setChoice] = useState(lift)
     const [initialLift, setInitialLift] = useState(null)
+    const [showDirections, setShowDirections] = useState(false)
+    const [swipe, setSwipe] = useState(false)
+
+    const handlers = useSwipeable({
+        onSwipeStart: () => setShowDirections(true),
+        onSwipedLeft: swipe && activeSlide+1 >= currentWorkout?.exercises.length ? setActiveSlide(activeSlide) : () => {setActiveSlide(activeSlide+1);setShowDirections(false)},
+        onSwipedRight: swipe && activeSlide === 0 ? setActiveSlide(activeSlide) : () => {setActiveSlide(activeSlide-1);setShowDirections(false)},
+    });
 
     useEffect(()=>{
         setRandomText(Math.floor(Math.random()*4))
@@ -279,21 +288,25 @@ export default function LiveExerciseLog({complete, lift, id, setComplete, curren
     }
 
     return (
-        <div className={`w-5/6 lg:w-1/2 flex-col gap-3 items-center border border-gray-300 rounded-lg ${completed && !editing ? 'bg-neutral-200' : 'bg-stone-50'} px-4 py-1 shadow-md`} key={id}>
-            {choice !== lift ?
-                <div className='flex justify-between items-center'>
-                    <p className='text-lg font-semibold text-center'>{exercises[choice].name}</p>
-                    <button className='text-red-500' onClick={()=>setChoice(initialLift)}>Revert</button>
+        <div className={`w-5/6 lg:w-1/2 flex-col mx-auto gap-3 items-center border border-gray-300 rounded-lg ${completed && !editing ? 'bg-neutral-200' : 'bg-stone-50'} px-4 py-1 shadow-md`} key={id}
+            {...handlers} style={{preventScrollOnSwipe:true}}
+        >
+            <div>
+                {choice !== lift ?
+                    <div className='flex justify-between items-center my-2'>
+                        <p className='text-lg font-semibold text-center'>{exercises[choice].name}</p>
+                        <button className='text-red-500' onClick={()=>setChoice(initialLift)}>Revert</button>
+                    </div>
+                    :
+                    <p className='text-lg font-semibold text-center my-2'>{exercises[choice].name}</p>
+                }
+                <div className='grid grid-cols-3 mt-4 gap-2 items-center'>
+                    <p className='text-xs text-neutral-500'>Set</p>
+                    <p className='text-xs text-neutral-500'>Reps</p>
+                    <p className='text-xs text-neutral-500'>Weight</p>
                 </div>
-                :
-                <p className='text-lg font-semibold text-center'>{exercises[choice].name}</p>
-            }
-            <div className='grid grid-cols-3 mt-2 gap-2 items-center'>
-                <p className='text-xs text-neutral-500'>Set</p>
-                <p className='text-xs text-neutral-500'>Reps</p>
-                <p className='text-xs text-neutral-500'>Weight</p>
             </div>
-            <form id={`lift-${lift}`} onSubmit={(e)=>SubmitSetForm(e)}>
+            <form id={`lift-${lift}`} onSubmit={(e)=>SubmitSetForm(e)} style={{trackTouch:false}}>
                 { !completed ? 
                     targetSets.map((set,index)=>
                         <div key={index} className='grid grid-cols-3 my-1 gap-2 items-center'>
@@ -381,7 +394,7 @@ export default function LiveExerciseLog({complete, lift, id, setComplete, curren
                 </div>
                 {ssId !== null ? 
                     <>
-                        <p className='text-xs text-blue-500 flex flex-col items-center '>
+                        <p className='text-xs text-blue-500 flex flex-col items-center w-full'>
                             |
                             <HiLink size={23} />
                             |
@@ -425,10 +438,10 @@ export default function LiveExerciseLog({complete, lift, id, setComplete, curren
                 }
                 <Slider
                     disabled={completed && !editing}
-                    onChange={(e)=>setRadioVal(e.target.value)}
+                    onChange={(e)=>{e.stopPropagation();setRadioVal(e.target.value)}}
                     track={false}
                     defaultValue={6}
-                    sx={{color:"#64748b"}}
+                    sx={{color:"#64748b",my:2}}
                     step={null}
                     min={2}
                     max={10}
@@ -450,7 +463,7 @@ export default function LiveExerciseLog({complete, lift, id, setComplete, curren
                     }
                 />
                 { completed ? 
-                <div className='mt-4 mb-2 flex justify-between'>
+                <div className='mt-2 mb-2 flex justify-between'>
                     { !editing ? 
                         <button type="button" onClick={()=>ToggleEdit(false)}
                             className='bg-stone-50 border border-neutral-700 rounded-full px-5 py-1 mt-4 mb-2'

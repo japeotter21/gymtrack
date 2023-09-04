@@ -129,7 +129,7 @@ export default function History() {
             if(duration !== NaN)
             {
                 const hours = Math.floor(duration / 3600)
-                const minutes = Math.floor(duration % 60)
+                const minutes = Math.round((duration / 60)) % 60
                 setDisplayTime(`${hours}:${minutes.toLocaleString('en-US',{minimumIntegerDigits:2})}`)
             }
             else
@@ -148,23 +148,33 @@ export default function History() {
 
     return (
         <main className="flex min-h-screen flex-col items-center py-6 lg:pt-12 px-2 lg:p-12 gap-4">
-            <select value={filter} onChange={(e)=>setFilter(e.target.value)}>
+            {/* <select value={filter} onChange={(e)=>setFilter(e.target.value)}>
                 <option value="All">All</option>
                 {titles.map((item,id)=>
                     <option value={item} key={id}>{item}</option>
                 )}
-            </select>
+            </select> */}
+            {month !== currentDate.getMonth() ? <button className='text-xs text-blue-500' onClick={()=>setMonth(currentDate.getMonth())}>Today</button> : <></>}
             <div className='flex gap-4'>
+                <button className='border bg-white px-2 py-1 rounded-sm shadow-sm' onClick={()=>setMonth(month-1)}><BsChevronLeft /></button>
                 <p className='font-semibold text-lg'>{months[month]}</p>
-                <button className='border bg-white px-2 py-1' onClick={()=>setMonth(month-1)}><BsChevronLeft /></button>
-                <button className='border bg-white px-2 py-1' onClick={()=>setMonth(month+1)}><BsChevronRight /></button>
+                <button className='border bg-white px-2 py-1 rounded-sm shadow-sm' onClick={()=>setMonth(month+1)}><BsChevronRight /></button>
             </div>
             <div className='grid grid-cols-7 bg-white w-full divide-x divide-y border rounded-sm shadow-md'>
+                <div className='col-span-7 grid grid-cols-7 border py-1'>
+                    <p className='text-sm text-center text-neutral-400'>Sun</p>
+                    <p className='text-sm text-center text-neutral-400'>Mon</p>
+                    <p className='text-sm text-center text-neutral-400'>Tue</p>
+                    <p className='text-sm text-center text-neutral-400'>Wed</p>
+                    <p className='text-sm text-center text-neutral-400'>Thur</p>
+                    <p className='text-sm text-center text-neutral-400'>Fri</p>
+                    <p className='text-sm text-center text-neutral-400'>Sat</p>
+                </div>
                 {calendarDays.map((day,index)=>
                     <div key={index} className='px-0.5 pb-10 pt-1'>
                         {day > 0 ?
                             <div>
-                                <p className={`font-semibold text-sm w-max mx-auto p-1 ${currentDate > day && currentDate < calendarDays[index+1] ? 'px-1.5 bg-opacity-80 text-blue-600 bg-sky-200 shadow-lg rounded-full' : ''}`}>
+                                <p className={`font-semibold text-sm w-max mx-auto px-1 py-1 ${currentDate > day && currentDate < calendarDays[index+1] ? 'px-1.5 bg-opacity-80 text-blue-600 bg-sky-200 shadow-lg rounded-full' : ''}`}>
                                     {new Date(day).getDate()}
                                 </p>
                                 <div  className='flex flex-col gap-0.5'>
@@ -172,7 +182,7 @@ export default function History() {
                                     <div key={`${workout.title}-${id}`}>
                                     {parseInt(workout.date) > day && parseInt(workout.date) < calendarDays[index+1] ?
                                         <div className='text-xs cursor-pointer break-word bg-gradient-to-r from-sky-600 to-sky-400 text-white rounded-full truncate shadow-sm pl-1 py-0.5'
-                                            onClick={()=>view?.title === workout.title ? setView(null) : setView(workout)}
+                                            onClick={()=> view?.date === workout.date ? setView(null) : setView(workout)}
                                         >
                                             {workout.title}
                                         </div> 

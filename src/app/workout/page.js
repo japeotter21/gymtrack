@@ -1,6 +1,6 @@
 "use client"
 import React, { useState, useEffect, useContext } from 'react'
-import { BsPause, BsPauseBtn, BsPlay } from 'react-icons/bs'
+import { BsChevronLeft, BsChevronRight, BsCircle, BsCircleFill, BsPause, BsPauseBtn, BsPlay } from 'react-icons/bs'
 import axios from 'axios'
 import { useRouter } from 'next/navigation';
 import LiveExerciseLog from '../components/LiveExerciseLog';
@@ -9,7 +9,7 @@ import { redirect } from 'next/navigation'
 import { FinishWorkout } from '@/services/services';
 import { Dialog } from '@mui/material';
 import DialogButton from '../components/DialogButton';
-
+import Pagenav from '../components/Pagenav';
 
 export default function Workout() {
     const [profile, setProfile] = useState({})
@@ -23,8 +23,10 @@ export default function Workout() {
     const [workoutComplete, setWorkoutComplete] = useState(false)
     const [finishing, setFinishing] = useState(false)
     const [finishObj, setFinishObj] = useState(null)
+    const [activeSlide, setActiveSlide] = useState(0)
     const router = useRouter()
     const {activeUser, Refresh} = useContext(AppContext)
+
 
     useEffect(()=>{
         if(activeUser)
@@ -118,6 +120,45 @@ export default function Workout() {
 
     return (
         <main className="flex min-h-screen flex-col items-center pt-6 pb-12 px-2 lg:p-12 gap-4">
+            <div className='w-full'>
+                { currentWorkout.exercises.map((lift,id)=>
+                <>
+                    { activeSlide === id ?
+                            <LiveExerciseLog key={`exercise${id}`} lift={lift.exercise} id={id} complete={complete} setComplete={setComplete} currentWorkout={currentWorkout} currentWorkoutIndex={currentWorkoutIndex}
+                                profile={profile} exercises={exercises} username={activeUser} setExercises={setExercises} setFinishObj={setFinishObj} setCurrentWorkout={setCurrentWorkout}
+                                setActiveSlide={setActiveSlide} activeSlide={activeSlide}
+                            />
+                        :
+                            <div className='h-11/12'></div>
+                    }
+                </>
+                )}
+            </div>
+            <div className='w-max mx-auto flex gap-2 block justify-center text-neutral-500 items-center my-3'>
+                {activeSlide > 0 ?
+                    <button className='text-green-600 border rounded-sm bg-stone-50 px-2 py-1 shadow-sm mr-2'
+                        onClick={()=>setActiveSlide(activeSlide-1)}
+                    ><BsChevronLeft /></button>
+                    :
+                    <button disabled className='text-neutral-400'><BsChevronLeft /></button>
+                }
+                {currentWorkout.exercises.map((item,id)=>
+                    <div>
+                        {id === activeSlide ?
+                            <BsCircleFill size={15} style={{color:'#16a34a'}} />
+                            :
+                            <BsCircle size={15} />
+                        }
+                    </div>
+                )}
+                {activeSlide < currentWorkout.exercises.length - 1 ?
+                    <button className='text-green-600 border rounded-sm bg-stone-50 px-2 py-1 shadow-sm ml-2'
+                    onClick={()=>setActiveSlide(activeSlide+1)}
+                    ><BsChevronRight /></button>
+                    :
+                    <button disabled className='text-neutral-400'><BsChevronRight /></button>
+                }
+            </div>
             <div className='flex justify-between w-5/6 lg:w-1/2'>
                 <button className='rounded-lg border border-red-400 shadow-md bg-stone-50 text-red-600 px-7 py-2'
                     onClick={Cancel}
@@ -141,12 +182,6 @@ export default function Workout() {
                     >Finish</button>
                 }
             </div>
-            { currentWorkout.exercises.map((lift,id)=>
-                <LiveExerciseLog key={`exercise${id}`} lift={lift.exercise} id={id} complete={complete} setComplete={setComplete} currentWorkout={currentWorkout} currentWorkoutIndex={currentWorkoutIndex}
-                    profile={profile} exercises={exercises} username={activeUser} setExercises={setExercises} setFinishObj={setFinishObj} setCurrentWorkout={setCurrentWorkout}
-                    
-                />
-            )}
             <Dialog open={finishObj && workoutComplete} onClose={()=>setWorkoutComplete(false)}>
                 <div className='px-4 py-3'>
                     { finishObj ? 
