@@ -35,14 +35,14 @@ export default function LiveExerciseLog({complete, lift, id, setComplete, curren
     const handlers = useSwipeable({
         onSwipeStart: () => setShowDirections(true),
         onSwipedLeft(e) {
-            if(-e.deltaX > 200 && activeSlide < currentWorkout.exercises.length - 2 && swipe)
+            if(-e.deltaX > 170 && activeSlide < currentWorkout.exercises.length - 1 && swipe)
             {
                 setActiveSlide(activeSlide+1)
                 setShowDirections(false)
             }
         },
         onSwipedRight(e) {
-            if (e.deltaX > 200 && activeSlide > 0 && swipe)
+            if (e.deltaX > 170 && activeSlide > 0 && swipe)
             {
                 setActiveSlide(activeSlide-1)
                 setShowDirections(false)
@@ -51,7 +51,7 @@ export default function LiveExerciseLog({complete, lift, id, setComplete, curren
     });
 
     useEffect(()=>{
-        setRandomText(Math.floor(Math.random()*4))
+        setRandomText(Math.round(Math.random()*3))
         setInitialLift(lift)
     },[])
 
@@ -68,7 +68,6 @@ export default function LiveExerciseLog({complete, lift, id, setComplete, curren
             if(complete.length > 0 )
             {
                 complete[id].rpe > 0 ? setCompleted(complete[id]) : setCompleted(null)
-                complete[id].superset.length > 0 ? setSSId(complete[id].superset[0]) : <></>
             }
             else
             {
@@ -81,47 +80,21 @@ export default function LiveExerciseLog({complete, lift, id, setComplete, curren
     useEffect(()=>{
         if(ssId !== null)
         {
-            if(sessionStorage.getItem('supersets') && sessionStorage.getItem('supersets') !== undefined)
-            {
-                const currentSSObj = JSON.parse(sessionStorage.getItem('supersets'))
-                const sessIndex = currentSSObj.findIndex((item,id)=>item.name === exercises[ssId].name)
-                if(sessIndex < 0)
-                {
-                    setSuperset(exercises[ssId].target.sets)
-                }
-                else
-                {
-                    setSuperset(currentSSObj[sessIndex].sets)
-                }
-            }
-            else
-            {
-                setSuperset(exercises[ssId].target.sets)
-            }
+            setSuperset(exercises[ssId].target.sets)
         }
     },[ssId])
 
     useEffect(()=>{
         if(choice != lift) {
             const currenttemp = Object.assign({}, currentWorkout)
-            currenttemp.exercises.splice(id,1,
-                {
-                    exercise: parseInt(choice),
-                    superset: superset
-                }
-            )
+            currenttemp.exercises.splice(id,1,parseInt(choice))
             setCurrentWorkout(currenttemp)
             setSwap(false)
         }
-        else if (currentWorkout.exercises[id].exercise !== initialLift && initialLift !== null)
+        else if (currentWorkout.exercises[id] !== initialLift && initialLift !== null)
         {
             const currenttemp = Object.assign({}, currentWorkout)
-            currenttemp.exercises.splice(id,1,
-                {
-                    exercise: lift,
-                    superset: superset
-                }
-            )
+            currenttemp.exercises.splice(id,1,lift)
             setCurrentWorkout(currenttemp)
         }
     },[choice])
@@ -148,8 +121,7 @@ export default function LiveExerciseLog({complete, lift, id, setComplete, curren
             name: exercises[choice].name,
             notes: '',
             rpe: radioVal,
-            sets: postArr,
-            superset: complete[id].superset
+            sets: postArr
         }
         const ssObj = ssId !== null ? {
                 name: exercises[ssId].name,
@@ -159,28 +131,28 @@ export default function LiveExerciseLog({complete, lift, id, setComplete, curren
                 superset: []
             }
             : null
-        if (ssObj !== null)
-        {
-            if(sessionStorage.getItem('supersets') && sessionStorage.getItem('supersets') !== undefined)
-            {
-                const currentSSObj = JSON.parse(sessionStorage.getItem('supersets'))
-                const sessIndex = currentSSObj.findIndex((item,id)=>item.name === ssObj.name)
-                if(sessIndex < 0)
-                {
-                    currentSSObj.push(ssObj)
-                    sessionStorage.setItem('supersets',JSON.stringify(currentSSObj))
-                }
-                else
-                {
-                    currentSSObj.splice(sessIndex,1,ssObj)
-                    sessionStorage.setItem('supersets',JSON.stringify(currentSSObj))
-                }
-            }
-            else
-            {
-                sessionStorage.setItem('supersets',JSON.stringify([ssObj]))
-            }
-        }
+        // if (ssObj !== null)
+        // {
+        //     if(sessionStorage.getItem('supersets') && sessionStorage.getItem('supersets') !== undefined)
+        //     {
+        //         const currentSSObj = JSON.parse(sessionStorage.getItem('supersets'))
+        //         const sessIndex = currentSSObj.findIndex((item,id)=>item.name === ssObj.name)
+        //         if(sessIndex < 0)
+        //         {
+        //             currentSSObj.push(ssObj)
+        //             sessionStorage.setItem('supersets',JSON.stringify(currentSSObj))
+        //         }
+        //         else
+        //         {
+        //             currentSSObj.splice(sessIndex,1,ssObj)
+        //             sessionStorage.setItem('supersets',JSON.stringify(currentSSObj))
+        //         }
+        //     }
+        //     else
+        //     {
+        //         sessionStorage.setItem('supersets',JSON.stringify([ssObj]))
+        //     }
+        // }
         if(completed && editing)
         {
             setUpdating(true)

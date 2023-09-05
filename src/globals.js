@@ -5,15 +5,13 @@ export const inProgressObj = {
     name: "",
     notes: "",
     rpe: 0,
-    sets: [],
-    superset: []
+    sets: []
   }
 
 export const targetObj = {
     notes: "",
     reminder: "",
-    sets: [],
-    superset: []
+    sets: []
   }
 
 export const userProfile = {
@@ -850,90 +848,29 @@ export const userWork = {
     "workouts": [
         {
             "name": "Rest",
-            "exercises": []
+            "exercises": [],
+            "superset": []
         },
         {
             "name": "Push Day",
             "exercises": [
-                {
-                    "exercise": 0,
-                    "superset": []
-                },
-                {
-                    "exercise": 8,
-                    "superset": []
-                },
-                {
-                    "exercise": 6,
-                    "superset": []
-                },
-                {
-                    "exercise": 11,
-                    "superset": []
-                },
-                {
-                    "exercise": 36,
-                    "superset": []
-                },
-                {
-                    "exercise": 40,
-                    "superset": []
-                }
-            ]
+                0,8,6,11,36,40
+            ],
+            "superset": []
         },
         {
             "name": "Pull Day",
             "exercises": [
-                {
-                    "exercise": 16,
-                    "superset": []
-                },
-                {
-                    "exercise": 15,
-                    "superset": []
-                },
-                {
-                    "exercise": 19,
-                    "superset": []
-                },
-                {
-                    "exercise": 24,
-                    "superset": []
-                },
-                {
-                    "exercise": 31,
-                    "superset": []
-                },
-                {
-                    "exercise": 33,
-                    "superset": []
-                }
-            ]
+                16,15,19,24,31,33
+            ],
+            "superset": []
         },
         {
             "name": "Leg Day",
             "exercises": [
-                {
-                    "exercise": 49,
-                    "superset": []
-                },
-                {
-                    "exercise": 52,
-                    "superset": []
-                },
-                {
-                    "exercise": 51,
-                    "superset": []
-                },
-                {
-                    "exercise": 53,
-                    "superset": []
-                },
-                {
-                    "exercise": 54,
-                    "superset": []
-                }
-            ]
+                49,51,52,53,54
+            ],
+            "superset": []
         }
     ],
     "currentProgram": 0,
@@ -944,13 +881,14 @@ export const userWork = {
             "results": [
                 {
                     "sets": [],
-                    "superset": [],
                     "notes": "",
                     "name": "",
-                    "rpe": 0
+                    "rpe": 0,
+                    "title": ""
                 }
             ],
-            "date": 0
+            "date": 0,
+            "end": 0
         }
     ],
     "inProgress": {
@@ -958,7 +896,6 @@ export const userWork = {
         "results": [
             {
                 "sets": [],
-                "superset": [],
                 "notes": "",
                 "name": "",
                 "rpe": 0

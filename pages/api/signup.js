@@ -55,7 +55,7 @@ export default function handler(req, res) {
                     data: userData
                 }; 
                 const workoutData = JSON.stringify({
-                    "collection": "workouts",
+                    "collection": "workoutObj",
                     "database": "gymtrack",
                     "dataSource": "link0",
                     "document": userWork

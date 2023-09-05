@@ -14,7 +14,7 @@ export default function handler(req, res) {
             const user = req.query.user
             const timeNow = new Date().getTime()
             const data = JSON.stringify({
-                "collection": "workouts",
+                "collection": "workoutObj",
                 "database": "gymtrack",
                 "dataSource": "link0",
                 "filter": {

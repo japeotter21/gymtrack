@@ -15,7 +15,7 @@ export default async function handler(req, res) {
             {
                 const program = req.query.program
                 const data = JSON.stringify({
-                    "collection": "workouts",
+                    "collection": "workoutObj",
                     "database": "gymtrack",
                     "dataSource": "link0",
                     "filter": {
@@ -51,7 +51,7 @@ export default async function handler(req, res) {
                 const workout = parseInt(req.query.workout)
                 const program = req.query.program
                 const data = JSON.stringify({
-                    "collection": "workouts",
+                    "collection": "workoutObj",
                     "database": "gymtrack",
                     "dataSource": "link0",
                     "filter": {
@@ -88,7 +88,7 @@ export default async function handler(req, res) {
         {
             const program = req.query.program
             const data = JSON.stringify({
-                "collection": "workouts",
+                "collection": "workoutObj",
                 "database": "gymtrack",
                 "dataSource": "link0",
                 "filter": {

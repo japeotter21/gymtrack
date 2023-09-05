@@ -10,7 +10,7 @@ export default async function handler(req, res) {
         if (req.method === 'PUT')
         {
             const data = JSON.stringify({
-                "collection": "workouts",
+                "collection": "workoutObj",
                 "database": "gymtrack",
                 "dataSource": "link0",
                 "filter": {

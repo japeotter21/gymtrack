@@ -74,12 +74,6 @@ export default function Workout() {
                 if(done)
                 {
                     let currentIP = res.data.inProgress
-                    if(sessionStorage.getItem('supersets') && sessionStorage.getItem('supersets') !== undefined)
-                    {
-                        const supersets = JSON.parse(sessionStorage.getItem('supersets'))
-                        const newResults = currentIP.results.concat(supersets)
-                        currentIP.results = newResults
-                    }
                     setFinishObj(currentIP)
                 }
             })
@@ -106,7 +100,6 @@ export default function Workout() {
         FinishWorkout(dayNum, activeUser, false, postObj)
         .then(r=>{
             setFinishing(false)
-            sessionStorage.removeItem('supersets')
             router.push('/history')
         })
     }
@@ -124,7 +117,7 @@ export default function Workout() {
                 { currentWorkout.exercises.map((lift,id)=>
                 <>
                     { activeSlide === id ?
-                            <LiveExerciseLog key={`exercise${id}`} lift={lift.exercise} id={id} complete={complete} setComplete={setComplete} currentWorkout={currentWorkout} currentWorkoutIndex={currentWorkoutIndex}
+                            <LiveExerciseLog key={`exercise${id}`} lift={lift} id={id} complete={complete} setComplete={setComplete} currentWorkout={currentWorkout} currentWorkoutIndex={currentWorkoutIndex}
                                 profile={profile} exercises={exercises} username={activeUser} setExercises={setExercises} setFinishObj={setFinishObj} setCurrentWorkout={setCurrentWorkout}
                                 setActiveSlide={setActiveSlide} activeSlide={activeSlide}
                             />

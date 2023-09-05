@@ -16,7 +16,7 @@ export default function handler(req, res) {
             const user = req.query.user
             const rest = req.query.rest
             const data = JSON.stringify({
-                "collection": "workouts",
+                "collection": "workoutObj",
                 "database": "gymtrack",
                 "dataSource": "link0",
                 "filter": {

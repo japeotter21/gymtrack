@@ -20,40 +20,7 @@ export default function WorkoutList({exercises, setExercises, currentWorkout, se
     const [superset, setSuperset] = useState('')
     const [updating, setUpdating] = useState(false)
 
-    useEffect(()=>{
-        if(currentSS.length > 0)
-        {
-            setSuperset(currentSS[0])
-        }
-    },[showSS])
-    
-    useEffect(()=>{
-        if(showSS !== null && superset !== '')
-        {
-            const wTemp = currentWorkout
-            if(parseInt(superset) !== wTemp.exercises[showSS].superset[0])
-            {
-                wTemp.exercises[showSS].superset = [parseInt(superset)]
-                setUpdating(true)
-                axios.post('/api/workouts',wTemp.exercises,{params:{workout: day, user:activeUser}})
-                .then(res=>{
-                    axios.get('/api/workouts', { params: {user:activeUser}})
-                    .then(r=>{
-                        const currentIndex = r.data.currentProgram
-                        const dayIndex = r.data.currentDay
-                        const workoutIndex = r.data.programs[currentIndex].schedule[dayIndex]
-                        setCurrentWorkout(r.data.workouts[workoutIndex])
-                        HandleClose()
-                    })
-                })
-            }
-        }
-    },[superset])
-
     function HandleClose() {
-        setCurrentSS([])
-        setSuperset('')
-        setShowSS(null)
         setUpdating(false)
     }
 
@@ -144,7 +111,6 @@ export default function WorkoutList({exercises, setExercises, currentWorkout, se
     function DeleteSS() {
         setUpdating(true)
         const wTemp = currentWorkout
-        wTemp.exercises[showSS].superset = []
         axios.post('/api/workouts',wTemp.exercises,{params:{workout: day, user:activeUser}})
         .then(res=>{
           axios.get('/api/workouts', { params: {user:activeUser}})
@@ -206,7 +172,7 @@ export default function WorkoutList({exercises, setExercises, currentWorkout, se
                                 {...provided.droppableProps}
                             >
                                 { workouts[day].exercises.map((ex,ind)=>
-                                    <Draggable key={exercises[ex.exercise].name} draggableId={exercises[ex.exercise].name} index={ind}>
+                                    <Draggable key={exercises[ex].name} draggableId={exercises[ex].name} index={ind}>
                                         {(provided, snapshot)=>(
                                             <div className={`text-sm p-2 ${!show ? 'h-[0px]' : 'h-max'}`}
                                                 ref={provided.innerRef}
@@ -222,20 +188,17 @@ export default function WorkoutList({exercises, setExercises, currentWorkout, se
                                                     <div className='w-full'>
                                                         <div className='flex items-center'>
                                                             <div className='flex items-center gap-3 justify-normal'>
-                                                                <p className='break-words w-fit'>{exercises[ex.exercise].name}</p>
-                                                                {ex.superset.length > 0 ?
-                                                                <></>
-                                                                :
+                                                                <p className='break-words w-fit'>{exercises[ex].name}</p>
                                                                 <p className="underline text-xs text-blue-500">
                                                                     <button type='button' className='text-blue-500 flex items-center'
-                                                                        onClick={()=>{setShowSS(ind);setCurrentSS(ex.superset)}}
+                                                                        onClick={()=>setShowSS(ind)}
                                                                     ><HiLink />&nbsp;Add Superset</button>
                                                                     
-                                                                </p>}
+                                                                </p>
                                                             </div>
                                                             <DeleteExercise currentWorkout={workouts[day]} currentWorkoutIndex={day}
                                                                 setPrograms={setPrograms} setCurrentProgram={setCurrentProgram} homepage={false}
-                                                                username={activeUser} item={ex.exercise} id={ind} setWorkouts={setWorkouts} exercises={exercises}
+                                                                username={activeUser} item={ex} id={ind} setWorkouts={setWorkouts} exercises={exercises}
                                                             />
                                                         </div>
                                                         {/* <div className='flex flex-col gap-1 text-sm'>
@@ -243,7 +206,7 @@ export default function WorkoutList({exercises, setExercises, currentWorkout, se
                                                                 <p>Sets</p>
                                                                 <p>Reps</p>
                                                                 <p>Weight</p>
-                                                                <select defaultValue={exercises[ex.exercise].target.sets.length} className='border border-gray-400 rounded-md'
+                                                                <select defaultValue={exercises[ex].target.sets.length} className='border border-gray-400 rounded-md'
                                                                     onChange={()=>setEdited(true)}
                                                                     name={`set-${ind}`} id={`set-${ind}`}
                                                                 >
@@ -251,7 +214,7 @@ export default function WorkoutList({exercises, setExercises, currentWorkout, se
                                                                         <option value={num} key={setNum}>{num}</option>
                                                                     )}
                                                                 </select>
-                                                                <select defaultValue={exercises[ex.exercise].target.sets[0].reps} className='border border-gray-400 rounded-md'
+                                                                <select defaultValue={exercises[ex].target.sets[0].reps} className='border border-gray-400 rounded-md'
                                                                     onChange={()=>setEdited(true)}
                                                                     name={`rep-${ind}`} id={`rep-${ind}`}
                                                                 >
@@ -259,24 +222,13 @@ export default function WorkoutList({exercises, setExercises, currentWorkout, se
                                                                         <option value={num} key={setNum}>{num}</option>
                                                                     )}
                                                                 </select>
-                                                                <input type="number" step="0.5" defaultValue={exercises[ex.exercise].target.sets[0].weight} className='border border-gray-400 rounded-md px-1'
+                                                                <input type="number" step="0.5" defaultValue={exercises[ex].target.sets[0].weight} className='border border-gray-400 rounded-md px-1'
                                                                     onChange={()=>setEdited(true)}
                                                                     name={`weight-${ind}`} id={`weight-${ind}`}
                                                                 />
                                                             </div>
                                                         </div> */}
                                                     </div>
-                                                </div>
-                                                <div className='flex items-center gap-2 ml-8'>
-                                                    {ex.superset.length > 0 ?
-                                                        <button type='button' className='text-blue-500 text-sm flex items-center gap-2'
-                                                            onClick={()=>{setShowSS(ind);setCurrentSS(ex.superset)}}
-                                                        >
-                                                            <HiLink />{exercises[ex.superset[0]].name}
-                                                        </button>   
-                                                    :
-                                                        <></>
-                                                    }
                                                 </div>
                                             </div>
                                         )}

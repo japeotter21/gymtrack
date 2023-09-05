@@ -95,30 +95,25 @@ export default function Home() {
     if(editing !== null && superset !== '')
     {
         const wTemp = currentWorkout
-        const exIndex = wTemp.exercises.findIndex((item,id)=>editing == item.exercise)
-        if(parseInt(superset) !== wTemp.exercises[exIndex].superset[0])
-        {
-          setUpdating(true)
-          wTemp.exercises[exIndex].superset = [parseInt(superset)]
-          axios.post('/api/workouts',wTemp.exercises,{params:{workout: currentWorkoutIndex, user:activeUser}})
-          .then(res=>{
-            axios.get('/api/workouts', { params: {user:activeUser}})
-            .then(r=>{
-                const currentIndex = r.data.currentProgram
-                const dayIndex = r.data.currentDay
-                const workoutIndex = r.data.programs[currentIndex].schedule[dayIndex]
-                setCurrentWorkout(r.data.workouts[workoutIndex])
-                setUpdating(false)
-            })
+        const exIndex = wTemp.exercises.findIndex((item,id)=>editing == item)
+        setUpdating(true)
+        axios.post('/api/workouts',wTemp.exercises,{params:{workout: currentWorkoutIndex, user:activeUser}})
+        .then(res=>{
+          axios.get('/api/workouts', { params: {user:activeUser}})
+          .then(r=>{
+              const currentIndex = r.data.currentProgram
+              const dayIndex = r.data.currentDay
+              const workoutIndex = r.data.programs[currentIndex].schedule[dayIndex]
+              setCurrentWorkout(r.data.workouts[workoutIndex])
+              setUpdating(false)
           })
-        }
+        })
     }
   },[superset])
 
   function DeleteSS() {
       const wTemp = currentWorkout
-      const exIndex = wTemp.exercises.findIndex((item,id)=> editing == item.exercise)
-      wTemp.exercises[exIndex].superset = []
+      const exIndex = wTemp.exercises.findIndex((item,id)=> editing == item)
       axios.post('/api/workouts',wTemp.exercises,{params:{workout: currentWorkoutIndex, user:activeUser}})
       .then(res=>{
         axios.get('/api/workouts', { params: {user:activeUser}})
@@ -256,9 +251,6 @@ export default function Home() {
       {
         const resultsLength = Array.from({length:currentWorkout.exercises.length},x=>Object.assign({},inProgressObj))
         let resultsTemp = [...resultsLength]
-        currentWorkout.exercises.forEach((item,id)=>{
-            item.superset.length > 0 ? resultsTemp[id].superset = item.superset : <></>         
-        })
         axios.post('api/start', resultsTemp, {params: {user:activeUser, name:currentWorkout.name}})
         .then(res=>{
             router.push('/workout')
@@ -300,7 +292,7 @@ export default function Home() {
                         {...provided.droppableProps}
                     >
                       { currentWorkout.exercises.map((item,id)=>
-                        <Draggable key={exercises[item.exercise].name} draggableId={exercises[item.exercise].name} index={id}>
+                        <Draggable key={exercises[item].name} draggableId={exercises[item].name} index={id}>
                           {(provided, snapshot)=>(
                               <div className={`text-sm grid grid-cols-9 border border-t-0 items-center`}
                                   ref={provided.innerRef}
@@ -313,15 +305,15 @@ export default function Home() {
                                 {...provided.dragHandleProps}
                                 >
                                   <HiChevronUpDown size={18} className='absolute ml-[-8px] text-gray-500' />
-                                  <span className='ml-[12px]'>{exercises[item.exercise].name}</span>
+                                  <span className='ml-[12px]'>{exercises[item].name}</span>
                                 </div>
-                                <div className='py-2 px-1' onClick={()=>{setEditing(item.exercise);setCurrentSS(item.superset)}}>{exercises[item.exercise].target?.sets?.length || 0}</div>
-                                <div className='py-2 px-1' onClick={()=>{setEditing(item.exercise);setCurrentSS(item.superset)}}>{exercises[item.exercise].target?.sets[0]?.reps || 0}</div>
-                                <div className='py-2 px-1' onClick={()=>{setEditing(item.exercise);setCurrentSS(item.superset)}}>{exercises[item.exercise].target?.sets[0]?.weight || "0"}</div>
+                                <div className='py-2 px-1' onClick={()=>setEditing(item)}>{exercises[item].target?.sets?.length || 0}</div>
+                                <div className='py-2 px-1' onClick={()=>setEditing(item)}>{exercises[item].target?.sets[0]?.reps || 0}</div>
+                                <div className='py-2 px-1' onClick={()=>setEditing(item)}>{exercises[item].target?.sets[0]?.weight || "0"}</div>
                                 <DeleteExercise currentWorkout={currentWorkout} currentWorkoutIndex={currentWorkoutIndex} setCurrentWorkout={setCurrentWorkout}
-                                  username={activeUser} item={item.exercise} id={id} homepage={true} exercises={exercises}
+                                  username={activeUser} item={item} id={id} homepage={true} exercises={exercises}
                                 />
-                                {item.superset.length > 0 ?
+                                {/* {true ?
                                 <>
                                   {item.superset.map((ex,index)=>
                                     <div className='flex items-center col-span-9 grid grid-cols-9 bg-sky-100 bg-opacity-40' key={`supserset-${index}`}>
@@ -334,7 +326,7 @@ export default function Home() {
                                 </>
                                 :
                                 <></>
-                                }
+                                } */}
                           </div>
                           )}
                         </Draggable>
