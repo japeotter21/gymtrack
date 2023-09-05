@@ -9,6 +9,7 @@ import { repConstant, setConstant } from '@/globals';
 import { Dialog, Tooltip } from '@mui/material';
 import { HiChevronUpDown, HiLink } from 'react-icons/hi2';
 import GroupExercises from './GroupExercises'
+import DialogButton from './DialogButton';
 
 export default function WorkoutList({exercises, setExercises, currentWorkout, setCurrentWorkout, day, i, profile, workouts, setPrograms, setCurrentProgram, setWorkouts, activeUser, currentProgram, HandleDelete}) {
     const [loading, setLoading] = useState(0)
@@ -19,9 +20,11 @@ export default function WorkoutList({exercises, setExercises, currentWorkout, se
     const [currentSS, setCurrentSS] = useState([])
     const [superset, setSuperset] = useState('')
     const [updating, setUpdating] = useState(false)
+    const [editName, setEditName] = useState(null)
 
     function HandleClose() {
         setUpdating(false)
+        setShowSS(null)
     }
 
     const getListStyle = isDraggingOver => ({
@@ -124,6 +127,23 @@ export default function WorkoutList({exercises, setExercises, currentWorkout, se
         })
     }
 
+    function EditWorkoutName() {
+        setUpdating(true)
+        const postObj = {name: editName}
+        axios.put('/api/workouts',postObj,{params:{workout: day, user:activeUser}})
+        .then(res=>{
+          axios.get('/api/workouts', { params: {user:activeUser}})
+          .then(r=>{
+              const currentIndex = r.data.currentProgram
+              const dayIndex = r.data.currentDay
+              const workoutIndex = r.data.programs[currentIndex].schedule[dayIndex]
+              setWorkouts(r.data.workouts)
+              setEditName(null)
+                setUpdating(false)
+          })
+        })
+    }
+
     return (
         <DragDropContext onDragEnd={onDragEnd}>
             {/* <form id={`${i}`} onSubmit={(e)=>PostExercises(e)}> */}
@@ -136,7 +156,9 @@ export default function WorkoutList({exercises, setExercises, currentWorkout, se
                             <BsChevronUp />
                         }
                         <p>{workouts[day].name}</p>
-                        <button className='text-gray-500' type="button">
+                        <button className='text-gray-500' type="button"
+                            onClick={(e)=>{e.stopPropagation();setEditName(currentWorkout.name)}}
+                        >
                             <RiPencilLine />
                         </button>
                     </div>
@@ -284,6 +306,22 @@ export default function WorkoutList({exercises, setExercises, currentWorkout, se
             :
                 <></>
             }
+            <Dialog open={editName !== null} onClose={()=>setEditName(null)}>
+                <div className='px-4 py-3'>
+                    <p>Rename Workout</p>
+                    <input type="text" value={editName} onChange={(e)=>setEditName(e.target.value)}
+                        className='rounded-sm border border-neutral-500 px-2 py-1'
+                    />
+                    <div className='flex justify-between mt-8'>
+                        <button className={`shadow-md border ${updating ? 'text-gray-200 border-gray-200' : ' border-neutral-500'} rounded-md py-1 px-3`} disabled={updating}
+                            onClick={()=>setEditName(null)}
+                        >Cancel</button>
+                        <DialogButton type='button' text='Save' loadingText='Saving...' loading={updating} setLoading={setUpdating}
+                            disabled={updating} action={EditWorkoutName}
+                        />
+                    </div>
+                </div>
+            </Dialog>
         </DragDropContext>
     )
 }

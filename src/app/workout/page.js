@@ -24,6 +24,7 @@ export default function Workout() {
     const [finishing, setFinishing] = useState(false)
     const [finishObj, setFinishObj] = useState(null)
     const [activeSlide, setActiveSlide] = useState(0)
+    const [supersets, setSupersets] = useState([])
     const router = useRouter()
     const {activeUser, Refresh} = useContext(AppContext)
 
@@ -59,10 +60,7 @@ export default function Workout() {
           Refresh()
         }
     },[activeUser])    
-
-    useEffect(()=>{
-        
-    })
+    console.log(currentWorkout?.superset)
 
     useEffect(()=>{
         if(workoutComplete)
@@ -111,18 +109,28 @@ export default function Workout() {
         )
     }
 
+    console.log(currentWorkout?.superset)
+
     return (
         <main className="flex min-h-screen flex-col items-center pt-6 pb-12 px-2 lg:p-12 gap-4">
             <div className='w-full'>
                 { currentWorkout.exercises.map((lift,id)=>
                 <>
-                    { activeSlide === id ?
+                    { activeSlide === id && !currentWorkout?.superset.includes(currentWorkout.exercises[id-1]) ?
                             <LiveExerciseLog key={`exercise${id}`} lift={lift} id={id} complete={complete} setComplete={setComplete} currentWorkout={currentWorkout} currentWorkoutIndex={currentWorkoutIndex}
                                 profile={profile} exercises={exercises} username={activeUser} setExercises={setExercises} setFinishObj={setFinishObj} setCurrentWorkout={setCurrentWorkout}
                                 setActiveSlide={setActiveSlide} activeSlide={activeSlide}
                             />
                         :
                             <div className='h-11/12' key={id}></div>
+                    }
+                    { currentWorkout?.superset.includes(lift) && activeSlide === id ?
+                        <LiveExerciseLog key={`exercise${id+1}`} lift={currentWorkout.exercises[id+1]} id={id+1} complete={complete} setComplete={setComplete}
+                                currentWorkout={currentWorkout} currentWorkoutIndex={currentWorkoutIndex} profile={profile} exercises={exercises} username={activeUser}
+                                setExercises={setExercises} setFinishObj={setFinishObj} setCurrentWorkout={setCurrentWorkout} setActiveSlide={setActiveSlide} activeSlide={activeSlide}
+                            />
+                    :
+                    <></>
                     }
                 </>
                 )}
@@ -137,9 +145,11 @@ export default function Workout() {
                 }
                 {currentWorkout.exercises.map((item,id)=>
                     <div key={id}>
-                        {id === activeSlide ?
+                        {currentWorkout?.superset.includes(currentWorkout.exercises[id-1]) ?
+                            <></>
+                        : id === activeSlide ?
                             <BsCircleFill size={15} style={{color:'#16a34a'}} />
-                            :
+                        :
                             <BsCircle size={15} />
                         }
                     </div>
@@ -175,7 +185,7 @@ export default function Workout() {
                     >Finish</button>
                 }
             </div>
-            <Dialog open={finishObj && workoutComplete} onClose={()=>setWorkoutComplete(false)}>
+            <Dialog open={finishObj !== null && workoutComplete !== null} onClose={()=>setWorkoutComplete(false)}>
                 <div className='px-4 py-3'>
                     { finishObj ? 
                     <>

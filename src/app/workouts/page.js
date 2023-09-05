@@ -55,7 +55,8 @@ export default function Workouts() {
         setUpdating(true)
         const postObj = {
             name: workoutName,
-            exercises: []
+            exercises: [],
+            superset: []
         }
         const newWorkoutIndex = workouts.length
         axios.post('/api/routine', postObj, {params:{workout: newWorkoutIndex, user:activeUser, program: programIndex }})
