@@ -48,7 +48,7 @@ export default async function handler(req, res) {
             const postObj = {
                 query:
                 `query {
-                    workouts (query:{user:"${req.query.user}"}) {
+                    workoutObj (query:{user:"${req.query.user}"}) {
                     record {
                         title
                         date
@@ -70,7 +70,7 @@ export default async function handler(req, res) {
             .then(function (response) {
                 const responseTemp = response.data
                 const workoutsTemp = []
-                responseTemp.data.workouts[0].record.forEach((item,id)=>{
+                responseTemp.data.workoutObj.record.forEach((item,id)=>{
                     if(item.date > 0)
                     {
                         workoutsTemp.push(item)
