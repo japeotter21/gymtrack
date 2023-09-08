@@ -60,7 +60,6 @@ export default function Workout() {
           Refresh()
         }
     },[activeUser])    
-    console.log(currentWorkout?.superset)
 
     useEffect(()=>{
         if(workoutComplete)
@@ -109,8 +108,6 @@ export default function Workout() {
         )
     }
 
-    console.log(currentWorkout?.superset)
-
     return (
         <main className="flex min-h-screen flex-col items-center pt-6 pb-12 px-2 lg:p-12 gap-4">
             <div className='w-full'>
@@ -156,7 +153,7 @@ export default function Workout() {
                 )}
                 {activeSlide < currentWorkout.exercises.length - 1 ?
                     <button className='text-green-600 border rounded-sm bg-stone-50 px-2 py-1 shadow-sm ml-2'
-                    onClick={()=>setActiveSlide(activeSlide+1)}
+                    onClick={()=>setActiveSlide((activeSlide+1) % currentWorkout.exercises.length)}
                     ><BsChevronRight /></button>
                     :
                     <button disabled className='text-neutral-400'><BsChevronRight /></button>
@@ -185,7 +182,7 @@ export default function Workout() {
                     >Finish</button>
                 }
             </div>
-            <Dialog open={finishObj !== null && workoutComplete !== null} onClose={()=>setWorkoutComplete(false)}>
+            <Dialog open={finishObj !== null && workoutComplete} onClose={()=>setWorkoutComplete(false)}>
                 <div className='px-4 py-3'>
                     { finishObj ? 
                     <>

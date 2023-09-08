@@ -29,24 +29,38 @@ export default function LiveExerciseLog({complete, lift, id, setComplete, curren
     const [swap, setSwap] = useState(false)
     const [choice, setChoice] = useState(lift)
     const [initialLift, setInitialLift] = useState(null)
-    const [showDirections, setShowDirections] = useState(false)
+    const [showDirections, setShowDirections] = useState(0)
     const [swipe, setSwipe] = useState(true)
     const handlers = useSwipeable({
-        onSwipeStart: () => setShowDirections(true),
-        onSwipedLeft(e) {
-            if(-e.deltaX > 170 && activeSlide < currentWorkout.exercises.length - 1 && swipe)
+        onSwiping(e) {
+            if(e.deltaX > 20)
             {
-                setActiveSlide(activeSlide+1)
-                setShowDirections(false)
+                setShowDirections(1)
+            }
+            else if (e.deltaX < -20)
+            {
+                setShowDirections(-1)
+            }
+        },
+        onTouchEndOrOnMouseUp(e) {
+            setShowDirections(2)
+        },
+        onSwipedLeft(e) {
+            if(-e.deltaX > 100 && swipe)
+            {
+                setActiveSlide((activeSlide+1) % currentWorkout.exercises.length)
+                setShowDirections(3)
             }
         },
         onSwipedRight(e) {
-            if (e.deltaX > 170 && activeSlide > 0 && swipe)
+            if (e.deltaX > 100 && swipe && activeSlide > 0)
             {
                 setActiveSlide(activeSlide-1)
-                setShowDirections(false)
+                setShowDirections(3)
             }
         },
+        swipeDuration: 500,
+        preventScrollOnSwipe: true,
     });
 
     useEffect(()=>{
@@ -127,6 +141,7 @@ export default function LiveExerciseLog({complete, lift, id, setComplete, curren
                     setEditing(false)
                     setAddSet([])
                     setUpdating(false)
+                    setActiveSlide((activeSlide+1) % currentWorkout.exercises.length)
                 })
                 .catch(err=>{
                     console.error(err)
@@ -150,6 +165,7 @@ export default function LiveExerciseLog({complete, lift, id, setComplete, curren
                     setAddSet([])
                     setFinishObj(r.data.inProgress)
                     setSaving(false)
+                    setActiveSlide((activeSlide+1) % currentWorkout.exercises.length)
                 })
                 .catch(err=>{
                     console.error(err)
@@ -215,8 +231,13 @@ export default function LiveExerciseLog({complete, lift, id, setComplete, curren
 
     return (
         <div
-            className={`w-5/6 lg:w-1/2 flex-col mx-auto gap-3 items-center border border-gray-300 rounded-lg ${completed && !editing ? 'bg-neutral-200' : 'bg-stone-50'} px-4 py-3 shadow-md`} key={id}
-            {...handlers} style={{preventScrollOnSwipe:true}}
+            className={`w-5/6 lg:w-1/2 flex-col mx-auto gap-3 items-center border border-gray-300 rounded-lg
+                ${completed && !editing ? 'bg-neutral-200' : 'bg-stone-50'} px-4 py-3 shadow-md
+                ${ showDirections === 2 ? '' : showDirections === 3 ? 'animate-fadeOut' : showDirections < 0 ? 'animate-pushLeft' : showDirections > 0 ? 'animate-pushRight' : 'animate-fadeIn'}
+                `
+            }
+            key={id}
+            {...handlers}
         >
             <div>
                 {choice !== lift ?

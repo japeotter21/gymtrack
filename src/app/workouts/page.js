@@ -151,23 +151,23 @@ export default function Workouts() {
                             <button className='px-3 py-1 rounded-full'>
                                 <BsCheck2Circle size={20} style={{color:'#15803d'}} />
                             </button>
-                            <p className='text-xs'>Current</p>
+                            <p className='text-xs text-center'>Current</p>
                         </div>
                         :
-                        <div className='flex flex-col gap-1 items-center justify-start'>
+                        <div className='flex flex-col gap-1 items-center'>
                             <button className='px-3 py-1 rounded-full'
                                 onClick={ChangeProgram}
                             >
                                 <BsCircle size={20} style={{color:'#6b7280'}} />
                             </button>
-                            <p className='text-xs'>Use This Program</p>
+                            <p className='text-xs text-center'>Use This Program</p>
                         </div>
                     }
                     <div className='flex flex-col gap-1 items-center justify-start'>
                         <button className='px-3 py-1 rounded-full text-sky-500'
                             onClick={()=>setNewProgram(true)}
                         ><BsPlusCircleFill size={20} /></button>
-                        <p className='text-xs'>Create New</p>
+                        <p className='text-xs text-center'>Create New</p>
                     </div>
                 </div>
             </div>

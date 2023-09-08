@@ -26,7 +26,8 @@ export const userProfile = {
             "best": 0
         }
     },
-    "user": ""
+    "user": "",
+    "select": true
 }
 
 export const userEx = {
