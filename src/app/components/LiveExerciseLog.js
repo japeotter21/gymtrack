@@ -48,14 +48,14 @@ export default function LiveExerciseLog({complete, lift, id, setComplete, curren
         onSwipedLeft(e) {
             if(-e.deltaX > 100 && swipe)
             {
-                setActiveSlide((activeSlide+1) % currentWorkout.exercises.length)
+                currentWorkout?.superset.includes(lift) || currentWorkout?.superset.includes(currentWorkout?.exercises[id-1]) ? setActiveSlide((activeSlide+2) % currentWorkout.exercises.length) : setActiveSlide((activeSlide+1) % currentWorkout.exercises.length)
                 setShowDirections(3)
             }
         },
         onSwipedRight(e) {
             if (e.deltaX > 100 && swipe && activeSlide > 0)
             {
-                setActiveSlide(activeSlide-1)
+                currentWorkout?.superset.includes(currentWorkout.exercises[id-2]) ? setActiveSlide(activeSlide-2) : setActiveSlide(activeSlide-1)
                 setShowDirections(3)
             }
         },

@@ -7,7 +7,7 @@ import { RiDraggable, RiPencilLine } from 'react-icons/ri'
 import PostExercise from '../components/EditWorkout'
 import { repConstant, setConstant } from '@/globals';
 import { Dialog, Tooltip } from '@mui/material';
-import { HiChevronUpDown, HiLink } from 'react-icons/hi2';
+import { HiArrowUp, HiArrowUpLeft, HiChevronUpDown, HiLink } from 'react-icons/hi2';
 import GroupExercises from './GroupExercises'
 import DialogButton from './DialogButton';
 
@@ -16,7 +16,6 @@ export default function WorkoutList({exercises, setExercises, currentWorkout, se
     const [edited, setEdited] = useState(false)
     const [show, setShow] = useState(false)
     const [deleteWorkout, setDeleteWorkout] = useState(false)
-    const [showSS, setShowSS] = useState(null)
     const [currentSS, setCurrentSS] = useState([])
     const [superset, setSuperset] = useState('')
     const [updating, setUpdating] = useState(false)
@@ -24,7 +23,6 @@ export default function WorkoutList({exercises, setExercises, currentWorkout, se
 
     function HandleClose() {
         setUpdating(false)
-        setShowSS(null)
     }
 
     const getListStyle = isDraggingOver => ({
@@ -111,19 +109,32 @@ export default function WorkoutList({exercises, setExercises, currentWorkout, se
         })
     }
 
-    function DeleteSS() {
-        setUpdating(true)
-        const wTemp = currentWorkout
-        axios.post('/api/workouts',wTemp.exercises,{params:{workout: day, user:activeUser}})
+    function AddSuperset(ind) {
+        const postObj = {exercise: parseInt(ind)}
+        axios.post('api/superset',postObj,{ params: { workout:day, user:activeUser }})
         .then(res=>{
-          axios.get('/api/workouts', { params: {user:activeUser}})
-          .then(r=>{
-              const currentIndex = r.data.currentProgram
-              const dayIndex = r.data.currentDay
-              const workoutIndex = r.data.programs[currentIndex].schedule[dayIndex]
-              setCurrentWorkout(r.data.workouts[workoutIndex])
-              HandleClose()
-          })
+            axios.get('/api/workouts', { params: { user: activeUser } })
+            .then(r=>{
+                setWorkouts(r.data.workouts)
+            })
+            .catch(err=>{
+            })
+        })
+    }
+
+    function RemoveSS(ind) {
+        const arrObj = workouts[day].superset
+        const index = arrObj.findIndex((item)=>item==ind)
+        arrObj.splice(index,1)
+        const postObj = {superset:arrObj}
+        axios.put('api/superset',postObj,{ params: { workout:day, user:activeUser }})
+        .then(res=>{
+            axios.get('/api/workouts', { params: { user: activeUser } })
+            .then(r=>{
+                setWorkouts(r.data.workouts)
+            })
+            .catch(err=>{
+            })
         })
     }
 
@@ -194,29 +205,44 @@ export default function WorkoutList({exercises, setExercises, currentWorkout, se
                                 {...provided.droppableProps}
                             >
                                 { workouts[day].exercises.map((ex,ind)=>
+                                    workouts[day].superset.includes(workouts[day].exercises[ind-1]) ?
+                                    <></>
+                                    :
                                     <Draggable key={exercises[ex].name} draggableId={exercises[ex].name} index={ind}>
                                         {(provided, snapshot)=>(
-                                            <div className={`text-sm p-2 ${!show ? 'h-[0px]' : 'h-max'}`}
+                                            <div className={`text-sm ${!show ? 'h-[0px]' : 'h-max'}`}
                                                 ref={provided.innerRef}
                                                 style={getItemStyle(snapshot.isDragging,
                                                     provided.draggableProps.style)}
                                                 {...provided.draggableProps}
-                                                {...provided.dragHandleProps}
                                             >
                                                 <div className='flex items-stretch'>
-                                                    <div className='text-neutral-300 flex flex-col justify-center px-1'>
+                                                    <div className='text-neutral-300 flex flex-col justify-center px-1 py-2'>
                                                         <HiChevronUpDown size={28} />
                                                     </div>
-                                                    <div className='w-full'>
+                                                    <div className='w-full p-2'
+                                                        {...provided.dragHandleProps}
+                                                    >
                                                         <div className='flex items-center'>
                                                             <div className='flex items-center gap-3 justify-normal'>
                                                                 <p className='break-words w-fit'>{exercises[ex].name}</p>
-                                                                <p className="underline text-xs text-blue-500">
-                                                                    <button type='button' className='text-blue-500 flex items-center'
-                                                                        onClick={()=>setShowSS(ind)}
-                                                                    ><HiLink />&nbsp;Add Superset</button>
-                                                                    
-                                                                </p>
+                                                                {  workouts[day].superset.includes(ex) ?
+                                                                    <>
+                                                                        <button onClick={()=>RemoveSS(ex)}>
+                                                                            <HiLink className='text-blue-500' />
+                                                                        </button>
+                                                                        <span>{exercises[workouts[day].exercises[ind+1]].name}</span>
+                                                                    </>
+                                                                : ind === 0 || workouts[day].superset.includes(workouts[day].exercises[ind-1]) || workouts[day].superset.includes(workouts[day].exercises[ind-2]) ?
+                                                                    <></>
+                                                                :
+                                                                    <p className="underline text-xs text-blue-500">
+                                                                        <button type='button' className='text-blue-500 flex items-center'
+                                                                            onClick={()=>AddSuperset(workouts[day].exercises[ind-1])}
+                                                                        ><HiArrowUpLeft />&nbsp;Superset</button>
+                                                                        
+                                                                    </p>
+                                                                }
                                                             </div>
                                                             <DeleteExercise currentWorkout={workouts[day]} currentWorkoutIndex={day}
                                                                 setPrograms={setPrograms} setCurrentProgram={setCurrentProgram} homepage={false}
@@ -276,30 +302,6 @@ export default function WorkoutList({exercises, setExercises, currentWorkout, se
                             <button className='block shadow-md py-1 px-3 rounded-xl bg-red-600 hover:bg-opacity-80 text-white hover:scale-105 transition duration-200'
                                 onClick={()=>HandleDelete(i)}
                             >Remove</button>
-                        </div>
-                    </div>
-                </Dialog>
-            :
-                <></>
-            }
-            { exercises.length > 0 && showSS !== null ? 
-                <Dialog open={showSS !== null} onClose={HandleClose}>
-                    <div className='px-4 py-3'>
-                        <p> Superset Exercise with</p>
-                        <div className='flex items-center gap-2 mt-4'>
-                            <GroupExercises exercises={exercises} choice={superset} setChoice={setSuperset} ss={true} disabled={updating} />
-                            { currentSS.length > 0 ?
-                            <div className='p-2 text-red-500 block ml-auto cursor-pointer'>
-                                <BsTrash size={15} onClick={DeleteSS} />
-                            </div>
-                            :
-                                <></>
-                            }
-                        </div>
-                        <div className='flex justify-between mt-8'>
-                            <button className={`shadow-md border ${updating ? 'text-gray-200 border-gray-200' : ' border-neutral-500'} rounded-md py-1 px-3`} disabled={updating}
-                                onClick={HandleClose}
-                            >Cancel</button>
                         </div>
                     </div>
                 </Dialog>

@@ -141,15 +141,16 @@ export default function Workout() {
                     <button disabled className='text-neutral-400'><BsChevronLeft /></button>
                 }
                 {currentWorkout.exercises.map((item,id)=>
-                    <div key={id}>
-                        {currentWorkout?.superset.includes(currentWorkout.exercises[id-1]) ?
+                        currentWorkout?.superset.includes(currentWorkout.exercises[id-1]) ?
                             <></>
                         : id === activeSlide ?
-                            <BsCircleFill size={15} style={{color:'#16a34a'}} />
+                            <div key={id}>
+                                <BsCircleFill size={15} style={{color:'#16a34a'}} />
+                            </div>
                         :
-                            <BsCircle size={15} />
-                        }
-                    </div>
+                            <div key={id}>
+                                <BsCircle size={15} />
+                            </div>
                 )}
                 {activeSlide < currentWorkout.exercises.length - 1 ?
                     <button className='text-green-600 border rounded-sm bg-stone-50 px-2 py-1 shadow-sm ml-2'

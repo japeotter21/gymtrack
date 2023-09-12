@@ -123,7 +123,7 @@ export default function Schedule() {
 
     return (
         <main className="min-h-screen grid place-items-center">
-            <div className='bg-stone-50 border border-gray-300 rounded-lg px-6 py-4 lg:py-12 flex flex-col gap-4 shadow-xl w-3/4 lg:w-1/4 row-span-6'>
+            <div className='bg-stone-50 border border-gray-300 rounded-lg px-6 py-4 flex flex-col gap-4 shadow-xl w-5/6 lg:w-1/4 row-span-6'>
                 <p className='text-center text-xl font-semibold text-zinc-600'>{newUser ? <>Sign Up</> : <>Log In</>}</p>
                 <form onSubmit={(e)=>TryLogin(e)} className='flex flex-col gap-4'>
                     <input type={newUser ? "email" : "text"} placeholder='Email' required className='border border-gray-200 rounded-lg py-2 px-3'

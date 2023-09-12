@@ -2,7 +2,7 @@
 import React, { useState, useEffect, useContext } from 'react'
 import Image from 'next/image'
 import { Avatar, Dialog } from '@mui/material'
-import { BsPencil, BsThreeDotsVertical, BsTrash } from 'react-icons/bs'
+import { BsMagnet, BsMagnetFill, BsPencil, BsThreeDotsVertical, BsTrash } from 'react-icons/bs'
 import axios from 'axios'
 import Pagenav from './components/Pagenav'
 import Link from 'next/link'
@@ -36,13 +36,10 @@ export default function Home() {
   const [editReps, setEditReps] = useState(0)
   const [editWeight, setEditWeight] = useState(0)
   const [editNotes, setEditNotes] = useState('')
-  const [editSS, setEditSS] = useState(false)
   const [updating, setUpdating] = useState(false)
   const [changeDay, setChangeDay] = useState(false)
   const [inProgress, setInProgress] = useState(null)
   const [starting, setStarting] = useState(false)
-  const [superset, setSuperset] = useState('')
-  const [currentSS, setCurrentSS] = useState([])
 
   const {activeUser, Refresh} = useContext(AppContext)
   const router = useRouter()
@@ -84,59 +81,15 @@ export default function Home() {
         setEditReps(exercises[editing].target?.sets[0]?.reps || 0)
         setEditWeight(exercises[editing].target?.sets[0]?.weight || 0)
         setEditNotes(exercises[editing].target?.notes)
-        if(currentSS.length > 0)
-        {
-          setSuperset(currentSS[0])
-        }
     }
   },[editing])
-
-  useEffect(()=>{
-    if(editing !== null && superset !== '')
-    {
-        const wTemp = currentWorkout
-        const exIndex = wTemp.exercises.findIndex((item,id)=>editing == item)
-        setUpdating(true)
-        axios.post('/api/workouts',wTemp.exercises,{params:{workout: currentWorkoutIndex, user:activeUser}})
-        .then(res=>{
-          axios.get('/api/workouts', { params: {user:activeUser}})
-          .then(r=>{
-              const currentIndex = r.data.currentProgram
-              const dayIndex = r.data.currentDay
-              const workoutIndex = r.data.programs[currentIndex].schedule[dayIndex]
-              setCurrentWorkout(r.data.workouts[workoutIndex])
-              setUpdating(false)
-          })
-        })
-    }
-  },[superset])
-
-  function DeleteSS() {
-      const wTemp = currentWorkout
-      const exIndex = wTemp.exercises.findIndex((item,id)=> editing == item)
-      axios.post('/api/workouts',wTemp.exercises,{params:{workout: currentWorkoutIndex, user:activeUser}})
-      .then(res=>{
-        axios.get('/api/workouts', { params: {user:activeUser}})
-        .then(r=>{
-            const currentIndex = r.data.currentProgram
-            const dayIndex = r.data.currentDay
-            const workoutIndex = r.data.programs[currentIndex].schedule[dayIndex]
-            setCurrentWorkout(r.data.workouts[workoutIndex])
-            setSuperset('')
-            setCurrentSS([])
-        })
-      })
-  }
 
   function HandleClose() {
     setEditSets(0)
     setEditReps(0)
     setEditWeight(0)
-    setCurrentSS([])
-    setSuperset('')
     setEditNotes('')
     setEditing(null)
-    setEditSS(false)
   }
 
   function HandleEdit() {
@@ -301,32 +254,32 @@ export default function Home() {
                                   {...provided.draggableProps}
                                   
                               >
-                                <div className='p-1 col-span-5 flex items-center relative'
-                                {...provided.dragHandleProps}
-                                >
-                                  <HiChevronUpDown size={18} className='absolute ml-[-8px] text-gray-500' />
-                                  <span className='ml-[12px]'>{exercises[item].name}</span>
-                                </div>
+                                { currentWorkout.superset.includes(currentWorkout.exercises[id-1]) ?
+                                  <div className='p-1 col-span-5 flex items-center relative text-blue-500'
+                                  >
+                                    <BsMagnet size={12} style={{transform:'rotate(180deg)'}} />
+                                    <span className='ml-[12px]'>{exercises[item].name}</span>
+                                  </div>
+                                : currentWorkout.superset.includes(item) ?
+                                  <div className='p-1 col-span-5 flex items-center relative text-blue-500'
+                                  >
+                                    <BsMagnetFill size={12} />
+                                    <span className='ml-[12px]'>{exercises[item].name}</span>
+                                  </div>
+                                :
+                                  <div className='p-1 col-span-5 flex items-center relative'
+                                  {...provided.dragHandleProps}
+                                  >
+                                    <HiChevronUpDown size={18} className='absolute ml-[-8px] text-gray-500' />
+                                    <span className='ml-[12px]'>{exercises[item].name}</span>
+                                  </div>
+                                }
                                 <div className='py-2 px-1' onClick={()=>setEditing(item)}>{exercises[item].target?.sets?.length || 0}</div>
                                 <div className='py-2 px-1' onClick={()=>setEditing(item)}>{exercises[item].target?.sets[0]?.reps || 0}</div>
                                 <div className='py-2 px-1' onClick={()=>setEditing(item)}>{exercises[item].target?.sets[0]?.weight || "0"}</div>
                                 <DeleteExercise currentWorkout={currentWorkout} currentWorkoutIndex={currentWorkoutIndex} setCurrentWorkout={setCurrentWorkout}
                                   username={activeUser} item={item} id={id} homepage={true} exercises={exercises}
                                 />
-                                {/* {true ?
-                                <>
-                                  {item.superset.map((ex,index)=>
-                                    <div className='flex items-center col-span-9 grid grid-cols-9 bg-sky-100 bg-opacity-40' key={`supserset-${index}`}>
-                                      <div className='col-span-5 ml-4 gap-2 flex items-center text-blue-500'> <HiLink /> <p className='text-neutral-800'>{exercises[ex].name}</p></div>
-                                      <div className='py-2 px-1' onClick={()=>{setEditing(ex);setEditSS(true)}}>{exercises[ex].target?.sets?.length || 0}</div>
-                                      <div className='py-2 px-1' onClick={()=>{setEditing(ex);setEditSS(true)}}>{exercises[ex].target?.sets[0]?.reps || 0}</div>
-                                      <div className='py-2 px-1' onClick={()=>{setEditing(ex);setEditSS(true)}}>{exercises[ex].target?.sets[0]?.weight || "0"}</div>
-                                    </div>
-                                  )}
-                                </>
-                                :
-                                <></>
-                                } */}
                           </div>
                           )}
                         </Draggable>
@@ -374,23 +327,6 @@ export default function Home() {
             <input className='text-md border rounded-lg w-full py-1 px-2' value={editWeight}
               onChange={(e)=>setEditWeight(e.target.value)}
             />
-            { editSS ? 
-                <></>
-            :
-                <>
-                    <p className='text-md'>Superset?</p>
-                    <div className='flex items-center gap-4 col-span-2 lg:col-span-1'>
-                        <GroupExercises exercises={exercises} choice={superset} setChoice={setSuperset} ss={true} disabled={updating} />
-                        { currentSS.length > 0 ?
-                        <div className='p-2 text-red-500 block ml-auto cursor-pointer'>
-                          <BsTrash size={15} onClick={DeleteSS} />
-                        </div>
-                        :
-                          <></>
-                        }
-                    </div>
-                </>
-            }
           </div>
           <div className='flex justify-end px-3 py-3 gap-3'>
               <button className='border border-gray-400 py-1 px-3 rounded-xl lg:hover:bg-red-100 lg:hover:border-red-200 lg:hover:text-red-500 lg:hover:scale-105 transition duration-200'
