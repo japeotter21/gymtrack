@@ -15,6 +15,7 @@ export default function History() {
     const [view, setView] = useState(null)
     const [displayTime, setDisplayTime] = useState('')
     const [calendarDays, setCalendarDays] = useState([])
+    const [nextWorkout, setNextWorkout] = useState({})
     const {activeUser, Refresh} = useContext(AppContext)
     const currentDate = new Date();
     const [month, setMonth] = useState(currentDate.getMonth())
@@ -73,6 +74,14 @@ export default function History() {
             })
             .catch(err=>{
                 console.error(err.message)
+            })
+            axios.get('api/workouts',{params:{user:activeUser}})
+            .then(res=>{
+                const workoutDay = res.data.currentDay
+                const currentIndex = res.data.currentProgram
+                const currentProgram = res.data.programs[currentIndex]
+                const workoutIndex = currentProgram.schedule[workoutDay]
+                setNextWorkout(res.data.workouts[workoutIndex])
             })
         }
         else
@@ -178,19 +187,27 @@ export default function History() {
                                     {new Date(day).getDate()}
                                 </p>
                                 <div  className='flex flex-col gap-0.5'>
-                                { workouts.map((workout,id)=>
-                                    <div key={`${workout.title}-${id}`}>
-                                    {parseInt(workout.date) > day && parseInt(workout.date) < calendarDays[index+1] ?
-                                        <div className='text-xs cursor-pointer break-word bg-gradient-to-r from-sky-600 to-sky-400 text-white rounded-full truncate shadow-sm pl-1 py-0.5'
-                                            onClick={()=> view?.date === workout.date ? setView(null) : setView(workout)}
+                                    { workouts.map((workout,id)=>
+                                        <div key={`${workout.title}-${id}`}>
+                                        {parseInt(workout.date) > day && parseInt(workout.date) < calendarDays[index+1] ?
+                                            <div className='text-xs cursor-pointer break-word bg-gradient-to-r from-sky-600 to-sky-400 text-white rounded-full truncate shadow-sm pl-1 py-0.5'
+                                                onClick={()=> view?.date === workout.date ? setView(null) : setView(workout)}
+                                            >
+                                                {workout.title}
+                                            </div> 
+                                            :
+                                            <></>
+                                        }
+                                        </div>
+                                    )}
+                                    {currentDate > day && currentDate < calendarDays[index+1] ? 
+                                        <div className='text-xs cursor-pointer break-word bg-gradient-to-r text-center from-neutral-300 to-neutral-400 text-white rounded-full truncate shadow-sm pl-1 py-0.5'
                                         >
-                                            {workout.title}
-                                        </div> 
-                                        :
+                                            {nextWorkout?.name}
+                                        </div>
+                                    :
                                         <></>
                                     }
-                                    </div>
-                                )}
                                 </div>
                             </div>
                         :

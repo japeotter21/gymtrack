@@ -80,7 +80,7 @@ export default function LiveExerciseLog({complete, lift, id, setComplete, curren
         {
             if(complete.length > 0 )
             {
-                complete[id].rpe > 0 ? setCompleted(complete[id]) : setCompleted(null)
+                complete[id]?.rpe > 0 ? setCompleted(complete[id]) : setCompleted(null)
             }
             else
             {
@@ -340,7 +340,7 @@ export default function LiveExerciseLog({complete, lift, id, setComplete, curren
                     <input disabled className='border border-gray-200 rounded-md px-2 bg-gray-100' />
                     <input disabled className='border border-gray-200 rounded-md px-2 bg-gray-100' />
                 </div>
-                <Slider
+                {/* <Slider
                     disabled={completed && !editing}
                     onChange={(e)=>{e.stopPropagation();setRadioVal(e.target.value)}}
                     track={false}
@@ -365,9 +365,9 @@ export default function LiveExerciseLog({complete, lift, id, setComplete, curren
                             }
                         ]
                     }
-                />
+                /> */}
                 { completed ? 
-                <div className='mt-2 mb-2 flex justify-between'>
+                <div className='mt-12 mb-2 flex justify-between'>
                     { !editing ? 
                         <button type="button" onClick={()=>ToggleEdit(false)}
                             className='bg-stone-50 border border-neutral-700 rounded-full px-5 py-1 mt-4 mb-2'
@@ -386,7 +386,9 @@ export default function LiveExerciseLog({complete, lift, id, setComplete, curren
                     </div>
                 </div>
                 :
-                    <LiveButton disabled={!(radioVal > 0)} text={'Save'} loading={saving} loadingText={'Saving...'} />
+                    <div className='mt-12 mb-2'>
+                        <LiveButton disabled={!(radioVal > 0)} text={'Save'} loading={saving} loadingText={'Saving...'} />
+                    </div>
                 }
             </form>
             <div className='flex justify-center mt-4 gap-1'>
