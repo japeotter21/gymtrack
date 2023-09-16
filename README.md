@@ -9,7 +9,7 @@ Core Features:
 
 
 ![Screenshot 2023-08-13 135900](https://github.com/japeotter21/gymtrack/assets/97000604/4679c1de-6d64-4200-9792-65782fa55709)
-![Screenshot 2023-09-13 112536](https://github.com/japeotter21/gymtrack/assets/97000604/d4c4d3e4-3f6e-4c4c-83ac-cf7b6cf335d5)
+![Screenshot 2023-09-16 140810](https://github.com/japeotter21/gymtrack/assets/97000604/0aa1b0ed-ed58-4d97-9a6b-6e896fa2edbe)
 ![Screenshot 2023-09-13 112452](https://github.com/japeotter21/gymtrack/assets/97000604/67e11a40-5e90-4f4b-b3bb-5dd978970018)
 ![Screenshot 2023-08-13 135947](https://github.com/japeotter21/gymtrack/assets/97000604/096bd79f-1b4b-45c9-b6ae-744a8c24e246)
 
