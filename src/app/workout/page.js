@@ -110,8 +110,8 @@ export default function Workout() {
 
     return (
         <main className="grid min-h-screen place-items-center pt-6 pb-12 px-2 lg:p-12">
-            <div className='flex flex-col items-center gap-2'>
-                <div className='w-5/6'>
+            <div className='flex flex-col items-center gap-2 w-5/6'>
+                <div>
                     { currentWorkout.exercises.map((lift,id)=>
                     <>
                         { activeSlide === id && !currentWorkout?.superset.includes(currentWorkout.exercises[id-1]) ?
@@ -147,7 +147,7 @@ export default function Workout() {
                                 </div>
                     )}
                 </div>
-                <div className='flex justify-between w-2/3 lg:w-1/2 mx-auto mt-8'>
+                <div className='flex justify-between w-full mx-auto mt-4'>
                     <button className='rounded-lg border border-red-400 shadow-md bg-stone-50 text-red-600 px-7 py-2'
                         onClick={Cancel}
                     >Cancel</button>

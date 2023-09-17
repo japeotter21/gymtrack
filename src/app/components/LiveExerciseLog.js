@@ -231,7 +231,7 @@ export default function LiveExerciseLog({complete, lift, id, setComplete, curren
 
     return (
         <div
-            className={`w-5/6 lg:w-1/2 flex-col mx-auto gap-3 items-center border border-gray-300 rounded-lg
+            className={`w-full flex-col mx-auto gap-3 items-center border border-gray-300 rounded-lg
                 ${completed && !editing ? 'bg-neutral-200' : 'bg-stone-50'} px-4 py-3 shadow-md
                 ${ showDirections === 2 ? '' : showDirections === 3 ? 'animate-fadeOut' : showDirections < 0 ? 'animate-pushLeft' : showDirections > 0 ? 'animate-pushRight' : 'animate-fadeIn'}
                 `
