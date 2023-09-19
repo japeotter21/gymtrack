@@ -37,20 +37,11 @@ export default async function handler(req, res) {
                 const workoutsTemp = []
                 console.log(responseTemp.data.workoutObj.record)
                 responseTemp.data.workoutObj.record.forEach((item,id)=>{
-                    if(item.date > 0)
+                    let resultTemp = item.results.find((result)=>result.name === name)
+                    if(resultTemp && resultTemp !== undefined)
                     {
-                        let resultTemp = null
-                        item.results.forEach((result,ind)=>{
-                            if(result.name === name)
-                            {
-                                resultTemp = result
-                            }
-                        })
-                        if(resultTemp)
-                        {
-                            item.results = resultTemp
-                            workoutsTemp.push(item)
-                        }
+                        item.results = resultTemp
+                        workoutsTemp.push(item)
                     }
                 })
                 res.status(200).json(workoutsTemp);
