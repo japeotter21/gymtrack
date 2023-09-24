@@ -249,7 +249,7 @@ export default function History() {
                     <></>
                 }
             </div>
-            <Pagenav page='history' />
+            {/* <Pagenav page='history' /> */}
         </main>
     )
 }

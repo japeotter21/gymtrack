@@ -209,7 +209,7 @@ export default function Stats() {
             :
                 <div className='h-[10vh]'></div>
             }
-            <Pagenav page='stats' />
+            {/* <Pagenav page='stats' /> */}
         </main>
     )
 }

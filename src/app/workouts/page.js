@@ -191,7 +191,7 @@ export default function Workouts() {
                         Add Workout
                     </button>
                 </div>
-                <Pagenav page='workouts' />
+                {/* <Pagenav page='workouts' /> */}
             </div>
             <Dialog open={addingWorkout} onClose={HandleClose}>
                 <div className='bg-stone-50 p-2 flex flex-col gap-4'>

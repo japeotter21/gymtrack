@@ -135,7 +135,7 @@ export default function Schedule() {
                     </div>
                 </div>
             </div>
-            <Pagenav page='profile' />
+            {/* <Pagenav page='profile' /> */}
             <Dialog open={editProfile} onClose={()=>setEditProfile(false)}>
                 <div className='px-4 py-2'>
                 <p className='font-semibold text-lg py-2'>Edit Profile</p>

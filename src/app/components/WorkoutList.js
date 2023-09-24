@@ -154,6 +154,8 @@ export default function WorkoutList({exercises, setExercises, currentWorkout, se
           })
         })
     }
+    const ConditionalWrapper = ({ condition, wrapper, children }) =>
+    condition ? wrapper(children) : children;
 
     return (
         <DragDropContext onDragEnd={onDragEnd}>
@@ -216,13 +218,15 @@ export default function WorkoutList({exercises, setExercises, currentWorkout, se
                                                     provided.draggableProps.style)}
                                                 {...provided.draggableProps}
                                             >
+                                                 <ConditionalWrapper
+                                                    condition={!(workouts[day].superset.includes(ex))}
+                                                    wrapper={children => <a {...provided.dragHandleProps}>{children}</a>}
+                                                >
                                                 <div className='flex items-stretch'>
                                                     <div className='text-neutral-300 flex flex-col justify-center px-1 py-2'>
-                                                        <HiChevronUpDown size={28} />
+                                                    {  workouts[day].superset.includes(ex) ? <div className='w-[28px]'></div> : <HiChevronUpDown size={28} />}
                                                     </div>
-                                                    <div className='w-full p-2'
-                                                        {...provided.dragHandleProps}
-                                                    >
+                                                    <div className='w-full p-2'>
                                                         <div className='flex items-center'>
                                                             <div className='flex items-center gap-3 justify-normal'>
                                                                 <p className='break-words w-fit'>{exercises[ex].name}</p>
@@ -278,6 +282,7 @@ export default function WorkoutList({exercises, setExercises, currentWorkout, se
                                                         </div> */}
                                                     </div>
                                                 </div>
+                                                </ConditionalWrapper>
                                             </div>
                                         )}
                                     </Draggable>
