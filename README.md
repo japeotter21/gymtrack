@@ -16,10 +16,10 @@ Core Features:
 - Choose exercises to perform in workouts and add workouts to your program
 - Record results, view past workouts, and track your progress on exercises (projected 1-rep max based on NSCA load chart https://www.nsca.com/contentassets/61d813865e264c6e852cadfe247eae52/nsca_training_load_chart.pdf)
 
+![Screenshot 2023-09-23 233248](https://github.com/japeotter21/gymtrack/assets/97000604/93cedf2f-7ded-4be4-90b1-60b95dbf6ec8)
+![Screenshot 2023-09-23 233305](https://github.com/japeotter21/gymtrack/assets/97000604/30b32ef0-59d8-4f57-84fb-9becf690074c)
 ![Screenshot 2023-09-23 233505](https://github.com/japeotter21/gymtrack/assets/97000604/6c27066b-8537-40e4-86c8-9e47e91df404)
 ![Screenshot 2023-09-23 233326](https://github.com/japeotter21/gymtrack/assets/97000604/344601c3-fac4-473f-ad9f-f01c34ceaf3d)
-![Screenshot 2023-09-23 233305](https://github.com/japeotter21/gymtrack/assets/97000604/30b32ef0-59d8-4f57-84fb-9becf690074c)
-![Screenshot 2023-09-23 233248](https://github.com/japeotter21/gymtrack/assets/97000604/93cedf2f-7ded-4be4-90b1-60b95dbf6ec8)
 
 To Do:
 <p>✅ Progress tracking by exercise (chart)</p>
