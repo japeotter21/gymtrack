@@ -16,12 +16,10 @@ Core Features:
 - Choose exercises to perform in workouts and add workouts to your program
 - Record results, view past workouts, and track your progress on exercises (projected 1-rep max based on NSCA load chart https://www.nsca.com/contentassets/61d813865e264c6e852cadfe247eae52/nsca_training_load_chart.pdf)
 
-
-![Screenshot 2023-08-13 135900](https://github.com/japeotter21/gymtrack/assets/97000604/4679c1de-6d64-4200-9792-65782fa55709)
-![Screenshot 2023-09-16 140810](https://github.com/japeotter21/gymtrack/assets/97000604/0aa1b0ed-ed58-4d97-9a6b-6e896fa2edbe)
-![Screenshot 2023-09-13 112452](https://github.com/japeotter21/gymtrack/assets/97000604/67e11a40-5e90-4f4b-b3bb-5dd978970018)
-![Screenshot 2023-08-13 135947](https://github.com/japeotter21/gymtrack/assets/97000604/096bd79f-1b4b-45c9-b6ae-744a8c24e246)
-
+![Screenshot 2023-09-23 233505](https://github.com/japeotter21/gymtrack/assets/97000604/6c27066b-8537-40e4-86c8-9e47e91df404)
+![Screenshot 2023-09-23 233326](https://github.com/japeotter21/gymtrack/assets/97000604/344601c3-fac4-473f-ad9f-f01c34ceaf3d)
+![Screenshot 2023-09-23 233305](https://github.com/japeotter21/gymtrack/assets/97000604/30b32ef0-59d8-4f57-84fb-9becf690074c)
+![Screenshot 2023-09-23 233248](https://github.com/japeotter21/gymtrack/assets/97000604/93cedf2f-7ded-4be4-90b1-60b95dbf6ec8)
 
 To Do:
 <p>✅ Progress tracking by exercise (chart)</p>
@@ -39,7 +37,6 @@ To Do:
 <p>⬜ API cleanup (separate GraphQL service)</p>
 <p>⬜ Configure progression to set target weights</p>
 <p>⬜ User behavior tracking</p>
-<p>⬜ Supabase for images</p>
 
 Future: 
 <p>⬜ AI workout progressions, plans and exercise recommendations</p>
