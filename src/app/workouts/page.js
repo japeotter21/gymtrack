@@ -2,12 +2,12 @@
 import React, { useState, useEffect, useContext } from 'react'
 import axios from 'axios'
 import Pagenav from '../components/Pagenav'
-import { BsTrash, BsCheck2Circle, BsChevronLeft, BsChevronRight, BsCircle, BsPlus, BsPlusCircle, BsPlusCircleFill } from 'react-icons/bs'
+import { BsTrash, BsCheck2Circle, BsChevronLeft, BsChevronRight, BsCircle, BsPlus, BsPlusCircle, BsPlusCircleFill, BsCalendar2, BsArrowLeft, BsHouse } from 'react-icons/bs'
 import { Checkbox, Dialog } from '@mui/material'
 import WorkoutList from '../components/WorkoutList'
 import AppContext from '../AppContext'
-import { redirect } from 'next/navigation'
 import DialogButton from '../components/DialogButton'
+import Link from 'next/link'
 
 export default function Workouts() {
     const [profile, setProfile] = useState(null)
@@ -135,63 +135,69 @@ export default function Workouts() {
     }
     
     return (
-        <main className="flex min-h-screen flex-col items-center gap-4">
-            <div className='flex justify-between items-center gap-8 w-full bg-stone-50 pt-6 pb-3 px-2'>
-                <div className='flex flex-col gap-2 items-center justify-start'>
+        <main className="flex min-h-screen flex-col items-center gap-4 py-12">
+            <div className='w-full lg:w-1/2 flex flex-col gap-2 items-center px-2 lg:px-12'>
+                <div className='w-full text-center'>
+                    <p className='text-xs text-gray-500'>Program</p>
                     <select className='border rounded-md border-gray-400 px-2 h-max' value={programIndex} onChange={(e)=>setProgramIndex(e.target.value)}>
                         {programs.map((prog,index)=>
                             <option key={index} value={index}>{prog.name}</option>
                         )}
                     </select>
-                    <p className='text-xs'>Choose Program</p>
+                    <p className='text-xs mt-2 text-gray-500'>Description</p>
+                    <p className='text-sm break-words px-2 py-1'>{programs[programIndex].description}</p>
                 </div>
-                <div className='flex items-center gap-2'>
-                    { programs[programIndex].name === currentProgram.name ?
-                        <div className='flex flex-col gap-1 items-center justify-start'>
-                            <button className='px-3 py-1 rounded-full'>
-                                <BsCheck2Circle size={20} style={{color:'#15803d'}} />
-                            </button>
-                            <p className='text-xs text-center'>Current</p>
-                        </div>
-                        :
-                        <div className='flex flex-col gap-1 items-center'>
-                            <button className='px-3 py-1 rounded-full'
-                                onClick={ChangeProgram}
-                            >
-                                <BsCircle size={20} style={{color:'#6b7280'}} />
-                            </button>
-                            <p className='text-xs text-center'>Use This Program</p>
-                        </div>
-                    }
-                    <div className='flex flex-col gap-1 items-center justify-start'>
-                        <button className='px-3 py-1 rounded-full text-sky-500'
-                            onClick={()=>setNewProgram(true)}
-                        ><BsPlusCircleFill size={20} /></button>
-                        <p className='text-xs text-center'>Create New</p>
-                    </div>
-                </div>
-            </div>
-            <div className='w-full lg:w-1/2 flex flex-col gap-2 items-center px-2 lg:px-12'>
-                <div className='w-full text-center'>
-                    <p className='font-semibold'>{programs[programIndex].name}</p>
-                    <p className='text-sm break-words'>{programs[programIndex].description}</p>
-                </div>
+                <hr className='my-2 w-full border-gray-300' />
                 <div className='flex flex-col gap-4 w-full mb-4'>
                     {programs[programIndex].schedule.map((day,i)=>
-                        <div key={`${i}-${day}`} className='border border-gray-400 bg-stone-50 rounded-md shadow-sm'> 
+                        <div key={`${i}-${day}`} className='bg-stone-50 rounded-md shadow-md'> 
                             <WorkoutList currentWorkout={workouts[day]} exercises={exercises} setCurrentWorkout={setCurrentWorkout} setExercises={setExercises}
                                 setPrograms={setPrograms} setCurrentProgram={setCurrentProgram} workouts={workouts} currentProgram={currentProgram}
                                 profile={profile} setWorkouts={setWorkouts} day={day} i={i} activeUser={activeUser} HandleDelete={HandleDelete}
                             />
                         </div>
                     )}
-                    <button className='bg-gradient-to-r from-green-500 to-green-600 py-2 rounded-xl shadow-lg'
+                    <button className='bg-gradient-radial to-[#f4f4f5] from-white py-2 rounded-lg text-neutral-600 border border-blue-200'
                         onClick={()=>setAddingWorkout(true)}
                     > 
                         Add Workout
                     </button>
                 </div>
                 {/* <Pagenav page='workouts' /> */}
+            </div>
+            <div className='grid grid-cols-3 items-center gap-2 w-full px-2 lg:px-12'>
+                <Link className='flex flex-col h-full gap-1 items-center justify-center px-4 py-2 shadow-sm rounded-md bg-stone-50 text-neutral-600'
+                    href="/"
+                >
+                    <button className='px-3 py-1 rounded-full'
+                    ><BsHouse size={20} /></button>
+                    <p className='text-xs text-center'>Back to Home</p>
+                </Link>
+                { programs[programIndex].name === currentProgram.name ?
+                    <div className='flex flex-col gap-1 items-center justify-center px-4 py-2 shadow-md rounded-md text-sky-600 bg-sky-100 border border-sky-300'>
+                        <button className='px-3 py-1 rounded-full'>
+                            <BsCheck2Circle size={20} />
+                        </button>
+                        <p className='text-xs text-center'>Current Program</p>
+                    </div>
+                    :
+                    <div className='flex flex-col gap-1 items-center justify-center px-4 py-2 shadow-sm rounded-md bg-stone-50'
+                        onClick={ChangeProgram}
+                    >
+                        <button className='px-3 py-1 rounded-full text-gray-500'
+                        >
+                            <BsCircle size={20}/>
+                        </button>
+                        <p className='text-xs text-center'>Use This Program</p>
+                    </div>
+                }
+                <div className='flex flex-col gap-1 items-center justify-center px-4 py-2 shadow-sm rounded-md bg-stone-50'
+                    onClick={()=>setNewProgram(true)}
+                >
+                    <button className='px-3 py-1 rounded-full text-sky-500'
+                    ><BsCalendar2 size={20} /></button>
+                    <p className='text-xs text-center'>Create New Program</p>
+                </div>
             </div>
             <Dialog open={addingWorkout} onClose={HandleClose}>
                 <div className='bg-stone-50 p-2 flex flex-col gap-4'>
