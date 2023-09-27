@@ -166,7 +166,7 @@ export default function Workouts() {
                 {/* <Pagenav page='workouts' /> */}
             </div>
             <div className='grid grid-cols-3 items-center gap-2 w-full px-2 lg:px-12'>
-                <Link className='flex flex-col h-full gap-1 items-center justify-center px-4 py-2 shadow-sm rounded-md bg-stone-50 text-neutral-600'
+                <Link className='flex flex-col gap-1 items-center justify-center self-stretch px-4 py-2 shadow-sm rounded-md bg-stone-50 text-neutral-600'
                     href="/"
                 >
                     <button className='px-3 py-1 rounded-full'
