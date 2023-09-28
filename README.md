@@ -20,7 +20,7 @@ Core Features:
 ![Screenshot 2023-09-26 232017](https://github.com/japeotter21/gymtrack/assets/97000604/c3be8a93-2d41-4064-8815-dbcd78e875f2)
 ![Screenshot 2023-09-26 232039](https://github.com/japeotter21/gymtrack/assets/97000604/e1610e9a-6e99-40c4-b85d-eba083a91478)
 ![Screenshot 2023-09-23 233505](https://github.com/japeotter21/gymtrack/assets/97000604/6c27066b-8537-40e4-86c8-9e47e91df404)
-![Screenshot 2023-09-23 233326](https://github.com/japeotter21/gymtrack/assets/97000604/344601c3-fac4-473f-ad9f-f01c34ceaf3d)
+![Screenshot 2023-09-28 183309](https://github.com/japeotter21/gymtrack/assets/97000604/c6d8bedb-7571-4518-aa44-65a2908ae5f6)
 
 To Do:
 <p>✅ Progress tracking by exercise (chart)</p>
