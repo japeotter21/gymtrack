@@ -122,7 +122,7 @@ export default function Stats() {
 
     return (
         <main className="flex min-h-screen flex-col items-center py-6 lg:pt-12 px-2 lg:p-12 gap-4">
-            <div className='flex items-center justify-between w-11/12'>
+            <div className='flex items-center justify-center w-11/12'>
                 <select className='border border-gray-400 rounded-md p-1'
                     onChange={(e)=>ChartExercise(e)} defaultValue=''
                     >
@@ -130,14 +130,6 @@ export default function Stats() {
                     {results.map((ex,id)=>
                         <option value={id} key={id}>{ex.name}</option>
                     )}
-                </select>
-                <select className='border border-gray-400 rounded-md p-1'
-                    onChange={(e)=>setRange(e.target.value)} defaultValue=''
-                    >
-                    <option value='' disabled>Range</option>
-                    <option value='all'>All</option>
-                    <option value='month'>Month</option>
-                    <option value='year'>Year</option>
                 </select>
             </div>
             { current !== null ?
@@ -185,6 +177,15 @@ export default function Stats() {
                                 />
                                 {/* <LineChart data={data} /> */}
                         </div>
+                    </div>
+                    <div className='flex flex-col items-center gap-2'>
+                        <div className='flex'
+                        >
+                            <button className={`${range === 'all' ? 'bg-sky-600 text-white' : 'bg-stone-50'} px-4 py-1.5 text-sm rounded-l-md`} onClick={(e)=>setRange('all')}>All</button>
+                            <button className={`${range === 'month' ? 'bg-sky-600 text-white' : 'bg-stone-50'} px-4 py-1.5 text-sm border-x-[1px]`} onClick={(e)=>setRange('month')}>Month</button>
+                            <button className={`${range === 'year' ? 'bg-sky-600 text-white' : 'bg-stone-50'} px-4 py-1.5 text-sm rounded-r-md`} onClick={(e)=>setRange('year')}>Year</button>
+                        </div>
+                        <p className='text-xs text-neutral-500'>Date Range</p>
                     </div>
                     <div className='w-full lg:w-1/2 bg-stone-50 rounded-lg px-4 py-2 max-h-[30vh] overflow-y-auto'>
                         <p>{current.name}</p>
