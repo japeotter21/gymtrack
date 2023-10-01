@@ -147,8 +147,7 @@ export default function Home() {
     function UpdateCurrentDay(newDay) {
         setUpdating(true)
         const postObj = {newDay: parseInt(newDay)}
-        const resultsLength = Array.from({length:workouts[currentProgram.schedule[newDay]].exercises.length},x=>inProgressObj)
-        axios.post('api/start',resultsLength,{params: {user:activeUser, name:workouts[currentProgram.schedule[newDay]].name}})
+        axios.post('api/start',{params: {user:activeUser, name:workouts[currentProgram.schedule[newDay]].name}})
         axios.put('/api/workouts', postObj, { params: {user:activeUser}})
         .then(r=>{
         axios.get('/api/workouts', { params: {user:activeUser}})
@@ -208,9 +207,7 @@ export default function Home() {
         }
         else
         {
-            const resultsLength = Array.from({length:currentWorkout.exercises.length},x=>Object.assign({},inProgressObj))
-            let resultsTemp = [...resultsLength]
-            axios.post('api/start', resultsTemp, {params: {user:activeUser, name:currentWorkout.name}})
+            axios.post('api/start', {params: {user:activeUser, name:currentWorkout.name}})
             .then(res=>{
                 router.push('/workout')
             })

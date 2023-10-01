@@ -13,6 +13,34 @@ export default function handler(req, res) {
     // {
         if (req.method === 'POST')
         {
+            let currentName = ''
+            let workoutObj = []
+            const workoutTemp = req.body.workout
+            workoutTemp.results.forEach((item,id)=>{
+                if(item.name.split('-')[0] === currentName)
+                {
+                    const wIndex = workoutObj.findIndex((w)=>w.name === currentName)
+                    workoutObj[wIndex].sets.push({reps:item.reps, weight: item.weight})
+                }
+                else
+                {
+                    currentName = item.name.split('-')[0]
+                    workoutObj.push({
+                        name: currentName,
+                        notes: "",
+                        rpe: 6,
+                        sets: [{reps: item.reps, weight: item.weight}]
+                    })
+                }
+            })
+            console.log(workoutObj)
+            const resultObj = {
+                date: workoutTemp.date,
+                title: workoutTemp.title,
+                end: workoutTemp.end,
+                results: workoutObj
+            }
+            console.log(resultObj)
             const user = req.query.user
             const rest = req.query.rest
             const data = JSON.stringify({
@@ -32,10 +60,10 @@ export default function handler(req, res) {
                 {
                     "$set": {
                         [`currentDay`]: req.body.day,
-                        [`inProgress.results`]: [inProgressObj]
+                        [`inProgress.results`]: []
                     },
                     "$push": {
-                        [`record`]: req.body.results
+                        [`record`]: resultObj
                     }
                 }
             });

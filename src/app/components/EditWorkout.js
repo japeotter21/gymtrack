@@ -166,39 +166,43 @@ export default function PostExercise({username, currentWorkoutIndex, currentWork
                 <div className="animate-pulse rounded-full bg-gray-200 h-4 w-full"></div>
             </>
             }
-            <Dialog open={editEx !== null} onClose={()=>{setEditEx(null);setChoice('')}} maxWidth='lg' fullWidth>
-                <div className='px-4 py-3'>
-                    <p className='font-semibold mb-2'>{choice && choice !== '' ? <>{exercises[parseInt(choice)].name}</> : <></>}</p>
-                    <div className='grid grid-cols-2 px-3 py-3 gap-3'>
-                        <p className='text-md'>Sets</p>
-                        <select className='text-md border rounded-lg w-full py-1 px-2' value={editSets}
-                        onChange={(e)=>{setEdited(true);setEditSets(e.target.value)}}
-                        >
-                        {setConstant.map((num,setNum)=>
-                            <option value={num} key={setNum}>{num}</option>
-                        )}
-                        </select>
-                        <p className='text-md'>Reps</p>
-                        <select className='text-md border rounded-lg w-full py-1 px-2' value={editReps}
-                        onChange={(e)=>{setEdited(true);setEditReps(e.target.value)}}
-                        >
-                        {repConstant.map((num,setNum)=>
-                            <option value={num} key={setNum}>{num}</option>
-                        )}
-                        </select>
-                        <p className='text-md'>Weight (lbs)</p>
-                        <input className='text-md border rounded-lg w-full py-1 px-2' value={editWeight}
-                        onChange={(e)=>{setEdited(true);setEditWeight(e.target.value)}}
-                        />
+            { editEx !== null ? 
+                <Dialog open={editEx !== null} onClose={()=>{setEditEx(null);setChoice('')}} maxWidth='lg' fullWidth>
+                    <div className='px-4 py-3'>
+                        <p className='font-semibold mb-2'>{choice && choice !== '' ? <>{exercises[parseInt(choice)].name}</> : <></>}</p>
+                        <div className='grid grid-cols-2 px-3 py-3 gap-3'>
+                            <p className='text-md'>Sets</p>
+                            <select className='text-md border rounded-lg w-full py-1 px-2' value={editSets}
+                            onChange={(e)=>{setEdited(true);setEditSets(e.target.value)}}
+                            >
+                            {setConstant.map((num,setNum)=>
+                                <option value={num} key={setNum}>{num}</option>
+                            )}
+                            </select>
+                            <p className='text-md'>Reps</p>
+                            <select className='text-md border rounded-lg w-full py-1 px-2' value={editReps}
+                            onChange={(e)=>{setEdited(true);setEditReps(e.target.value)}}
+                            >
+                            {repConstant.map((num,setNum)=>
+                                <option value={num} key={setNum}>{num}</option>
+                            )}
+                            </select>
+                            <p className='text-md'>Weight (lbs)</p>
+                            <input className='text-md border rounded-lg w-full py-1 px-2' value={editWeight}
+                            onChange={(e)=>{setEdited(true);setEditWeight(e.target.value)}}
+                            />
+                        </div>
+                        <div className='flex justify-between'>
+                            <button type="button" className='px-3 py-1 rounded-md shadow-md border border-neutral-300' onClick={()=>{setEditEx(null);setChoice('')}}
+                            >Cancel</button>
+                            <DialogButton text="Add to Workout" type="button" loadingText="Adding..." loading={loading} action={AddToWorkout} />
+                        </div>
+                    
                     </div>
-                    <div className='flex justify-between'>
-                        <button type="button" className='px-3 py-1 rounded-md shadow-md border border-neutral-300' onClick={()=>{setEditEx(null);setChoice('')}}
-                        >Cancel</button>
-                        <DialogButton text="Add to Workout" type="button" loadingText="Adding..." loading={loading} action={AddToWorkout} />
-                    </div>
-                  
-                </div>
-            </Dialog>
+                </Dialog>
+                :
+                <></>
+            }
             <Dialog open={addNew} onClose={HandleClose} maxWidth='lg' fullWidth>
                 <div className='px-4 py-3'>
                     <p className='font-semibold mb-2'>Add Custom Exercise</p>

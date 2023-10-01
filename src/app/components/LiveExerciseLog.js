@@ -12,23 +12,20 @@ import LiveRow from './LiveRow.js';
 
 const textOptions = ['Machine taken?', 'Machine broken?', 'Not feeling it?', 'In a hurry?']
 
-export default function LiveExerciseLog({complete, lift, id, setComplete, currentWorkout, profile, currentWorkoutIndex, exercises, setExercises, username,
-    setFinishObj, setCurrentWorkout, setActiveSlide, activeSlide
+export default function LiveExerciseLog({lift, id, currentWorkout, profile, complete, currentWorkoutIndex, exercises, setExercises, username,
+    setCurrentWorkout, setActiveSlide, activeSlide, setComplete
     })
 {
     const [targetSets, setTargetSets] = useState([])
     const [radioVal, setRadioVal] = useState(6)
     const [addSet, setAddSet] = useState([])
     const [ssId, setSSId] = useState(null)
-    const [completed, setCompleted] = useState(null)
-    const [loading, setLoading] = useState(true)
     const [saving, setSaving] = useState(false)
     const [updating, setUpdating] = useState(false)
     const [randomText, setRandomText] = useState(0)
     const [swap, setSwap] = useState(false)
     const [choice, setChoice] = useState(lift)
     const [initialLift, setInitialLift] = useState(null)
-
     useEffect(()=>{
         setRandomText(Math.round(Math.random()*3))
         setInitialLift(lift)
@@ -40,21 +37,6 @@ export default function LiveExerciseLog({complete, lift, id, setComplete, curren
             setTargetSets(exercises[choice].target.sets)
         }
     },[choice, exercises])
-
-    useEffect(()=>{
-        if(complete)
-        {
-            if(complete.length > 0 )
-            {
-                complete[id]?.rpe > 0 ? setCompleted(complete[id]) : setCompleted(null)
-            }
-            else
-            {
-                setCompleted(null)
-            }
-            setLoading(false)
-        }
-    },[complete])
 
     useEffect(()=>{
         if(choice != lift) {
@@ -84,24 +66,10 @@ export default function LiveExerciseLog({complete, lift, id, setComplete, curren
         setAddSet(setTemp)
     }
 
-    function RemoveCompletedSet(index) {
-        const setTemp = Object.assign({},completed)
-        setTemp.sets.splice(index,1)
-        setCompleted(setTemp)
-    }
-
-    if(loading)
-    {
-        return(
-            <></>
-        )
-    }
-
     return (
         <div
             className={`w-full flex-col mx-auto gap-3 items-center border border-gray-300 rounded-lg
-                ${completed ? 'bg-neutral-200' : 'bg-stone-50'} px-4 py-3 shadow-md
-                
+                px-4 py-3 shadow-md bg-stone-50
                 `
             }
             key={id}
@@ -123,22 +91,14 @@ export default function LiveExerciseLog({complete, lift, id, setComplete, curren
                 </div>
             </div>
             <div>
-                { !completed ? 
-                    targetSets.map((set,index)=>
+                { targetSets.map((set,index)=>
                         <LiveRow key={`${id}-${index}`} index={index} set={set} setLength={targetSets.length} repConstant={repConstant} RemoveTargetSet={RemoveTargetSet}
-                            completed={completed} id={id} username={username} name={exercises[choice].name} extraRow={false}
+                            id={id} username={username} name={exercises[choice].name} extraRow={false} complete={complete} setComplete={setComplete}
                         />
-                    )
-                :
-                    completed.sets.map((set,index)=>
-                        <LiveRow key={`${id}-${index}`} index={index} set={set} setLength={completed.sets.length} repConstant={repConstant} RemoveTargetSet={RemoveTargetSet}
-                            completed={completed} id={id} username={username} name={exercises[choice].name} extraRow={false}
-                        />
-                )
-                }
+                )}
                 {addSet.map((set,index)=>
-                    <LiveRow key={`${id}extra-${index}`} index={completed ? completed.sets.length + index : targetSets.length + index} set={set} setLength={addSet.length} repConstant={repConstant} RemoveTargetSet={RemoveExtraSet}
-                        completed={completed} id={id} username={username} name={exercises[choice].name} extraRow={targetSets.length < 1 ? false : true}
+                    <LiveRow key={`${id}extra-${index}`} index={targetSets.length + index} set={set} setLength={addSet.length} repConstant={repConstant} RemoveTargetSet={RemoveExtraSet}
+                        id={id} username={username} name={exercises[choice].name} extraRow={targetSets.length < 1 ? false : true} complete={complete} setComplete={setComplete}
                     />
                 )}
                 <div className='grid grid-cols-7 my-2 gap-2 items-center'>
@@ -185,7 +145,7 @@ export default function LiveExerciseLog({complete, lift, id, setComplete, curren
             <Dialog open={swap} onClose={()=>setSwap(false)}>
                 <div className='px-4 py-3'>
                     <div className='font-semibold'>New Exercise</div>
-                    <GroupExercises exercises={exercises} setChoice={setChoice} choice={choice} ss={false} disabled={completed !== null} />
+                    <GroupExercises exercises={exercises} setChoice={setChoice} choice={choice} ss={false} />
                     <button className='border border-gray-400 py-1 px-3 mt-4 rounded-xl lg:hover:bg-red-100 lg:hover:border-red-200 lg:hover:text-red-500 lg:hover:scale-105 transition duration-200'
                         onClick={()=>{setSwap(false);setChoice(lift)}}
                     >Cancel</button>

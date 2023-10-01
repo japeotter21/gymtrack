@@ -3,9 +3,9 @@ import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import { BsTrash } from 'react-icons/bs'
 
-export default function LiveRow({index, set, RemoveTargetSet, completed, repConstant, id, setLength, username, name, extraRow}) {
+export default function LiveRow({index, set, RemoveTargetSet, repConstant, id, setLength, username, name, extraRow, complete, setComplete}) {
     const [repVal, setrepVal] = useState(0)
-    const [weightVal, setweightVal] = useState(0)
+    const [weightVal, setweightVal] = useState("0")
     const [allowWeight, setallowWeight] = useState(false)
     const [updated, setUpdated] = useState(false)
     const [updating, setUpdating] = useState(false)
@@ -21,14 +21,24 @@ export default function LiveRow({index, set, RemoveTargetSet, completed, repCons
         }
     },[])
 
+    useEffect(() => {
+        if(complete.length > 0)
+        {
+            const checkDone = complete.findIndex((item)=>item.name === name+'-'+index)
+            if(checkDone >= 0)
+            {
+                setUpdated(true)
+                setrepVal(complete[checkDone].reps)
+                setweightVal(complete[checkDone].weight)
+            }
+        }
+    }, [complete])
+    
+
     useEffect(()=>{
         if(repVal > 0)
         {
             setallowWeight(true)
-            if(updated)
-            {
-                PostResults()
-            }
         }
         else
         {
@@ -43,14 +53,16 @@ export default function LiveRow({index, set, RemoveTargetSet, completed, repCons
             // if updated is already set true then the entry already exists and should be edited
             const postObj = {
                 reps: parseInt(repVal),
-                weight: weightVal
+                weight: weightVal,
+                name: name+'-'+index
             }
             setUpdated(true)
-            axios.put('/api/history',postObj,{ params: { user: username, index: id, edit: index }})
+            axios.put('/api/history',postObj,{ params: { user: username, edit: index }})
             .then(res=>{
                 axios.get('/api/workouts',{ params: {user: username}})
                 .then(r=>{
                     setUpdating(false)
+                    setComplete(r.data.inProgress.results)
                 })
                 .catch(err=>{
                     console.error(err)
@@ -64,55 +76,28 @@ export default function LiveRow({index, set, RemoveTargetSet, completed, repCons
         }
         else
         {
-            // otherwise need to create a new entry
-            if(index === 0 && !extraRow)
-            {
-                const resultObj = {
-                    name: name,
-                    notes: '',
-                    rpe: 6,
-                    sets: [{reps: parseInt(repVal), weight: weightVal}]
-                }
-                setUpdated(true)
-                axios.put('/api/history',resultObj,{ params: { user: username, index: id, create: true }})
-                .then(res=>{
-                    axios.get('/api/workouts',{ params: {user: username}})
-                    .then(r=>{
-                        setUpdating(false)
-                    })
-                    .catch(err=>{
-                        console.error(err)
-                        setUpdating(false)
-                    })
-                }) 
+            const postObj = {
+                reps: parseInt(repVal),
+                weight: weightVal,
+                name: name+'-'+index
+            }
+            setUpdated(true)
+            axios.put('/api/history',postObj,{ params: { user: username }})
+            .then(res=>{
+                axios.get('/api/workouts',{ params: {user: username}})
+                .then(r=>{
+                    setUpdating(false)
+                    setComplete(r.data.inProgress.results)
+                })
                 .catch(err=>{
                     console.error(err)
                     setUpdating(false)
                 })
-            }
-            else
-            {
-                const postObj = {
-                    reps: parseInt(repVal),
-                    weight: weightVal
-                }
-                setUpdated(true)
-                axios.put('/api/history',postObj,{ params: { user: username, index: id }})
-                .then(res=>{
-                    axios.get('/api/workouts',{ params: {user: username}})
-                    .then(r=>{
-                        setUpdating(false)
-                    })
-                    .catch(err=>{
-                        console.error(err)
-                        setUpdating(false)
-                    })
-                }) 
-                .catch(err=>{
-                    console.error(err)
-                    setUpdating(false)
-                })
-            }
+            }) 
+            .catch(err=>{
+                console.error(err)
+                setUpdating(false)
+            })
         }
     }
 
@@ -139,10 +124,17 @@ export default function LiveRow({index, set, RemoveTargetSet, completed, repCons
             <input type="number" step="0.5" value={weightVal} disabled={!allowWeight} onChange={(e)=>setweightVal(e.target.value)} onBlur={PostResults}
                 className={`border border-gray-400 rounded-md px-2 col-span-2 ${allowWeight ? '' : 'bg-gray-200 border-gray-200 text-gray-400'}`} required
             />
+            { updated ? 
+            <div
+                className={`rounded-full border border-gray-400 h-[15px] w-[15px] mx-auto transition duration-200 ${updating ? 'animate-pulse bg-sky-500 border-none' : ''} bg-gradient-to-r to-sky-500 from-sky-600 border-none `}
+            />
+            :
             <div
                 onClick={PostResults}
-                className={`rounded-full border border-gray-400 h-[15px] w-[15px] mx-auto transition duration-200 ${updating ? 'animate-pulse bg-sky-500 border-none' : ''} ${updated ? 'bg-gradient-to-r to-sky-500 from-sky-600 border-none' : ''} `}
+                className={`rounded-full border border-gray-400 h-[15px] w-[15px] mx-auto transition duration-200 ${updating ? 'animate-pulse bg-sky-500 border-none' : ''} `}
             />
+
+            }
         </div>
     )
 }

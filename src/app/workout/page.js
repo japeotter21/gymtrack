@@ -22,9 +22,9 @@ export default function Workout() {
     const [complete, setComplete] = useState(null)
     const [workoutComplete, setWorkoutComplete] = useState(false)
     const [finishing, setFinishing] = useState(false)
-    const [finishObj, setFinishObj] = useState(null)
     const [activeSlide, setActiveSlide] = useState(0)
     const [supersets, setSupersets] = useState([])
+    const [finishObj, setFinishObj] = useState({})
     const router = useRouter()
     const {activeUser, Refresh} = useContext(AppContext)
 
@@ -45,12 +45,6 @@ export default function Workout() {
                 setCurrentWorkout(workout.data.workouts[workoutIndex])
                 setCurrentDay(dayIndex)
                 setComplete(workout.data.inProgress.results)
-                let done = false
-                workout.data.inProgress.results.forEach((item,id)=>item.rpe > 0 ? done = true : <></>)
-                if(done)
-                {
-                    setFinishObj(workout.data.inProgress)
-                }
                 setLoading(false)
             })
             )
@@ -64,15 +58,9 @@ export default function Workout() {
     useEffect(()=>{
         if(workoutComplete)
         {
-            axios.get('api/workouts',{ params: {user: activeUser }})
+            axios.get('api/workouts')
             .then(res=>{
-                let done = false
-                res.data.inProgress.results.forEach((item,id)=>item.name !== "" ? done = true : <></>)
-                if(done)
-                {
-                    let currentIP = res.data.inProgress
-                    setFinishObj(currentIP)
-                }
+                setFinishObj(res.data.inProgress)
             })
         }
     },[workoutComplete])
@@ -93,11 +81,18 @@ export default function Workout() {
             dayNum = currentDay + 1
         }
         const endTime = new Date().getTime()
-        const postObj = Object.assign({end: endTime},finishObj)
-        FinishWorkout(dayNum, activeUser, false, postObj)
-        .then(r=>{
+        const finishObjFull = Object.assign({ end: endTime },  finishObj)
+        const postObj = {
+            day: dayNum,
+            workout: finishObjFull
+        }
+        axios.post('api/finished',postObj,{ params: {user: activeUser}})
+        .then(res=>{
             setFinishing(false)
             router.push('/history')
+        })
+        .catch(err=>{
+            console.error(err.message)
         })
     }
 
@@ -123,7 +118,7 @@ export default function Workout() {
                         onClick={()=>setPause(true)}
                     >Pause</button>
                 } */}
-                { finishObj ? 
+                { complete.length > 0 ? 
                     <button className='rounded-lg shadow-md bg-stone-50 border border-green-500 text-green-600 px-7 py-2'
                         onClick={()=>setWorkoutComplete(true)}
                     >Finish</button>
@@ -136,45 +131,24 @@ export default function Workout() {
             <div className='flex flex-col items-center gap-4 w-5/6'>
                 { currentWorkout.exercises.map((lift,id)=>
                 <>
-                    { !currentWorkout?.superset.includes(currentWorkout.exercises[id-1]) ?
-                            <LiveExerciseLog key={`exercise${id}`} lift={lift} id={id} complete={complete} setComplete={setComplete} currentWorkout={currentWorkout} currentWorkoutIndex={currentWorkoutIndex}
-                                profile={profile} exercises={exercises} username={activeUser} setExercises={setExercises} setFinishObj={setFinishObj} setCurrentWorkout={setCurrentWorkout}
-                                setActiveSlide={setActiveSlide} activeSlide={activeSlide}
-                            />
-                        :
-                            <></>
-                    }
-                    { currentWorkout?.superset.includes(lift)?
-                        <LiveExerciseLog key={`exercise${id+1}`} lift={currentWorkout.exercises[id+1]} id={id+1} complete={complete} setComplete={setComplete}
-                                currentWorkout={currentWorkout} currentWorkoutIndex={currentWorkoutIndex} profile={profile} exercises={exercises} username={activeUser}
-                                setExercises={setExercises} setFinishObj={setFinishObj} setCurrentWorkout={setCurrentWorkout} setActiveSlide={setActiveSlide} activeSlide={activeSlide}
-                            />
-                    :
-                    <></>
-                    }
+                    <LiveExerciseLog key={`exercise${id}`} lift={lift} id={id} complete={complete} setComplete={setComplete} currentWorkout={currentWorkout} currentWorkoutIndex={currentWorkoutIndex}
+                        profile={profile} exercises={exercises} username={activeUser} setExercises={setExercises} setCurrentWorkout={setCurrentWorkout}
+                        setActiveSlide={setActiveSlide} activeSlide={activeSlide}
+                    />
                 </>
                 )}
             </div>
-            <Dialog open={finishObj !== null && workoutComplete} onClose={()=>setWorkoutComplete(false)}>
+            <Dialog open={workoutComplete} onClose={()=>setWorkoutComplete(false)}>
                 <div className='px-4 py-3'>
-                    { finishObj ? 
-                    <>
-                        <p className='font-semibold mb-2'>Workout Complete!</p>
-                        <p className='text-sm'>This will record all saved exercise data.</p>
-                        <p className='text-sm'>Any unsaved data will be lost.</p>
-                        <div className='flex justify-between mt-4'>
-                            <button className='border border-neutral-300 shadow-md rounded-md px-3 py-1'
-                                onClick={()=>setWorkoutComplete(false)}
-                            >Cancel</button>
-                            <DialogButton text='Finish Workout' loading={finishing} loadingText='Saving...' type='button' action={SaveWorkout} />
-                        </div>
-                    </>
-                    :
-                    <>
-                        <p className='font-semibold'>No Workout Data Entered</p>
-                        <p className='text-sm'>Please save exercise results before finishing workout.</p>
-                    </>
-                    }
+                    <p className='font-semibold mb-2'>Workout Complete!</p>
+                    <p className='text-sm'>This will record all saved exercise data.</p>
+                    <p className='text-sm'>Any unsaved data will be lost.</p>
+                    <div className='flex justify-between mt-4'>
+                        <button className='border border-neutral-300 shadow-md rounded-md px-3 py-1'
+                            onClick={()=>setWorkoutComplete(false)}
+                        >Cancel</button>
+                        <DialogButton text='Finish Workout' loading={finishing} loadingText='Saving...' type='button' action={SaveWorkout} />
+                    </div>
                 </div>
             </Dialog>
         </main>
