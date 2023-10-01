@@ -5,8 +5,11 @@ import { Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material
 import { targetObj } from '@/globals'
 import DialogButton from './DialogButton'
 import GroupExercises from './GroupExercises'
-
-export default function PostExercise({username, currentWorkoutIndex, currentWorkout, setCurrentWorkout, exercises, setExercises, homepage, setWorkouts, setPrograms, setCurrentProgram, setCurrentWorkoutIndex}) {
+import { setConstant, repConstant } from '@/globals'
+export default function PostExercise({username, currentWorkoutIndex, currentWorkout, setCurrentWorkout, exercises, setExercises,
+    homepage, setWorkouts, setPrograms, setCurrentProgram, setCurrentWorkoutIndex
+    })
+{
     const [loading, setLoading] = useState(false)
     const [choice, setChoice] = useState('')
     const [addNew, setAddNew] = useState(false)
@@ -14,7 +17,11 @@ export default function PostExercise({username, currentWorkoutIndex, currentWork
     const [addCustom, setAddCustom] = useState(false)
     const [attributes, setAttributes] = useState([])
     const [newName, setNewName] = useState('')
-
+    const [editEx, setEditEx] = useState(null)
+    const [editSets, setEditSets] = useState(0)
+    const [editReps, setEditReps] = useState(0)
+    const [editWeight, setEditWeight] = useState(0)
+    const [edited, setEdited] = useState(false)
     useEffect(()=> {
         if(choice !== '')
         {
@@ -25,38 +32,19 @@ export default function PostExercise({username, currentWorkoutIndex, currentWork
             }
             else
             {
-                const newExercise = parseInt(choice)
-                const newWorkout = currentWorkout.exercises
-                newWorkout.push(newExercise)
-                const postObj = newWorkout
-                setLoading(true)
-                axios.post('/api/workouts',postObj, {params:{workout: currentWorkoutIndex, user:username}})
-                .then(res=>{
-                    axios.get('/api/workouts', {params: { user: username }})
-                    .then(r=>{
-                        const currentIndex = r.data.currentProgram
-                        const dayIndex = r.data.currentDay
-                        const workoutIndex = r.data.programs[currentIndex].schedule[dayIndex]
-                        if(homepage)
-                        {
-                            setCurrentWorkout(r.data.workouts[workoutIndex])
-                        }
-                        else
-                        {
-                            setPrograms(r.data.programs)
-                            const currentIndex = r.data.currentProgram
-                            setCurrentProgram(r.data.programs[currentIndex])
-                            setWorkouts(r.data.workouts)
-                        }
-                        HandleClose()
-                    })
-                    .catch(err=>{
-                        HandleClose()
-                    })
-                })
+                setEditEx(choice)
             }
         }
     },[choice])
+        
+    useEffect(()=>{
+        if(editEx !== null)
+        {
+            setEditSets(exercises[parseInt(choice)].target?.sets?.length || 0)
+            setEditReps(exercises[parseInt(choice)].target?.sets[0]?.reps || 0)
+            setEditWeight(exercises[parseInt(choice)].target?.sets[0]?.weight || 0)
+        }
+    },[editEx])
 
     function AddNewExercise() {
         setAddCustom(true)
@@ -75,7 +63,43 @@ export default function PostExercise({username, currentWorkoutIndex, currentWork
                 setAddCustom(false)
             })
         })
-    }   
+    }
+    
+    function AddToWorkout() {
+        if(edited)
+        {
+            HandleEdit()
+        }
+        const newExercise = parseInt(choice)
+        const newWorkout = currentWorkout.exercises
+        newWorkout.push(newExercise)
+        const postObj = newWorkout
+        setLoading(true)
+        axios.post('/api/workouts',postObj, {params:{workout: currentWorkoutIndex, user:username}})
+        .then(res=>{
+            axios.get('/api/workouts', {params: { user: username }})
+            .then(r=>{
+                const currentIndex = r.data.currentProgram
+                const dayIndex = r.data.currentDay
+                const workoutIndex = r.data.programs[currentIndex].schedule[dayIndex]
+                if(homepage)
+                {
+                    setCurrentWorkout(r.data.workouts[workoutIndex])
+                }
+                else
+                {
+                    setPrograms(r.data.programs)
+                    const currentIndex = r.data.currentProgram
+                    setCurrentProgram(r.data.programs[currentIndex])
+                    setWorkouts(r.data.workouts)
+                }
+                HandleClose()
+            })
+            .catch(err=>{
+                HandleClose()
+            })
+        })
+    }
 
     function AddAttribute(value) {
         setAttributes([...attributes,value])
@@ -95,6 +119,28 @@ export default function PostExercise({username, currentWorkoutIndex, currentWork
         }
     }
 
+    function HandleEdit() {
+        const newSets = parseInt(editSets)
+        const newReps = parseInt(editReps)
+        const newWeight = editWeight
+        let newPostArr = Array.from({length: newSets}, x=>0)
+        newPostArr.forEach((item,id)=>newPostArr[id]={reps:newReps, weight:newWeight})
+        const postObj = {
+            sets: newPostArr,
+            notes: '',
+            reminder: ""
+        }
+        axios.post('/api/exercise',postObj,{ params: {exercise: parseInt(choice), user:username, workout:currentWorkoutIndex}})
+        .then(res=>{
+            setEdited(false)
+            axios.get('/api/exercise',{ params: { user:username }})
+            .then(r=>{
+                setExercises(r.data.exercises)
+                HandleClose()
+            })
+        })
+    }
+
     function HandleClose() {
         setChoice('')
         setLoading(false)
@@ -103,6 +149,7 @@ export default function PostExercise({username, currentWorkoutIndex, currentWork
         setAttributes([])
         setAddedNew(false)
         setAddCustom(false)
+        setEditEx(null)
     }
 
     return(
@@ -119,7 +166,40 @@ export default function PostExercise({username, currentWorkoutIndex, currentWork
                 <div className="animate-pulse rounded-full bg-gray-200 h-4 w-full"></div>
             </>
             }
-            <Dialog open={addNew} onClose={HandleClose}>
+            <Dialog open={editEx !== null} onClose={()=>{setEditEx(null);setChoice('')}} maxWidth='lg' fullWidth>
+                <div className='px-4 py-3'>
+                    <p className='font-semibold mb-2'>{choice && choice !== '' ? <>{exercises[parseInt(choice)].name}</> : <></>}</p>
+                    <div className='grid grid-cols-2 px-3 py-3 gap-3'>
+                        <p className='text-md'>Sets</p>
+                        <select className='text-md border rounded-lg w-full py-1 px-2' value={editSets}
+                        onChange={(e)=>{setEdited(true);setEditSets(e.target.value)}}
+                        >
+                        {setConstant.map((num,setNum)=>
+                            <option value={num} key={setNum}>{num}</option>
+                        )}
+                        </select>
+                        <p className='text-md'>Reps</p>
+                        <select className='text-md border rounded-lg w-full py-1 px-2' value={editReps}
+                        onChange={(e)=>{setEdited(true);setEditReps(e.target.value)}}
+                        >
+                        {repConstant.map((num,setNum)=>
+                            <option value={num} key={setNum}>{num}</option>
+                        )}
+                        </select>
+                        <p className='text-md'>Weight (lbs)</p>
+                        <input className='text-md border rounded-lg w-full py-1 px-2' value={editWeight}
+                        onChange={(e)=>{setEdited(true);setEditWeight(e.target.value)}}
+                        />
+                    </div>
+                    <div className='flex justify-between'>
+                        <button type="button" className='px-3 py-1 rounded-md shadow-md border border-neutral-300' onClick={()=>{setEditEx(null);setChoice('')}}
+                        >Cancel</button>
+                        <DialogButton text="Add to Workout" type="button" loadingText="Adding..." loading={loading} action={AddToWorkout} />
+                    </div>
+                  
+                </div>
+            </Dialog>
+            <Dialog open={addNew} onClose={HandleClose} maxWidth='lg' fullWidth>
                 <div className='px-4 py-3'>
                     <p className='font-semibold mb-2'>Add Custom Exercise</p>
                     <div className='grid grid-cols-3 gap-4 items-center'>
@@ -211,7 +291,7 @@ export function DeleteExercise ({item, id, currentWorkout, setCurrentWorkout, cu
     }
     return (
         <>
-        <div className='p-2 text-red-500 block ml-auto cursor-pointer' onClick={()=>setDeleting(id)}><BsTrash size={15} /></div>
+        <div className='px-2 py-1 text-red-500 block ml-auto cursor-pointer' onClick={()=>setDeleting(id)}><BsTrash size={15} /></div>
         { exercises.length > 0 && deleting !== null ? 
           <Dialog open={deleting !== null} onClose={()=>setDeleting(null)} maxWidth="sm" fullWidth>
               <p className='font-semibold text-lg px-3 py-3'>Remove exercise</p>

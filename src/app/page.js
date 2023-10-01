@@ -317,7 +317,7 @@ export default function Home() {
             
             {/* <Pagenav page='home' /> */}
             { exercises.length > 0 && editing !== null ? 
-                <Dialog open={editing !== null} onClose={HandleClose} maxWidth="sm" fullWidth>
+                <Dialog open={editing !== null} onClose={HandleClose} maxWidth="lg" fullWidth>
                 <p className='font-semibold text-lg px-3 py-3'>{exercises[editing].name}</p>
                 <div className='grid grid-cols-2 px-3 py-3 gap-3'>
                     <p className='text-md'>Sets</p>
