@@ -1,12 +1,14 @@
 "use client"
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
+import { BsTrash } from 'react-icons/bs'
 
 export default function LiveRow({index, set, RemoveTargetSet, completed, repConstant, id, setLength, username, name, extraRow}) {
     const [repVal, setrepVal] = useState(0)
     const [weightVal, setweightVal] = useState(0)
     const [allowWeight, setallowWeight] = useState(false)
     const [updated, setUpdated] = useState(false)
+    const [updating, setUpdating] = useState(false)
 
     useEffect(()=>{
         if(set.reps)
@@ -35,7 +37,7 @@ export default function LiveRow({index, set, RemoveTargetSet, completed, repCons
     },[repVal])
 
     function PostResults() {
-        
+        setUpdating(true)
         if(updated)
         {
             // if updated is already set true then the entry already exists and should be edited
@@ -48,13 +50,16 @@ export default function LiveRow({index, set, RemoveTargetSet, completed, repCons
             .then(res=>{
                 axios.get('/api/workouts',{ params: {user: username}})
                 .then(r=>{
+                    setUpdating(false)
                 })
                 .catch(err=>{
                     console.error(err)
+                    setUpdating(false)
                 })
             }) 
             .catch(err=>{
                 console.error(err)
+                setUpdating(false)
             })
         }
         else
@@ -73,13 +78,16 @@ export default function LiveRow({index, set, RemoveTargetSet, completed, repCons
                 .then(res=>{
                     axios.get('/api/workouts',{ params: {user: username}})
                     .then(r=>{
+                        setUpdating(false)
                     })
                     .catch(err=>{
                         console.error(err)
+                        setUpdating(false)
                     })
                 }) 
                 .catch(err=>{
                     console.error(err)
+                    setUpdating(false)
                 })
             }
             else
@@ -93,40 +101,47 @@ export default function LiveRow({index, set, RemoveTargetSet, completed, repCons
                 .then(res=>{
                     axios.get('/api/workouts',{ params: {user: username}})
                     .then(r=>{
+                        setUpdating(false)
                     })
                     .catch(err=>{
                         console.error(err)
+                        setUpdating(false)
                     })
                 }) 
                 .catch(err=>{
                     console.error(err)
+                    setUpdating(false)
                 })
             }
         }
     }
 
     return (
-        <div className='grid grid-cols-3 my-1 gap-2 items-center'>
-            <div className='flex gap-3 items-center'>
+        <div className='grid grid-cols-7 my-1 gap-2 items-center'>
+            <div className='flex gap-3 items-center col-span-2'>
                 <p className='text-sm'>{index+1}</p>
-                { index === 0 ?
+                { index === 0 || updated ?
                     <button type="button"></button>
                 :
-                    <button className='text-red-500 text-xs border border-red-200 rounded-md px-1'
+                    <button className='text-red-500 text-xs border border-red-200 rounded-md px-2 py-0.5'
                         type="button"
                         onClick={()=>RemoveTargetSet(index)}
-                    >Remove</button>
+                    ><BsTrash /></button>
                 }
             </div>
             <select type="number" value={repVal} onChange={(e)=>setrepVal(e.target.value)}
-                className='border border-gray-400 rounded-md px-2'
+                className='border border-gray-400 rounded-md px-2 col-span-2'
             >
                 {repConstant.map((rep,number)=>
                     <option value={rep} key={number}>{rep}</option>
                 )}
             </select>
             <input type="number" step="0.5" value={weightVal} disabled={!allowWeight} onChange={(e)=>setweightVal(e.target.value)} onBlur={PostResults}
-                className={`border border-gray-400 rounded-md px-2 ${allowWeight ? '' : 'bg-gray-200 border-gray-200 text-gray-400'}`} required
+                className={`border border-gray-400 rounded-md px-2 col-span-2 ${allowWeight ? '' : 'bg-gray-200 border-gray-200 text-gray-400'}`} required
+            />
+            <div
+                onClick={PostResults}
+                className={`rounded-full border border-gray-400 h-[15px] w-[15px] mx-auto transition duration-200 ${updating ? 'animate-pulse bg-sky-500 border-none' : ''} ${updated ? 'bg-gradient-to-r to-sky-500 from-sky-600 border-none' : ''} `}
             />
         </div>
     )

@@ -245,7 +245,7 @@ export default function Home() {
                         </div>
                         <div className='divide-y'>
                             { currentWorkout.exercises.map((item,id)=>
-                                <div className={`text-sm grid grid-cols-2 items-center`} key={exercises[item].name}
+                                <div className={`text-sm grid grid-cols-2 items-center`} key={exercises[item].name} onClick={()=>setEditing(item)}
                                 >
                                     <p className='px-2 py-1'>{exercises[item].name}</p>
                                     <p className='px-2 py-1'>{exercises[item].target?.sets.length}</p>

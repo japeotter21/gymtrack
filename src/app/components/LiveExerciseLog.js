@@ -115,10 +115,11 @@ export default function LiveExerciseLog({complete, lift, id, setComplete, curren
                     :
                     <p className='text-lg font-semibold text-center mb-2'>{exercises[choice].name}</p>
                 }
-                <div className='grid grid-cols-3 mt-4 gap-2 items-center'>
-                    <p className='text-xs text-neutral-500'>Set</p>
-                    <p className='text-xs text-neutral-500'>Reps</p>
-                    <p className='text-xs text-neutral-500'>Weight</p>
+                <div className='grid grid-cols-7 mt-4 gap-2 items-center'>
+                    <p className='text-xs text-neutral-500 col-span-2'>Set</p>
+                    <p className='text-xs text-neutral-500 col-span-2'>Reps</p>
+                    <p className='text-xs text-neutral-500 col-span-2'>Weight</p>
+                    <p className='text-xs text-neutral-500'>Saved</p>
                 </div>
             </div>
             <div>
@@ -140,14 +141,14 @@ export default function LiveExerciseLog({complete, lift, id, setComplete, curren
                         completed={completed} id={id} username={username} name={exercises[choice].name} extraRow={targetSets.length < 1 ? false : true}
                     />
                 )}
-                <div className='grid grid-cols-3 my-2 gap-2 items-center'>
+                <div className='grid grid-cols-7 my-2 gap-2 items-center'>
                     <button onClick={()=>setAddSet([...addSet,{reps:0,weight:"0"}])} type="button"
-                        className={`text-sm bg-stone-100 border border-neutral-300 shadow-sm rounded-md px-1 py-0.5`}
+                        className={`text-sm bg-stone-100 border border-neutral-300 shadow-sm rounded-md px-1 py-0.5 col-span-2`}
                     >
                         Add Set
                     </button>
-                    <input disabled className='border border-gray-200 rounded-md px-2 bg-gray-100' />
-                    <input disabled className='border border-gray-200 rounded-md px-2 bg-gray-100' />
+                    <input disabled className='border border-gray-200 rounded-md px-2 bg-gray-100 col-span-2' />
+                    <input disabled className='border border-gray-200 rounded-md px-2 bg-gray-100 col-span-2' />
                 </div>
                 {/* <Slider
                     onChange={(e)=>{e.stopPropagation();setRadioVal(e.target.value)}}
