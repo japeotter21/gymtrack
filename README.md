@@ -37,10 +37,9 @@ To Do:
 <p>✅ Migrate React Scheduler to custom calendar</p>
 <p>⬜ API cleanup (separate GraphQL service)</p>
 <p>⬜ Configure progression to set target weights</p>
-<p>⬜ User behavior tracking</p>
+<p>⬜ Upload old workouts</p>
+<p>⬜ Share workouts</p>
 
 Future: 
 <p>⬜ AI workout progressions, plans and exercise recommendations</p>
-<p>Social Features?</p>
-<p>Attendance Tracking -- Check-in at location?</p>
 <p>⬜ Migrate to Flutter</p>
