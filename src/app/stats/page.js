@@ -2,7 +2,7 @@
 import React, { useState, useEffect, useContext } from 'react'
 import Image from 'next/image'
 import { Avatar, Paper } from '@mui/material'
-import { BsCalendar, BsGraphUp, BsPencil } from 'react-icons/bs'
+import { BsCalendar, BsGraphUp, BsHouse, BsPencil } from 'react-icons/bs'
 import { BiDumbbell} from 'react-icons/bi'
 import axios from 'axios'
 import Pagenav from '../components/Pagenav'
@@ -10,6 +10,7 @@ import { ResponsiveLine } from '@nivo/line'
 import AppContext from '../AppContext'
 import { redirect } from 'next/navigation'
 import LineChart from '../components/LineChart'
+import Link from 'next/link'
 
 export default function Stats() {
     const [loading, setLoading] = useState(true)
@@ -210,7 +211,22 @@ export default function Stats() {
             :
                 <div className='h-[10vh]'></div>
             }
-            {/* <Pagenav page='stats' /> */}
+            <div className='grid grid-cols-3 items-center gap-2 w-full px-2 lg:px-12'>
+                <Link className='flex flex-col gap-1 items-center justify-center self-stretch px-4 py-2 shadow-sm rounded-md bg-stone-50 text-neutral-600'
+                    href="/"
+                >
+                    <div className='px-3 py-1 rounded-full'
+                    ><BsHouse size={20} /></div>
+                    <p className='text-xs text-center'>Back to Home</p>
+                </Link>
+                <div></div>
+                <button className='flex flex-col gap-1 items-center justify-center px-4 py-2 rounded-md bg-gray-200 text-neutral-500'
+                >
+                    <div className='px-3 py-1 rounded-full text-green-700'
+                    ><BsGraphUp size={20} /></div>
+                    <p className='text-xs text-center'>Export Graph</p>
+                </button>
+            </div>
         </main>
     )
 }

@@ -39,6 +39,10 @@ export default function LiveRow({index, set, RemoveTargetSet, repConstant, id, s
         if(repVal > 0)
         {
             setallowWeight(true)
+            if(repVal !== set.reps && allowWeight)
+            {
+                PostResults()
+            }
         }
         else
         {

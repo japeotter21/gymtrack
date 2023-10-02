@@ -38,10 +38,9 @@ export default function Home() {
     const [editNotes, setEditNotes] = useState('')
     const [updating, setUpdating] = useState(false)
     const [changeDay, setChangeDay] = useState(false)
-    const [inProgress, setInProgress] = useState(null)
     const [starting, setStarting] = useState(false)
     const [showInfo, setShowInfo] = useState(false)
-    const {activeUser, Refresh} = useContext(AppContext)
+    const {activeUser, Refresh, paused} = useContext(AppContext)
     const router = useRouter()
 
     useEffect(()=>{
@@ -60,10 +59,6 @@ export default function Home() {
             setWorkouts(workout.data.workouts)
             setCurrentWorkoutIndex(workoutIndex)
             setCurrentWorkout(workout.data.workouts[workoutIndex])
-            const inProgressArr = workout.data.inProgress.results
-            const progressCheck = []
-            inProgressArr.forEach((item,id)=>item.rpe > 0 ? progressCheck.push(true) : progressCheck.push(false))
-            setInProgress(progressCheck.includes(true))
             setCurrentDay(dayIndex)
             setLoading(false)
             })
@@ -201,7 +196,7 @@ export default function Home() {
     function StartWorkout() {
         setStarting(true)
         router.prefetch('workout')
-        if(inProgress)
+        if(paused)
         {
             router.push('/workout')
         }
@@ -220,7 +215,7 @@ export default function Home() {
         <></>
         )
     }
-  
+
     return (
         <main className="flex min-h-screen flex-col items-center py-12 px-2 gap-1">
             <div className='w-full lg:w-1/2 flex-col gap-2 items-center border border-gray-300 rounded-md bg-stone-50 shadow-lg cursor-pointer px-3 pt-1'>
@@ -255,7 +250,10 @@ export default function Home() {
                 }
                 { currentWorkout ?
                     currentWorkout.exercises.length > 0 ?
-                    <StartButton text={'Start Workout'} loading={starting} loadingText={'Starting Workout...'} action={StartWorkout} />
+                        paused ?
+                        <StartButton text={'Resume Workout'} loading={starting} loadingText={'Resuming Workout...'} action={StartWorkout} />
+                        :
+                        <StartButton text={'Start Workout'} loading={starting} loadingText={'Starting Workout...'} action={StartWorkout} />
                     :
                     <StartButton text={'Complete Workout'} loading={starting} loadingText={'Completing Workout...'} action={CompleteWorkout} />
                 :

@@ -4,7 +4,8 @@ import axios from 'axios'
 import Pagenav from '../components/Pagenav'
 import AppContext from '../AppContext'
 import { redirect } from 'next/navigation'
-import { BsChevronLeft, BsChevronRight } from 'react-icons/bs'
+import { BsChevronLeft, BsChevronRight, BsFileSpreadsheet, BsHouse } from 'react-icons/bs'
+import Link from 'next/link'
 
 export default function History() {
     const [loading, setLoading] = useState(true)
@@ -156,7 +157,7 @@ export default function History() {
     }
 
     return (
-        <main className="flex min-h-screen flex-col items-center py-6 lg:pt-12 px-2 lg:p-12 gap-4">
+        <main className="flex min-h-screen flex-col items-center py-6 lg:pt-12 lg:p-12 gap-4">
             {/* <select value={filter} onChange={(e)=>setFilter(e.target.value)}>
                 <option value="All">All</option>
                 {titles.map((item,id)=>
@@ -170,44 +171,36 @@ export default function History() {
                 <button className='border bg-white px-2 py-1 rounded-sm shadow-sm' onClick={()=>setMonth(month+1)}><BsChevronRight /></button>
             </div>
             <div className='grid grid-cols-7 bg-white w-full divide-x divide-y border rounded-sm shadow-md'>
-                <div className='col-span-7 grid grid-cols-7 border py-1'>
-                    <p className='text-sm text-center text-neutral-400'>Sun</p>
-                    <p className='text-sm text-center text-neutral-400'>Mon</p>
-                    <p className='text-sm text-center text-neutral-400'>Tue</p>
-                    <p className='text-sm text-center text-neutral-400'>Wed</p>
-                    <p className='text-sm text-center text-neutral-400'>Thur</p>
-                    <p className='text-sm text-center text-neutral-400'>Fri</p>
-                    <p className='text-sm text-center text-neutral-400'>Sat</p>
+                <div className='col-span-7 grid grid-cols-7 border py-1 text-sm text-center text-neutral-400'>
+                    <p>Sun</p>
+                    <p>Mon</p>
+                    <p>Tue</p>
+                    <p>Wed</p>
+                    <p>Thur</p>
+                    <p>Fri</p>
+                    <p>Sat</p>
                 </div>
                 {calendarDays.map((day,index)=>
-                    <div key={index} className='px-0.5 pb-10 pt-1'>
+                    <div key={index} className='pb-10 pt-1'>
                         {day > 0 ?
                             <div>
-                                <p className={`font-semibold text-sm w-max mx-auto px-1 py-1 ${currentDate > day && currentDate < calendarDays[index+1] ? 'px-1.5 bg-opacity-80 text-blue-600 bg-sky-200 shadow-lg rounded-full' : ''}`}>
+                                <p className={`font-semibold text-sm w-max mx-auto py-1 ${currentDate > day && currentDate < calendarDays[index+1] ? 'px-1.5 bg-opacity-80 text-blue-600 bg-sky-200 shadow-lg rounded-full' : 'px-1'}`}>
                                     {new Date(day).getDate()}
                                 </p>
                                 <div  className='flex flex-col gap-0.5'>
                                     { workouts.map((workout,id)=>
                                         <div key={`${workout.title}-${id}`}>
                                         {parseInt(workout.date) > day && parseInt(workout.date) < calendarDays[index+1] ?
-                                            <div className='text-xs cursor-pointer break-word bg-gradient-to-r from-sky-600 to-sky-400 text-white rounded-full truncate shadow-sm pl-1 py-0.5'
+                                            <div className='text-xs cursor-pointer rounded-md bg-gradient-to-r from-sky-600 to-sky-400 text-white shadow-sm py-0.5'
                                                 onClick={()=> view?.date === workout.date ? setView(null) : setView(workout)}
                                             >
-                                                {workout.title}
+                                                <p className='px-0.5 truncate'>{workout.title}</p>
                                             </div> 
                                             :
                                             <></>
                                         }
                                         </div>
                                     )}
-                                    {currentDate > day && currentDate < calendarDays[index+1] ? 
-                                        <div className='text-xs cursor-pointer break-word bg-gradient-to-r text-center from-neutral-300 to-neutral-400 text-white rounded-full truncate shadow-sm pl-1 py-0.5'
-                                        >
-                                            {nextWorkout?.name}
-                                        </div>
-                                    :
-                                        <></>
-                                    }
                                 </div>
                             </div>
                         :
@@ -249,7 +242,22 @@ export default function History() {
                     <></>
                 }
             </div>
-            {/* <Pagenav page='history' /> */}
+            <div className='grid grid-cols-3 items-center gap-2 w-full px-2 lg:px-12'>
+                <Link className='flex flex-col gap-1 items-center justify-center self-stretch px-4 py-2 shadow-sm rounded-md bg-stone-50 text-neutral-600'
+                    href="/"
+                >
+                    <div className='px-3 py-1 rounded-full'
+                    ><BsHouse size={20} /></div>
+                    <p className='text-xs text-center'>Back to Home</p>
+                </Link>
+                <div></div>
+                <button className='flex flex-col gap-1 items-center justify-center px-4 py-2 rounded-md bg-gray-200 text-neutral-500'
+                >
+                    <div className='px-3 py-1 rounded-full text-green-700'
+                    ><BsFileSpreadsheet size={20} style={{transform:'rotate(270deg)'}} /></div>
+                    <p className='text-xs text-center'>Upload Past Workout</p>
+                </button>
+            </div>
         </main>
     )
 }

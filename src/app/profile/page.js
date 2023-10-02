@@ -6,7 +6,7 @@ import { RiDraggable, RiPencilLine } from 'react-icons/ri'
 import axios from 'axios'
 import Pagenav from '../components/Pagenav'
 import AppContext from '../AppContext'
-import { redirect } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 import DialogButton from '../components/DialogButton'
 
 export default function Schedule() {
@@ -17,9 +17,8 @@ export default function Schedule() {
     const [newGoal, setNewGoal] = useState('')
     const [editProfile, setEditProfile] = useState(false)
     const [updating, setUpdating] = useState(false)
-    const [inputType, setInputType] = useState(true)
-    const {activeUser, Refresh} = useContext(AppContext)
-
+    const {activeUser, setActiveUser, Refresh, orientation, setOrientation, inputType, setInputType} = useContext(AppContext)
+    const router = useRouter()
     useEffect(()=>{
         if (activeUser)
         {
@@ -28,6 +27,7 @@ export default function Schedule() {
                 setLoading(false)
                 setProfile(res.data.profile)
                 setInputType(res.data.profile.select)
+                setOrientation(res.data.profile.hand)
             })
             .catch(err=>{
                 console.error(err.message)
@@ -89,6 +89,23 @@ export default function Schedule() {
         })
     }
 
+    function ToggleOrientation() {
+        if(orientation === 'right')
+        {
+            setOrientation('left')
+        }
+        else
+        {
+            setOrientation('right')
+        }
+    }
+
+    function Logout()  {
+        sessionStorage.clear()
+        setActiveUser(null)
+        router.push('/')
+    }
+
     if(loading)
     {
         return (
@@ -101,7 +118,7 @@ export default function Schedule() {
             <div className='w-full flex flex-col items-center gap-3 lg:w-1/2 mb-6'>
                 <div className='flex w-full items-center gap-2 lg:gap-6'>
                     <div>
-                        <Avatar sx={{height:60, width:60}}>{profile.name ? profile.name.charAt(0) : activeUser.charAt(0)}</Avatar>
+                        <Avatar sx={{height:60, width:60}}>{profile.name ? profile.name.charAt(0) : activeUser?.charAt(0)}</Avatar>
                     </div>
                     <div className='w-full border border-gray-300 rounded-lg bg-stone-50 px-4 py-2'>
                         <div className='text-sm flex justify-between'>
@@ -125,15 +142,31 @@ export default function Schedule() {
                     <div className='grid grid-cols-3 text-sm items-center'>
                         <p>Input Preference</p>
                         <div className='flex items-center gap-2 col-span-2 justify-end'>
-                            <div className='rounded-full flex items-center border border-neutral-300'
+                            <div className='rounded-full flex items-center bg-slate-200 text-neutral-500'
                                 onClick={()=>setInputType(!inputType)}
                             >
-                                <p className={`px-4 py-1 rounded-full transition duration-500 ${!inputType ? 'bg-stone-200 text-green-500 shadow-md' : ''}`}>Text Box</p>
-                                <p className={`px-4 py-1 rounded-full transition duration-500 ${inputType ? 'bg-stone-200 text-green-500 shadow-md' : ''}`}>Dropdown</p>
+                                <p className={`px-4 py-1 rounded-full transition duration-500 ${inputType ? 'bg-sky-200 text-sky-600 shadow-md border border-sky-300' : ''}`}>Dropdown</p>
+                                <p className={`px-4 py-1 rounded-full transition duration-500 ${!inputType ? 'bg-sky-200 text-sky-600 shadow-md border border-sky-300' : ''}`}>Text Box</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div className='grid grid-cols-3 text-sm items-center my-4'>
+                        <p>Orientation</p>
+                        <div className='flex items-center gap-2 col-span-2 justify-end'>
+                            <div className='rounded-full flex items-center bg-slate-200 text-neutral-500'
+                                onClick={ToggleOrientation}
+                            >
+                                <p className={`px-4 py-1 rounded-full transition duration-500 ${orientation === 'right' ? 'bg-sky-200 text-sky-600 shadow-md border border-sky-300' : ''}`}>Right Hand</p>
+                                <p className={`px-4 py-1 rounded-full transition duration-500 ${orientation === 'left' ? 'bg-sky-200 text-sky-600 shadow-md border border-sky-300' : ''}`}>Left Hand</p>
                             </div>
                         </div>
                     </div>
                 </div>
+            </div>
+            <div>
+                <button className='text-sm px-3 py-1 rounded-md border border-neutral-500'
+                    onClick={Logout}
+                >Logout</button>
             </div>
             {/* <Pagenav page='profile' /> */}
             <Dialog open={editProfile} onClose={()=>setEditProfile(false)}>

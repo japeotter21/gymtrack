@@ -24,10 +24,11 @@ export const userProfile = {
         "streak": {
             "current": 0,
             "best": 0
-        }
+        },
+        "select": true,
+        "hand": "right"
     },
-    "user": "",
-    "select": true
+    "user": ""
 }
 
 export const userEx = {

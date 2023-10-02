@@ -95,11 +95,18 @@ export default async function handler(req, res) {
                     [`key`]: 'workouts',
                     [`user`]: req.query.user
                 },
-                "update": {
-                    "$set": {
-                        [`programs.${program}.schedule`]: req.body.data
+                "update": req.query.meta !== undefined ? {
+                        "$set": {
+                            [`programs.${program}.name`]: req.body.title,
+                            [`programs.${program}.description`]: req.body.description
+                        }
                     }
-                }
+                :
+                    {
+                        "$set": {
+                            [`programs.${program}.schedule`]: req.body.data
+                        }
+                    }
             });
             const config = {
                 method: 'post',

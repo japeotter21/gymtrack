@@ -2,8 +2,8 @@
 import React, { useState, useEffect, useContext } from 'react'
 import axios from 'axios'
 import Pagenav from '../components/Pagenav'
-import { BsTrash, BsCheck2Circle, BsChevronLeft, BsChevronRight, BsCircle, BsPlus, BsPlusCircle, BsPlusCircleFill, BsCalendar2, BsArrowLeft, BsHouse } from 'react-icons/bs'
-import { Checkbox, Dialog } from '@mui/material'
+import { BsTrash, BsCheck2Circle, BsChevronLeft, BsChevronRight, BsCircle, BsPlus, BsPlusCircle, BsPlusCircleFill, BsCalendar2, BsArrowLeft, BsHouse, BsPencil, BsArrowLeftRight } from 'react-icons/bs'
+import { Checkbox, Dialog, Menu } from '@mui/material'
 import WorkoutList from '../components/WorkoutList'
 import AppContext from '../AppContext'
 import DialogButton from '../components/DialogButton'
@@ -22,7 +22,13 @@ export default function Workouts() {
     const [workoutName, setWorkoutName] = useState('')
     const [newProgram, setNewProgram] = useState(false)
     const [updating, setUpdating] = useState(false)
+    const [editing, setEditing] = useState(false)
+    const [programName, setProgramName] = useState('')
+    const [programDescription, setProgramDescription] = useState('')
+    const [anchorEl, setanchorEl] = useState(null)
     const {activeUser, Refresh} = useContext(AppContext)
+
+    const open = Boolean(anchorEl)
 
     useEffect(()=>{
         if(activeUser)
@@ -46,9 +52,18 @@ export default function Workouts() {
         }
     },[activeUser])
 
+    useEffect(()=>{
+        if(editing)
+        {
+            setProgramName(programs[programIndex].name)
+            setProgramDescription(programs[programIndex].description)
+        }
+    },[editing])
+
     function HandleClose() {
         setUpdating(false)
         setAddingWorkout(false)
+        setEditing(false)
     }
 
     function AddWorkout() {
@@ -127,6 +142,24 @@ export default function Workouts() {
         })
     }
 
+    function EditProgram() {
+        setUpdating(true)
+        const postObj = {
+            title: programName,
+            description: programDescription
+        }
+        axios.put('/api/routine', postObj, {params:{user:activeUser, meta: true, program: programIndex }})
+        .then(res=>{
+            axios.get('/api/workouts',{params:{user:activeUser}})
+            .then(r=>{
+                setPrograms(r.data.programs)
+                const currentIndex = r.data.currentProgram
+                setCurrentProgram(r.data.programs[currentIndex])
+                HandleClose()
+            })
+        })
+    }
+
     if(loading)
     {
         return (
@@ -138,14 +171,22 @@ export default function Workouts() {
         <main className="flex min-h-screen flex-col items-center gap-4 py-12">
             <div className='w-full lg:w-1/2 flex flex-col gap-2 items-center px-2 lg:px-12'>
                 <div className='w-full text-center'>
-                    <p className='text-xs text-gray-500'>Program</p>
-                    <select className='border rounded-md border-gray-400 px-2 h-max' value={programIndex} onChange={(e)=>setProgramIndex(e.target.value)}>
-                        {programs.map((prog,index)=>
-                            <option key={index} value={index}>{prog.name}</option>
-                        )}
-                    </select>
-                    <p className='text-xs mt-2 text-gray-500'>Description</p>
+                    <p className='font-semibold text-xl px-2 py-1'>{programs[programIndex].name}</p>
                     <p className='text-sm break-words px-2 py-1'>{programs[programIndex].description}</p>
+                </div>
+                <div className='flex text-sm gap-6 items-baseline'>
+                    <button className='text-sky-600 flex flex-col items-center gap-2 bg-sky-50 bg-opacity-60 px-3 py-2 rounded-md'
+                        onClick={()=>setEditing(true)}
+                    >
+                        <BsPencil />
+                        <p>Edit Info</p>
+                    </button>
+                    <button className='text-sky-600 flex flex-col items-center gap-2 bg-sky-50 bg-opacity-60 px-3 py-2 rounded-md'
+                        onClick={(e)=>setanchorEl(e.currentTarget)}
+                    >
+                        <BsArrowLeftRight />
+                        <p>Switch Program</p>
+                    </button>
                 </div>
                 <hr className='my-2 w-full border-gray-300' />
                 <div className='flex flex-col gap-4 w-full mb-4'>
@@ -169,37 +210,50 @@ export default function Workouts() {
                 <Link className='flex flex-col gap-1 items-center justify-center self-stretch px-4 py-2 shadow-sm rounded-md bg-stone-50 text-neutral-600'
                     href="/"
                 >
-                    <button className='px-3 py-1 rounded-full'
-                    ><BsHouse size={20} /></button>
+                    <div className='px-3 py-1 rounded-full'
+                    ><BsHouse size={20} /></div>
                     <p className='text-xs text-center'>Back to Home</p>
                 </Link>
                 { programs[programIndex].name === currentProgram.name ?
-                    <div className='flex flex-col gap-1 items-center justify-center px-4 py-2 shadow-md rounded-md text-sky-600 bg-sky-100 border border-sky-300'>
-                        <button className='px-3 py-1 rounded-full'>
+                    <button className='flex flex-col gap-1 items-center justify-center px-4 py-2 shadow-md rounded-md text-sky-600 bg-sky-100 border border-sky-300'>
+                        <div className='px-3 py-1 rounded-full'>
                             <BsCheck2Circle size={20} />
-                        </button>
+                        </div>
                         <p className='text-xs text-center'>Current Program</p>
-                    </div>
+                    </button>
                     :
-                    <div className='flex flex-col gap-1 items-center justify-center px-4 py-2 shadow-sm rounded-md bg-stone-50'
+                    <button className='flex flex-col gap-1 items-center justify-center px-4 py-2 shadow-sm rounded-md bg-stone-50'
                         onClick={ChangeProgram}
                     >
-                        <button className='px-3 py-1 rounded-full text-gray-500'
+                        <div className='px-3 py-1 rounded-full text-gray-500'
                         >
                             <BsCircle size={20}/>
-                        </button>
+                        </div>
                         <p className='text-xs text-center'>Use This Program</p>
-                    </div>
+                    </button>
                 }
-                <div className='flex flex-col gap-1 items-center justify-center px-4 py-2 shadow-sm rounded-md bg-stone-50'
+                <button className='flex flex-col gap-1 items-center justify-center px-4 py-2 shadow-sm rounded-md bg-stone-50'
                     onClick={()=>setNewProgram(true)}
                 >
-                    <button className='px-3 py-1 rounded-full text-sky-500'
-                    ><BsCalendar2 size={20} /></button>
+                    <div className='px-3 py-1 rounded-full text-sky-500'
+                    ><BsCalendar2 size={20} /></div>
                     <p className='text-xs text-center'>Create New Program</p>
-                </div>
+                </button>
             </div>
-            <Dialog open={addingWorkout} onClose={HandleClose}>
+            <Menu anchorEl={anchorEl}
+                open={open}
+                onClose={()=>setanchorEl(null)}
+            >
+                <div className='px-2 py-1'>
+                    <p className='text-sm text-center mb-1'>Program</p>
+                    <select className='border rounded-md border-gray-400 px-2 h-max' value={programIndex} onChange={(e)=>{setProgramIndex(e.target.value);setanchorEl(null)}}>
+                        {programs.map((prog,index)=>
+                            <option key={index} value={index}>{prog.name}</option>
+                        )}
+                    </select>
+                </div>
+            </Menu>   
+            <Dialog open={addingWorkout} onClose={HandleClose} maxWidth="lg" fullWidth>
                 <div className='bg-stone-50 p-2 flex flex-col gap-4'>
                     <p className='font-semibold'>Add Workout</p>
                     <input type="text" placeholder='Name' className='border border-gray-400 rounded-md p-1'
@@ -213,7 +267,7 @@ export default function Workouts() {
                     </div>
                 </div>
             </Dialog>
-            <Dialog open={newProgram} onClose={()=>setNewProgram(false)}>
+            <Dialog open={newProgram} onClose={()=>setNewProgram(false)} maxWidth="lg" fullWidth>
                 <div className='bg-stone-50 px-4 py-3'>
                     <p className='font-semibold mb-4'>Add New Program</p>
                     <form id='newProgram' onSubmit={(e)=>AddProgram(e)} className='w-full flex flex-col items-center gap-2'>
@@ -235,6 +289,24 @@ export default function Workouts() {
                             <DialogButton text="Add" loading={updating} loadingText="Adding..." type="submit" action={null} disabled={false} />
                         </div>
                     </form>
+                </div>
+            </Dialog>
+            <Dialog open={editing} onClose={()=>setEditing(false)} maxWidth="lg" fullWidth>
+                <div className='bg-stone-50 p-2 flex flex-col gap-4'>
+                    <p className='text-xs mt-2 text-gray-500'>Title</p>
+                    <input value={programName} onChange={(e)=>setProgramName(e.target.value)}
+                        className='border border-gray-400 rounded-md px-2 py-1'
+                    />
+                    <p className='text-xs mt-2 text-gray-500'>Description</p>
+                    <textarea value={programDescription} onChange={(e)=>setProgramDescription(e.target.value)}
+                        className='border border-gray-400 rounded-md px-2 py-1'
+                    />
+                    <div className='flex justify-between'>
+                        <button className='px-3 py-2 rounded-lg shadow-md bg-opacity-90 bg-gray-300'
+                            onClick={()=>setEditing(false)}
+                        >Cancel</button>
+                        <DialogButton text="Add" loading={updating} loadingText="Adding..." type="button" action={EditProgram} disabled={false} />
+                    </div>
                 </div>
             </Dialog>
         </main>

@@ -26,7 +26,7 @@ export default function Workout() {
     const [supersets, setSupersets] = useState([])
     const [finishObj, setFinishObj] = useState({})
     const router = useRouter()
-    const {activeUser, Refresh} = useContext(AppContext)
+    const {activeUser, Refresh, paused, setPaused} = useContext(AppContext)
 
 
     useEffect(()=>{
@@ -46,6 +46,7 @@ export default function Workout() {
                 setCurrentDay(dayIndex)
                 setComplete(workout.data.inProgress.results)
                 setLoading(false)
+                setPaused(false)
             })
             )
         }
@@ -104,31 +105,27 @@ export default function Workout() {
     }
 
     return (
-        <main className="grid min-h-screen place-items-center pt-6 pb-12 px-2 lg:p-12">
-            <div className='flex justify-between w-5/6 mx-auto my-4'>
-                <button className='rounded-lg border border-red-400 shadow-md bg-stone-50 text-red-600 px-7 py-2'
-                    onClick={Cancel}
-                >Cancel</button>
-                {/* { pause ? 
-                    <button className='rounded-lg shadow-md bg-stone-50 border border-green-500 text-green-600 px-7 py-2'
-                        onClick={()=>setPause(false)}
-                    >Resume</button>
-                :
-                    <button className='rounded-lg shadow-md bg-stone-50 border border-green-500 text-green-600 px-7 py-2'
-                        onClick={()=>setPause(true)}
+        <main className="grid min-h-screen place-items-center pb-12 lg:p-12">
+            <div className='w-full bg-[#f4f4f5] z-10 py-4 fixed bottom-0'>
+                <div className='flex justify-between w-5/6 mx-auto px-2'>
+                    <button className='rounded-lg text-red-600 px-4 py-2'
+                        onClick={Cancel}
+                    >Cancel</button>
+                    <button className='rounded-lg text-sky-600 px-4 py-2'
+                        onClick={()=>{setPaused(true);router.push('/')}}
                     >Pause</button>
-                } */}
-                { complete.length > 0 ? 
-                    <button className='rounded-lg shadow-md bg-stone-50 border border-green-500 text-green-600 px-7 py-2'
-                        onClick={()=>setWorkoutComplete(true)}
-                    >Finish</button>
-                :
-                    <button className='rounded-lg shadow-md bg-stone-50 border border-neutral-300 text-neutral-400 px-7 py-2'
-                        disabled
-                    >Finish</button>
-                }
+                    { complete.length > 0 ? 
+                        <button className='rounded-lg text-green-600 px-4 py-2'
+                            onClick={()=>setWorkoutComplete(true)}
+                        >Finish</button>
+                    :
+                        <button className='rounded-lg bg-gray-100 text-neutral-400 px-4 py-2'
+                            disabled
+                        >Finish</button>
+                    }
+                </div>
             </div>
-            <div className='flex flex-col items-center gap-4 w-5/6'>
+            <div className='flex flex-col items-center gap-4 w-5/6 px-2 pt-8 pb-12'>
                 { currentWorkout.exercises.map((lift,id)=>
                 <>
                     <LiveExerciseLog key={`exercise${id}`} lift={lift} id={id} complete={complete} setComplete={setComplete} currentWorkout={currentWorkout} currentWorkoutIndex={currentWorkoutIndex}
