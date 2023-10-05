@@ -11,6 +11,7 @@ export default function handler(req, res) {
     // {
         if (req.method === 'POST')
         {
+            console.log(req.query.name)
             const user = req.query.user
             const timeNow = new Date().getTime()
             const data = JSON.stringify({

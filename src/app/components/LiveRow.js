@@ -39,10 +39,6 @@ export default function LiveRow({index, set, RemoveTargetSet, repConstant, id, s
         if(repVal > 0)
         {
             setallowWeight(true)
-            if(repVal !== set.reps && allowWeight)
-            {
-                PostResults()
-            }
         }
         else
         {
@@ -125,7 +121,7 @@ export default function LiveRow({index, set, RemoveTargetSet, repConstant, id, s
                     <option value={rep} key={number}>{rep}</option>
                 )}
             </select>
-            <input type="number" step="0.5" value={weightVal} disabled={!allowWeight} onChange={(e)=>setweightVal(e.target.value)} onBlur={PostResults}
+            <input type="number" step="0.5" value={weightVal} disabled={!allowWeight} onChange={(e)=>setweightVal(e.target.value)}
                 className={`border border-gray-400 rounded-md px-2 col-span-2 ${allowWeight ? '' : 'bg-gray-200 border-gray-200 text-gray-400'}`} required
             />
             { updated ? 
