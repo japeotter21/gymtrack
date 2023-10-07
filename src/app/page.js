@@ -274,41 +274,41 @@ export default function Home() {
                     </button>
                 </div>
             </div>
-            <div className='w-full lg:w-1/2 grid grid-cols-2 gap-4 mt-4'>
-                <div className='flex flex-col col-span-2 gap-1 items-center bg-stone-50 rounded-md shadow-md cursor-pointer px-3 py-3'
-                        onClick={()=>Navigate('/history')}
+            <div className='w-full lg:w-1/2 grid grid-cols-2 gap-4 mt-4 focus:bg-green-200'>
+                <Link className='flex flex-col col-span-2 gap-1 items-center bg-stone-50 rounded-md shadow-md cursor-pointer px-3 py-3'
+                        href='/history'
                 >
                     <div className=' text-sky-600'>
                         <BsCalendar size={20} />
                     </div>
                     <p className='text-sm mt-1'>History</p>
                     <p className='text-xs mt-1'>View past workouts</p>
-                </div>
-                <div className='flex flex-col col-span-2 gap-1 items-center rounded-md bg-stone-50 shadow-md cursor-pointer px-3 py-3'
-                        onClick={()=>Navigate('/stats')}
+                </Link>
+                <Link className='flex flex-col col-span-2 gap-1 items-center rounded-md bg-stone-50 shadow-md cursor-pointer px-3 py-3 focus:bg-green-200'
+                        href='/stats'
                 >
                     <BsGraphUp size={20} />
                     <p className='text-sm mt-1'>Stats</p>
                     <p className='text-xs mt-1 text-gray-500'>Track Your Progress</p>
-                </div>
-                <div className='flex flex-col gap-1 items-center justify-center bg-stone-50 rounded-md shadow-md cursor-pointer px-3 py-3'
-                        onClick={()=>Navigate('/workouts')}
+                </Link>
+                <Link className='flex flex-col gap-1 items-center justify-center bg-stone-50 rounded-md shadow-md cursor-pointer px-3 py-3 focus:bg-green-200'
+                        href='/workouts'
                 >
                     <div className='flex gap-6 items-center'>
                         <BiDumbbell size={20} />
                         <p className='text-sm mt-1'>Workouts</p>
                     </div>
                     <p className='text-xs mt-1 text-gray-500 text-center'>Edit programs or exercises</p>
-                </div>
-                <div className='flex flex-col gap-1 items-center justify-center rounded-md bg-stone-50 shadow-md cursor-pointer px-3 py-3'
-                        onClick={()=>Navigate('/profile')}
+                </Link>
+                <Link className='flex flex-col gap-1 items-center justify-center rounded-md bg-stone-50 shadow-md cursor-pointer px-3 py-3 focus:bg-green-200'
+                        href='/profile'
                 >
                     <div className='flex gap-6 items-center'>
                         <BsPerson size={20} />
                         <p className='text-sm mt-1'>Profile</p>
                     </div>
                     <p className='text-xs text-gray-500 mt-1 text-center'>Settings and Personal Info</p>
-                </div>
+                </Link>
             </div>
             
             {/* <Pagenav page='home' /> */}
