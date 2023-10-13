@@ -37,7 +37,7 @@ To Do:
 <p>✅ Migrate React Scheduler to custom calendar</p>
 <p>⬜ API cleanup (separate GraphQL service)</p>
 <p>⬜ Configure progression to set target weights</p>
-<p>⬜ Cache page loads</p>
+<p>✅ Cache page loads</p>
 <p>⬜ New user flow</p>
 <p>⬜ Upload old workouts</p>
 <p>⬜ Share workouts</p>
