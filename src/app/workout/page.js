@@ -10,6 +10,7 @@ import { FinishWorkout } from '@/services/services';
 import { Dialog } from '@mui/material';
 import DialogButton from '../components/DialogButton';
 import Pagenav from '../components/Pagenav';
+import PostExercise from '../components/EditWorkout';
 
 export default function Workout() {
     const [profile, setProfile] = useState({})
@@ -134,6 +135,9 @@ export default function Workout() {
                     />
                 </>
                 )}
+                <PostExercise currentWorkout={currentWorkout} currentWorkoutIndex={currentWorkoutIndex} setCurrentWorkout={setCurrentWorkout} 
+                    username={activeUser} exercises={exercises} homepage={true} setExercises={setExercises}
+                />
             </div>
             <Dialog open={workoutComplete} onClose={()=>setWorkoutComplete(false)}>
                 <div className='px-4 py-3'>

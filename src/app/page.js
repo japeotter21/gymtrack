@@ -202,7 +202,6 @@ export default function Home() {
         }
         else
         {
-            console.log(currentWorkout.name)
             axios.post('api/start', {}, {params: {user:activeUser, name:currentWorkout.name}})
             .then(res=>{
                 router.push('/workout')
