@@ -18,8 +18,31 @@ export default function WorkoutList({exercises, setExercises, currentWorkout, se
     const [deleteWorkout, setDeleteWorkout] = useState(false)
     const [currentSS, setCurrentSS] = useState([])
     const [superset, setSuperset] = useState('')
+    const [editing, setEditing] = useState(null)
+    const [editSets, setEditSets] = useState(0)
+    const [editReps, setEditReps] = useState(0)
+    const [editWeight, setEditWeight] = useState(0)
+    const [editNotes, setEditNotes] = useState('')
     const [updating, setUpdating] = useState(false)
     const [editName, setEditName] = useState(null)
+    
+    useEffect(()=>{
+        if(editing !== null)
+        {
+            setEditSets(exercises[editing].target?.sets?.length || 0)
+            setEditReps(exercises[editing].target?.sets[0]?.reps || 0)
+            setEditWeight(exercises[editing].target?.sets[0]?.weight || 0)
+            setEditNotes(exercises[editing].target?.notes)
+        }
+    },[editing])
+
+    function HandleEditClose() {
+        setEditSets(0)
+        setEditReps(0)
+        setEditWeight(0)
+        setEditNotes('')
+        setEditing(null)
+    }
 
     function HandleClose() {
         setUpdating(false)
@@ -62,6 +85,29 @@ export default function WorkoutList({exercises, setExercises, currentWorkout, se
               const workoutIndex = r.data.programs[currentIndex].schedule[dayIndex]
               setCurrentWorkout(r.data.workouts[workoutIndex])
           })
+        })
+    }
+
+    function HandleEdit() {
+        const newSets = parseInt(editSets)
+        const newReps = parseInt(editReps)
+        const newWeight = editWeight
+        let newPostArr = Array.from({length: newSets}, x=>0)
+        newPostArr.forEach((item,id)=>newPostArr[id]={reps:newReps, weight:newWeight})
+        const postObj = {
+            sets: newPostArr,
+            notes: editNotes,
+            reminder: ""
+        }
+        setUpdating(true)
+        axios.post('/api/exercise',postObj,{ params: {exercise: editing, user:activeUser, workout:day}})
+        .then(res=>{
+        axios.get('/api/exercise',{ params: { user:activeUser }})
+        .then(r=>{
+            setExercises(r.data.exercises)
+            HandleEditClose()
+            setUpdating(false)
+        })
         })
     }
 
@@ -202,7 +248,7 @@ export default function WorkoutList({exercises, setExercises, currentWorkout, se
                                                             </div>
                                                             {  !workouts[day].superset.includes(ex) ?
                                                             <>
-                                                                <div className='grid grid-cols-3 gap-x-2 text-xs w-max'>
+                                                                <div className='grid grid-cols-3 gap-x-2 text-xs w-max' onClick={()=>setEditing(ex)}>
                                                                     <p>{exercises[ex].target.sets.length}</p>
                                                                     <p>{exercises[ex].target.sets[0]?.reps}</p>
                                                                     <p>{exercises[ex].target.sets[0]?.weight}</p>
@@ -271,6 +317,41 @@ export default function WorkoutList({exercises, setExercises, currentWorkout, se
                     </div>
                 </Dialog>
             :
+                <></>
+            }
+            { exercises.length > 0 && editing !== null ? 
+                <Dialog open={editing !== null} onClose={HandleEditClose} maxWidth="lg" fullWidth>
+                <p className='font-semibold text-lg px-3 py-3'>{exercises[editing].name}</p>
+                <div className='grid grid-cols-2 px-3 py-3 gap-3'>
+                    <p className='text-md'>Sets</p>
+                    <select className='text-md border rounded-lg w-full py-1 px-2' value={editSets}
+                    onChange={(e)=>setEditSets(e.target.value)}
+                    >
+                    {setConstant.map((num,setNum)=>
+                        <option value={num} key={setNum}>{num}</option>
+                    )}
+                    </select>
+                    <p className='text-md'>Reps</p>
+                    <select className='text-md border rounded-lg w-full py-1 px-2' value={editReps}
+                    onChange={(e)=>setEditReps(e.target.value)}
+                    >
+                    {repConstant.map((num,setNum)=>
+                        <option value={num} key={setNum}>{num}</option>
+                    )}
+                    </select>
+                    <p className='text-md'>Weight (lbs)</p>
+                    <input className='text-md border rounded-lg w-full py-1 px-2' value={editWeight}
+                    onChange={(e)=>setEditWeight(e.target.value)}
+                    />
+                </div>
+                <div className='flex justify-end px-3 py-3 gap-3'>
+                    <button className='border border-gray-400 py-1 px-3 rounded-xl lg:hover:bg-red-100 lg:hover:border-red-200 lg:hover:text-red-500 lg:hover:scale-105 transition duration-200'
+                        onClick={HandleEditClose}
+                    >Cancel</button>
+                    <DialogButton disabled={updating} loading={updating} action={HandleEdit} text={'Update'} loadingText={'Updating...'} type="button"/>
+                </div>
+                </Dialog>
+                :
                 <></>
             }
             <Dialog open={editName !== null} onClose={()=>setEditName(null)}>
