@@ -108,18 +108,18 @@ export default function Workout() {
         <main className="grid min-h-screen place-items-center pb-12 lg:p-12">
             <div className='w-full bg-[#f4f4f5] z-10 py-4 fixed bottom-0'>
                 <div className='flex justify-between w-5/6 mx-auto px-2'>
-                    <button className='rounded-lg text-red-600 px-4 py-2'
+                    <button className='rounded-md text-red-600 bg-red-100 px-4 py-2'
                         onClick={Cancel}
                     >Cancel</button>
-                    <button className='rounded-lg text-sky-600 px-4 py-2'
+                    <button className='rounded-md text-sky-600 bg-sky-100 px-4 py-2'
                         onClick={()=>{setPaused(true);router.push('/')}}
                     >Pause</button>
                     { complete.length > 0 ? 
-                        <button className='rounded-lg text-green-600 px-4 py-2'
+                        <button className='rounded-md text-green-600 bg-green-100 px-4 py-2'
                             onClick={()=>setWorkoutComplete(true)}
                         >Finish</button>
                     :
-                        <button className='rounded-lg bg-gray-100 text-neutral-400 px-4 py-2'
+                        <button className='rounded-md text-neutral-400 border border-neutral-200 px-4 py-2'
                             disabled
                         >Finish</button>
                     }

@@ -231,17 +231,20 @@ export default function Home() {
                 <p className='text-sm text-gray-600'>from {currentProgram.name}</p>
                 { showInfo ? 
                     <div className='mt-4 mb-4 border border-gray-300 rounded-md'>
-                        <div className='text-sm font-semibold grid grid-cols-2 border-b-[1px]'>
-                            <div className='px-2 py-1'>Exercise</div>
-                            <div className='px-2 py-1'>Sets
-                            </div>
+                        <div className='text-sm font-semibold grid grid-cols-6 border-b-[1px]'>
+                            <div className='px-2 py-1 col-span-3'>Exercise</div>
+                            <div className='px-2 py-1'>Sets</div>
+                            <div className='px-2 py-1'>Reps</div>
+                            <div className='px-2 py-1'>Weight</div>
                         </div>
                         <div className='divide-y'>
                             { currentWorkout.exercises.map((item,id)=>
-                                <div className={`text-sm grid grid-cols-2 items-center`} key={exercises[item].name} onClick={()=>setEditing(item)}
+                                <div className={`text-sm grid grid-cols-6 items-center`} key={exercises[item].name} onClick={()=>setEditing(item)}
                                 >
-                                    <p className='px-2 py-1'>{exercises[item].name}</p>
+                                    <p className='px-2 py-1 col-span-3'>{exercises[item].name}</p>
                                     <p className='px-2 py-1'>{exercises[item].target?.sets.length}</p>
+                                    <p className='px-2 py-1'>{exercises[item].target?.sets[0]?.reps}</p>
+                                    <p className='px-2 py-1'>{exercises[item].target?.sets[0]?.weight}</p>
                                 </div>
                             )}
                         </div>
