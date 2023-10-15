@@ -9,6 +9,7 @@ import LiveButton from './LiveButton.js'
 import { HiLink } from 'react-icons/hi2';
 import GroupExercises from './GroupExercises.js';
 import LiveRow from './LiveRow.js';
+import { Combobox } from '@headlessui/react';
 
 const textOptions = ['Machine taken?', 'Machine broken?', 'Not feeling it?', 'In a hurry?']
 
@@ -22,12 +23,11 @@ export default function LiveExerciseLog({lift, id, currentWorkout, profile, comp
     const [ssId, setSSId] = useState(null)
     const [saving, setSaving] = useState(false)
     const [updating, setUpdating] = useState(false)
-    const [randomText, setRandomText] = useState(0)
     const [swap, setSwap] = useState(false)
     const [choice, setChoice] = useState(lift)
+    const [query, setQuery] = useState('')
     const [initialLift, setInitialLift] = useState(null)
     useEffect(()=>{
-        setRandomText(Math.round(Math.random()*3))
         setInitialLift(lift)
     },[])
 
@@ -65,7 +65,12 @@ export default function LiveExerciseLog({lift, id, currentWorkout, profile, comp
         setTemp.pop()
         setAddSet(setTemp)
     }
-
+    const filteredEx =
+    query === ''
+      ? exercises
+      : exercises.filter((ex) => {
+          return ex.name.toLowerCase().includes(query.toLowerCase())
+        })
     return (
         <div
             className={`w-full flex-col mx-auto gap-3 items-center border border-gray-300 rounded-lg
@@ -75,14 +80,16 @@ export default function LiveExerciseLog({lift, id, currentWorkout, profile, comp
             key={id}
         >
             <div>
-                {choice !== lift ?
-                    <div className='flex justify-between items-center mb-2'>
-                        <p className='text-lg font-semibold text-center'>{exercises[choice].name}</p>
-                        <button className='text-red-500' onClick={()=>setChoice(initialLift)}>Revert</button>
-                    </div>
-                    :
-                    <p className='text-lg font-semibold text-center mb-2'>{exercises[choice].name}</p>
-                }
+                <Combobox value={exercises[choice].name} onChange={setChoice}>
+                    <Combobox.Input onChange={(event) => setQuery(event.target.value)} className="border mx-auto block rounded-md text-center" />
+                    <Combobox.Options>
+                        {filteredEx.map((ex) => (
+                        <Combobox.Option key={ex.name} value={ex.id}>
+                            {ex.name}
+                        </Combobox.Option>
+                        ))}
+                    </Combobox.Options>
+                </Combobox>
                 <div className='grid grid-cols-7 mt-4 gap-2 items-center'>
                     <p className='text-xs text-neutral-500 col-span-2'>Set</p>
                     <p className='text-xs text-neutral-500 col-span-2'>Reps</p>
@@ -135,12 +142,6 @@ export default function LiveExerciseLog({lift, id, currentWorkout, profile, comp
                         ]
                     }
                 /> */}
-            </div>
-            <div className='flex justify-center mt-4 gap-1'>
-                <p className='text-sm text-gray-400'>{textOptions[randomText]}</p>
-                <button className='text-sm text-blue-500 underline'
-                    onClick={()=>setSwap(true)}
-                >Swap Exercise</button>
             </div>
             <Dialog open={swap} onClose={()=>setSwap(false)}>
                 <div className='px-4 py-3'>
