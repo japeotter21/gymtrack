@@ -10,6 +10,7 @@ import { HiLink } from 'react-icons/hi2';
 import GroupExercises from './GroupExercises.js';
 import LiveRow from './LiveRow.js';
 import { Combobox } from '@headlessui/react';
+import { DeleteExercise } from './EditWorkout.js';
 
 const textOptions = ['Machine taken?', 'Machine broken?', 'Not feeling it?', 'In a hurry?']
 
@@ -29,7 +30,8 @@ export default function LiveExerciseLog({lift, id, currentWorkout, profile, comp
     const [initialLift, setInitialLift] = useState(null)
     useEffect(()=>{
         setInitialLift(lift)
-    },[])
+        setChoice(lift)
+    },[lift])
 
     useEffect(()=>{
         if(exercises.length > 0)
@@ -37,21 +39,6 @@ export default function LiveExerciseLog({lift, id, currentWorkout, profile, comp
             setTargetSets(exercises[choice].target.sets)
         }
     },[choice, exercises])
-
-    useEffect(()=>{
-        if(choice != lift) {
-            const currenttemp = Object.assign({}, currentWorkout)
-            currenttemp.exercises.splice(id,1,parseInt(choice))
-            setCurrentWorkout(currenttemp)
-            setSwap(false)
-        }
-        else if (currentWorkout.exercises[id] !== initialLift && initialLift !== null)
-        {
-            const currenttemp = Object.assign({}, currentWorkout)
-            currenttemp.exercises.splice(id,1,lift)
-            setCurrentWorkout(currenttemp)
-        }
-    },[choice])
 
     function RemoveTargetSet(index) {
         const setTemp = [...targetSets]
@@ -70,7 +57,9 @@ export default function LiveExerciseLog({lift, id, currentWorkout, profile, comp
       ? exercises
       : exercises.filter((ex) => {
           return ex.name.toLowerCase().includes(query.toLowerCase())
-        })
+    })
+
+
     return (
         <div
             className={`w-full flex-col mx-auto gap-3 items-center border border-gray-300 rounded-lg
@@ -142,16 +131,11 @@ export default function LiveExerciseLog({lift, id, currentWorkout, profile, comp
                         ]
                     }
                 /> */}
+                <DeleteExercise currentWorkout={currentWorkout} currentWorkoutIndex={currentWorkoutIndex}
+                    homepage={true} setCurrentWorkout={setCurrentWorkout} displayText="Remove this Exercise"
+                    username={username} item={choice} id={id} exercises={exercises}
+                />
             </div>
-            <Dialog open={swap} onClose={()=>setSwap(false)}>
-                <div className='px-4 py-3'>
-                    <div className='font-semibold'>New Exercise</div>
-                    <GroupExercises exercises={exercises} setChoice={setChoice} choice={choice} ss={false} />
-                    <button className='border border-gray-400 py-1 px-3 mt-4 rounded-xl lg:hover:bg-red-100 lg:hover:border-red-200 lg:hover:text-red-500 lg:hover:scale-105 transition duration-200'
-                        onClick={()=>{setSwap(false);setChoice(lift)}}
-                    >Cancel</button>
-                </div>
-            </Dialog>
         </div>
     )
 }

@@ -249,7 +249,7 @@ export default function PostExercise({username, currentWorkoutIndex, currentWork
     )
 }
 
-export function DeleteExercise ({item, id, currentWorkout, setCurrentWorkout, currentWorkoutIndex, username, homepage, setPrograms, setCurrentProgram, setWorkouts, exercises}){
+export function DeleteExercise ({item, id, currentWorkout, setCurrentWorkout, currentWorkoutIndex, username, homepage, setPrograms, setCurrentProgram, setWorkouts, exercises, displayText}){
     const [deleting, setDeleting] = useState(null)
     const [loading, setLoading] = useState(false)
 
@@ -268,12 +268,10 @@ export function DeleteExercise ({item, id, currentWorkout, setCurrentWorkout, cu
         .then(res=>{
             axios.get('/api/workouts', { params: { user: username } })
             .then(r=>{
-                const currentIndex = r.data.currentProgram
-                const dayIndex = r.data.currentDay
-                const workoutIndex = r.data.programs[currentIndex].schedule[dayIndex]
                 if(homepage)
                 {
-                    setCurrentWorkout(r.data.workouts[workoutIndex])
+                    const tempObj = r.data.workouts[currentWorkoutIndex]
+                    setCurrentWorkout(tempObj)
                 }
                 else
                 {
@@ -295,7 +293,9 @@ export function DeleteExercise ({item, id, currentWorkout, setCurrentWorkout, cu
     }
     return (
         <>
-        <div className='px-2 py-1 text-red-500 block ml-auto cursor-pointer' onClick={()=>setDeleting(id)}><BsTrash size={15} /></div>
+        <button className={`px-2 py-1 ${displayText ? 'text-neutral-400' : 'text-red-500'} text-sm block ml-auto cursor-pointer`} onClick={()=>setDeleting(id)}>
+            {displayText ? <>{displayText}</> : <BsTrash size={15} />}    
+        </button>
         { exercises.length > 0 && deleting !== null ? 
           <Dialog open={deleting !== null} onClose={()=>setDeleting(null)} maxWidth="sm" fullWidth>
               <p className='font-semibold text-lg px-3 py-3'>Remove exercise</p>
