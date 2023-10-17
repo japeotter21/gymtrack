@@ -131,10 +131,10 @@ export default function LiveExerciseLog({lift, id, currentWorkout, profile, comp
                         ]
                     }
                 /> */}
-                <DeleteExercise currentWorkout={currentWorkout} currentWorkoutIndex={currentWorkoutIndex}
-                    homepage={true} setCurrentWorkout={setCurrentWorkout} displayText="Remove this Exercise"
+                {/* <DeleteExercise currentWorkout={currentWorkout} currentWorkoutIndex={currentWorkoutIndex}
+                    homepage={true} setCurrentWorkout={setCurrentWorkout} displayText="Skip this Exercise"
                     username={username} item={choice} id={id} exercises={exercises}
-                />
+                /> */}
             </div>
         </div>
     )

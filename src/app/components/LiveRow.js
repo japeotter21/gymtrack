@@ -5,7 +5,7 @@ import { BsTrash } from 'react-icons/bs'
 
 export default function LiveRow({index, set, RemoveTargetSet, repConstant, id, setLength, username, name, extraRow, complete, setComplete}) {
     const [repVal, setrepVal] = useState(0)
-    const [weightVal, setweightVal] = useState("0")
+    const [weightVal, setweightVal] = useState("")
     const [allowWeight, setallowWeight] = useState(false)
     const [updated, setUpdated] = useState(false)
     const [updating, setUpdating] = useState(false)
@@ -15,10 +15,10 @@ export default function LiveRow({index, set, RemoveTargetSet, repConstant, id, s
         {
             setrepVal(set.reps)
         }
-        if (set.weight)
-        {
-            setweightVal(set.weight)
-        }
+        // if (set.weight)
+        // {
+        //     setweightVal(set.weight)
+        // }
     },[])
 
     useEffect(() => {
@@ -30,6 +30,10 @@ export default function LiveRow({index, set, RemoveTargetSet, repConstant, id, s
                 setUpdated(true)
                 setrepVal(complete[checkDone].reps)
                 setweightVal(complete[checkDone].weight)
+            }
+            else
+            {
+                setUpdated(false)
             }
         }
     }, [complete])
@@ -44,11 +48,20 @@ export default function LiveRow({index, set, RemoveTargetSet, repConstant, id, s
         {
             setallowWeight(false)
         }
+        const checkDone = complete.findIndex((item)=>item.name === name+'-'+index)
+        if(updated && checkDone >=0)
+        {
+            if(repVal !== complete[checkDone].reps || weightVal !== complete[checkDone].weight)
+            {
+                setUpdated(false)
+            }
+        }
     },[repVal])
 
     function PostResults() {
         setUpdating(true)
-        if(updated)
+        const checkDone = complete.findIndex((item)=>item.name === name+'-'+index)
+        if(checkDone >= 0)
         {
             // if updated is already set true then the entry already exists and should be edited
             const postObj = {
@@ -121,17 +134,17 @@ export default function LiveRow({index, set, RemoveTargetSet, repConstant, id, s
                     <option value={rep} key={number}>{rep}</option>
                 )}
             </select>
-            <input type="number" step="0.5" value={weightVal} disabled={!allowWeight} onChange={(e)=>setweightVal(e.target.value)}
+            <input type="number" step="0.5" placeholder={set.weight} value={weightVal} disabled={!allowWeight} onChange={(e)=>setweightVal(e.target.value)}
                 className={`border border-gray-400 rounded-md px-2 col-span-2 ${allowWeight ? '' : 'bg-gray-200 border-gray-200 text-gray-400'}`} required
             />
             { updated ? 
             <div
-                className={`rounded-full border border-gray-400 h-[15px] w-[15px] mx-auto transition duration-200 ${updating ? 'animate-pulse bg-sky-500 border-none' : ''} bg-gradient-to-r to-sky-500 from-sky-600 border-none `}
+                className={`rounded-full border border-gray-400 h-[17px] w-[17px] mx-auto transition duration-200 ${updating ? 'animate-pulse bg-sky-500 border-none' : ''} bg-gradient-to-r to-sky-500 from-sky-600 border-none `}
             />
             :
             <div
                 onClick={PostResults}
-                className={`rounded-full border border-gray-400 h-[15px] w-[15px] mx-auto transition duration-200 ${updating ? 'animate-pulse bg-sky-500 border-none' : ''} `}
+                className={`rounded-full border border-gray-400 h-[17px] w-[17px] mx-auto transition duration-200 ${updating ? 'animate-pulse bg-sky-500 border-none' : ''} `}
             />
 
             }
