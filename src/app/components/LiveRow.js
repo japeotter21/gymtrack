@@ -141,12 +141,15 @@ export default function LiveRow({index, set, RemoveTargetSet, repConstant, id, s
             <div
                 className={`rounded-full border border-gray-400 h-[17px] w-[17px] mx-auto transition duration-200 ${updating ? 'animate-pulse bg-sky-500 border-none' : ''} bg-gradient-to-r to-sky-500 from-sky-600 border-none `}
             />
+            : isNaN(parseInt(weightVal)) ?
+            <div
+                className={`rounded-full border border-gray-400 h-[17px] w-[17px] mx-auto transition duration-200`}
+            />
             :
             <div
                 onClick={PostResults}
                 className={`rounded-full border border-gray-400 h-[17px] w-[17px] mx-auto transition duration-200 ${updating ? 'animate-pulse bg-sky-500 border-none' : ''} `}
             />
-
             }
         </div>
     )
