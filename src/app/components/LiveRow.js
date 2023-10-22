@@ -40,11 +40,11 @@ export default function LiveRow({index, set, RemoveTargetSet, repConstant, id, s
     
 
     useEffect(()=>{
-        if(repVal > 0)
+        if(repVal > 0 && !allowWeight)
         {
             setallowWeight(true)
         }
-        else
+        else if (!(repVal > 0))
         {
             setallowWeight(false)
         }
@@ -56,7 +56,7 @@ export default function LiveRow({index, set, RemoveTargetSet, repConstant, id, s
                 setUpdated(false)
             }
         }
-    },[repVal])
+    },[repVal, weightVal])
 
     function PostResults() {
         setUpdating(true)

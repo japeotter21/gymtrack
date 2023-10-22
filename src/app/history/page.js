@@ -187,7 +187,7 @@ export default function History() {
                                 <p className={`font-semibold text-sm w-max mx-auto py-1 ${currentDate > day && currentDate < calendarDays[index+1] ? 'px-1.5 bg-opacity-80 text-blue-600 bg-sky-200 shadow-lg rounded-full' : 'px-1'}`}>
                                     {new Date(day).getDate()}
                                 </p>
-                                <div  className='flex flex-col gap-0.5'>
+                                <div  className='flex flex-col'>
                                     { workouts.map((workout,id)=>
                                         <div key={`${workout.title}-${id}`}>
                                         {parseInt(workout.date) > day && parseInt(workout.date) < calendarDays[index+1] ?
