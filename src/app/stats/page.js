@@ -11,6 +11,7 @@ import AppContext from '../AppContext'
 import { redirect } from 'next/navigation'
 import LineChart from '../components/LineChart'
 import Link from 'next/link'
+import { Combobox } from '@headlessui/react';
 
 export default function Stats() {
     const [loading, setLoading] = useState(true)
@@ -22,6 +23,7 @@ export default function Stats() {
     const [yMax, setYMax] = useState(200)
     const [choice, setChoice] = useState('')
     const [range, setRange] = useState('all')
+    const [query, setQuery] = useState('')
     const maxPercent = [0, 1, 0.95, 0.93, 0.9, 0.87, 0.85, 0.83, 0.8, 0.77, 0.75, 0.7, 0.67, 0.65]
     const {activeUser, Refresh} = useContext(AppContext)
 
@@ -120,19 +122,25 @@ export default function Stats() {
     function ChartExercise(e) {
         setChoice(e.target.value)
     }
+    const filteredEx =
+    query === ''
+      ? results
+      : results.filter((ex) => {
+          return ex.name.toLowerCase().includes(query.toLowerCase())
+    })
 
     return (
         <main className="flex min-h-screen flex-col items-center py-6 lg:pt-12 px-2 lg:p-12 gap-4">
-            <div className='flex items-center justify-center w-11/12'>
-                <select className='border border-gray-400 rounded-md p-1'
-                    onChange={(e)=>ChartExercise(e)} defaultValue=''
-                    >
-                    <option value='' disabled>Select Exercise</option>
-                    {results.map((ex,id)=>
-                        <option value={id} key={id}>{ex.name}</option>
-                    )}
-                </select>
-            </div>
+            <Combobox value={results[choice]?.name} onChange={setChoice}>
+                <Combobox.Input onChange={(event) => setQuery(event.target.value)} className="border mx-auto block rounded-md text-center" />
+                <Combobox.Options className='bg-stone-50 fixed mt-6 z-10 p-2'>
+                    {filteredEx.map((ex) => (
+                    <Combobox.Option key={ex.name} value={ex.id}>
+                        {ex.name}
+                    </Combobox.Option>
+                    ))}
+                </Combobox.Options>
+            </Combobox>
             { current !== null ?
                 <>
                     <p className='mx-auto w-max'>Projected 1-Rep Max (lbs)</p>
