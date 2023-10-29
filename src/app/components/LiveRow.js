@@ -67,10 +67,10 @@ export default function LiveRow({index, set, RemoveTargetSet, repConstant, id, s
         setUpdated(true)
         axios.put('/api/history',postObj,{ params: { user: username, name: name+'-'+index }})
         .then(res=>{
-            axios.get('/api/workouts',{ params: {user: username}})
+            axios.get('/api/history',{ params: {user: username}})
             .then(r=>{
                 setUpdating(false)
-                setComplete(r.data.inProgress.results)
+                setComplete(r.data)
             })
             .catch(err=>{
                 console.error(err)

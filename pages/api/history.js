@@ -7,7 +7,33 @@ export default async function handler(req, res) {
     // {
     //     auth = req.headers.authorization.split(' ')[1] === btoa(process.env.EDIT_USE+':'+process.env.EDIT_PW)
     // }
-        if (req.method === 'PUT')
+        if (req.method === 'GET')
+        {
+            const user = req.query.user
+            const data = JSON.stringify({
+                "collection": `inProgress_${req.query.user.split('@')[0]}`,
+                "database": "gymtrack",
+                "dataSource": "link0"
+            });
+            const config = {
+                method: 'post',
+                url: 'https://us-east-2.aws.data.mongodb-api.com/app/data-hdjhg/endpoint/data/v1/action/find',
+                headers: {
+                'Content-Type': 'application/json',
+                'Access-Control-Request-Headers': '*',
+                'api-key': process.env.API_KEY,
+                },
+                data: data
+            }; 
+            axios(config)
+            .then(function (response) {
+                res.status(200).json(response.data.documents);
+            })
+            .catch(function (error) {
+                res.status(400).json({data: 'request failed'})
+            });
+        }
+        else if (req.method === 'PUT')
         {
             const data = JSON.stringify({
                 "collection": `inProgress_${req.query.user.split('@')[0]}`,
@@ -81,6 +107,33 @@ export default async function handler(req, res) {
                 console.error(error.message)
                 res.status(400).json({data: 'request failed'})
             });
+        }
+        else if (req.method === 'DELETE')
+        {
+            const data = JSON.stringify({
+                "collection": `inProgress_${req.query.user.split('@')[0]}`,
+                "database": "gymtrack",
+                "dataSource": "link0",
+                "filter": {}
+            });
+            const config = {
+                method: 'post',
+                url: 'https://us-east-2.aws.data.mongodb-api.com/app/data-hdjhg/endpoint/data/v1/action/deleteMany',
+                headers: {
+                'Content-Type': 'application/json',
+                'Access-Control-Request-Headers': '*',
+                'api-key': process.env.API_KEY,
+                },
+                data: data
+            }; 
+            axios(config)
+            .then(function (response) {
+                res.status(200).send({message: 'Cleared all exercises from workout log.'})
+            })
+            .catch(function (error) {
+                res.status(400).json({data: 'request failed'})
+            });
+
         }
         else
         {

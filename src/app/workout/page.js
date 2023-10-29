@@ -25,6 +25,7 @@ export default function Workout() {
     const [finishing, setFinishing] = useState(false)
     const [activeSlide, setActiveSlide] = useState(0)
     const [supersets, setSupersets] = useState([])
+    const [startTime, setStartTime] = useState(null)
     const [finishObj, setFinishObj] = useState({})
     const router = useRouter()
     const {activeUser, Refresh, paused, setPaused} = useContext(AppContext)
@@ -33,9 +34,9 @@ export default function Workout() {
     useEffect(()=>{
         if(activeUser)
         {
-            const endpoints = ['/api/user', '/api/exercise', '/api/workouts']
+            const endpoints = ['/api/user', '/api/exercise', '/api/workouts', 'api/history']
             axios.all(endpoints.map((endpoint) => axios.get(endpoint, {params: {user:activeUser}}))).then(
-            axios.spread((user, exercise, workout) => {
+            axios.spread((user, exercise, workout, history) => {
                 setProfile(user.data.profile)
                 setExercises(exercise.data.exercises)
                 const currentIndex = workout.data.currentProgram
@@ -45,7 +46,8 @@ export default function Workout() {
                 setCurrentWorkoutIndex(workoutIndex)
                 setCurrentWorkout(workout.data.workouts[workoutIndex])
                 setCurrentDay(dayIndex)
-                setComplete(workout.data.inProgress.results)
+                setStartTime(workout.data.inProgress.date)
+                setComplete(history.data)
                 setLoading(false)
                 setPaused(false)
             })
@@ -60,9 +62,9 @@ export default function Workout() {
     useEffect(()=>{
         if(workoutComplete)
         {
-            axios.get('api/workouts')
+            axios.get('api/history', { params: { user: activeUser } })
             .then(res=>{
-                setFinishObj(res.data.inProgress)
+                setFinishObj(res.data)
             })
         }
     },[workoutComplete])
@@ -72,7 +74,10 @@ export default function Workout() {
     },[router])
 
     function Cancel() {
-        router.push('/')
+        axios.delete('api/history', {params: { user: activeUser }})
+        .then(res=>{
+            router.push('/')
+        })
     }
 
     function SaveWorkout() {
@@ -83,15 +88,23 @@ export default function Workout() {
             dayNum = currentDay + 1
         }
         const endTime = new Date().getTime()
-        const finishObjFull = Object.assign({ end: endTime },  finishObj)
+        const finishObjFull = {
+            title: currentWorkout.name,
+            date: startTime,
+            end: endTime,
+            results: finishObj
+        } 
         const postObj = {
             day: dayNum,
             workout: finishObjFull
         }
         axios.post('api/finished',postObj,{ params: {user: activeUser}})
         .then(res=>{
-            setFinishing(false)
-            router.push('/history')
+            axios.delete('api/history', {params: { user: activeUser }})
+            .then(res=>{
+                setFinishing(false)
+                router.push('/history')
+            })
         })
         .catch(err=>{
             console.error(err.message)
