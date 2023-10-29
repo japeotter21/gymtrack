@@ -10,25 +10,17 @@ export default async function handler(req, res) {
         if (req.method === 'PUT')
         {
             const data = JSON.stringify({
-                "collection": "workoutObj",
+                "collection": `inProgress_${req.query.user.split('@')[0]}`,
                 "database": "gymtrack",
                 "dataSource": "link0",
-                "filter": {
-                    [`key`]: 'workouts',
-                    [`user`]: req.query.user
-                },
-                "update": req.query.edit !== undefined ? 
-                {
+                "filter": { name: req.query.name },
+                "update": {
                     "$set": {
-                        [`inProgress.results.${req.query.edit}`]: req.body
+                        name: req.query.name, reps: req.body.reps, weight: req.body.weight
                     }
-                }
-                :
-                {
-                    "$push": {
-                        [`inProgress.results`]: req.body
-                    }
-                }
+                },
+                "upsert": true
+                
             });
             const config = {
                 method: 'post',

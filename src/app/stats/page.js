@@ -12,6 +12,7 @@ import { redirect } from 'next/navigation'
 import LineChart from '../components/LineChart'
 import Link from 'next/link'
 import { Combobox } from '@headlessui/react';
+import { HiChevronUpDown } from 'react-icons/hi2'
 
 export default function Stats() {
     const [loading, setLoading] = useState(true)
@@ -132,7 +133,11 @@ export default function Stats() {
     return (
         <main className="flex min-h-screen flex-col items-center py-6 lg:pt-12 px-2 lg:p-12 gap-4">
             <Combobox value={results[choice]?.name} onChange={setChoice}>
-                <Combobox.Input onChange={(event) => setQuery(event.target.value)} className="border mx-auto block rounded-md text-center" />
+                <Combobox.Label>Exercise</Combobox.Label>
+                <div className='relative'>
+                    <Combobox.Input onChange={(event) => setQuery(event.target.value)} className="border mx-auto block rounded-md text-center" />
+                    <Combobox.Button className='absolute inset-y-0 right-2'><HiChevronUpDown /></Combobox.Button>
+                </div>
                 <Combobox.Options className='bg-stone-50 fixed mt-6 z-10 p-2'>
                     {filteredEx.map((ex) => (
                     <Combobox.Option key={ex.name} value={ex.id}>

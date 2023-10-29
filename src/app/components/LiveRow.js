@@ -60,58 +60,27 @@ export default function LiveRow({index, set, RemoveTargetSet, repConstant, id, s
 
     function PostResults() {
         setUpdating(true)
-        const checkDone = complete.findIndex((item)=>item.name === name+'-'+index)
-        if(checkDone >= 0)
-        {
-            // if updated is already set true then the entry already exists and should be edited
-            const postObj = {
-                reps: parseInt(repVal),
-                weight: weightVal,
-                name: name+'-'+index
-            }
-            setUpdated(true)
-            axios.put('/api/history',postObj,{ params: { user: username, edit: index }})
-            .then(res=>{
-                axios.get('/api/workouts',{ params: {user: username}})
-                .then(r=>{
-                    setUpdating(false)
-                    setComplete(r.data.inProgress.results)
-                })
-                .catch(err=>{
-                    console.error(err)
-                    setUpdating(false)
-                })
-            }) 
+        const postObj = {
+            reps: parseInt(repVal),
+            weight: weightVal
+        }
+        setUpdated(true)
+        axios.put('/api/history',postObj,{ params: { user: username, name: name+'-'+index }})
+        .then(res=>{
+            axios.get('/api/workouts',{ params: {user: username}})
+            .then(r=>{
+                setUpdating(false)
+                setComplete(r.data.inProgress.results)
+            })
             .catch(err=>{
                 console.error(err)
                 setUpdating(false)
             })
-        }
-        else
-        {
-            const postObj = {
-                reps: parseInt(repVal),
-                weight: weightVal,
-                name: name+'-'+index
-            }
-            setUpdated(true)
-            axios.put('/api/history',postObj,{ params: { user: username }})
-            .then(res=>{
-                axios.get('/api/workouts',{ params: {user: username}})
-                .then(r=>{
-                    setUpdating(false)
-                    setComplete(r.data.inProgress.results)
-                })
-                .catch(err=>{
-                    console.error(err)
-                    setUpdating(false)
-                })
-            }) 
-            .catch(err=>{
-                console.error(err)
-                setUpdating(false)
-            })
-        }
+        }) 
+        .catch(err=>{
+            console.error(err)
+            setUpdating(false)
+        })
     }
 
     return (
