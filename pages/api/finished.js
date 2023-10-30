@@ -44,24 +44,14 @@ export default function handler(req, res) {
             const user = req.query.user
             const rest = req.query.rest
             const data = JSON.stringify({
-                "collection": "workoutObj",
+                "collection": "record",
                 "database": "gymtrack",
                 "dataSource": "link0",
                 "filter": {
-                    [`key`]: 'workouts',
                     [`user`]: user
                 },
-                "update": rest ? {
-                    "$set": {
-                        [`currentDay`]: req.body.day,
-                    }
-                } 
-                :   
+                "update":   
                 {
-                    "$set": {
-                        [`currentDay`]: req.body.day,
-                        [`inProgress.results`]: []
-                    },
                     "$push": {
                         [`record`]: resultObj
                     }

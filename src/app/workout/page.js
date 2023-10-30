@@ -98,9 +98,9 @@ export default function Workout() {
             day: dayNum,
             workout: finishObjFull
         }
-        axios.post('api/finished',postObj,{ params: {user: activeUser}})
+        axios.post('api/finished',postObj,{ params: { user: activeUser }})
         .then(res=>{
-            axios.delete('api/history', {params: { user: activeUser }})
+            axios.delete('api/history', { params: { user: activeUser }})
             .then(res=>{
                 setFinishing(false)
                 router.push('/history')
