@@ -20,6 +20,8 @@ export default function History() {
     const {activeUser, Refresh} = useContext(AppContext)
     const currentDate = new Date();
     const [month, setMonth] = useState(currentDate.getMonth())
+
+    const oneDay = 86400000
     const year = currentDate.getFullYear();
     const months = [
         "January",
@@ -155,7 +157,6 @@ export default function History() {
             <></>
         )
     }
-
     return (
         <main className="flex min-h-screen flex-col items-center py-6 lg:pt-12 lg:p-12 gap-4">
             {/* <select value={filter} onChange={(e)=>setFilter(e.target.value)}>
@@ -190,7 +191,7 @@ export default function History() {
                                 <div  className='flex flex-col'>
                                     { workouts.map((workout,id)=>
                                         <div key={`${workout.title}-${id}`}>
-                                        {parseInt(workout.date) > day && parseInt(workout.date) < calendarDays[index+1] ?
+                                        {parseInt(workout.date) > day && parseInt(workout.date) <= calendarDays[index] + oneDay ?
                                             <div className='text-xs cursor-pointer rounded-md bg-gradient-to-r from-sky-600 to-sky-400 text-white shadow-sm py-0.5'
                                                 onClick={()=> view?.date === workout.date ? setView(null) : setView(workout)}
                                             >
