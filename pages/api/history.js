@@ -35,6 +35,9 @@ export default async function handler(req, res) {
         }
         else if (req.method === 'PUT')
         {
+            // ----------------------------------------------------------------------------------------------------------------
+            // post to records
+            // ----------------------------------------------------------------------------------------------------------------
             const data = JSON.stringify({
                 "collection": `inProgress_${req.query.user.split('@')[0]}`,
                 "database": "gymtrack",
@@ -124,11 +127,4 @@ export default async function handler(req, res) {
             res.status(405).send({ message: `${req.method} not allowed` })
             return
         }
-    // }
-    // else
-    // {
-    //     res.status(403).send({ message: `${req.method} not allowed` })
-    //     return
-    // }
-    
   }

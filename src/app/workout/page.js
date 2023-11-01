@@ -100,6 +100,8 @@ export default function Workout() {
         }
         axios.post('api/finished',postObj,{ params: { user: activeUser }})
         .then(res=>{
+            // const putObj = {newDay: parseInt(newDay)}
+            // axios.put('/api/workouts', postObj, { params: {user:activeUser}})
             axios.delete('api/history', { params: { user: activeUser }})
             .then(res=>{
                 setFinishing(false)

@@ -65,6 +65,7 @@ export default function LiveRow({index, set, RemoveTargetSet, repConstant, id, s
             weight: weightVal
         }
         setUpdated(true)
+        axios.put('/api/audit',postObj,{ params: { user: username, name: name+'-'+index }})
         axios.put('/api/history',postObj,{ params: { user: username, name: name+'-'+index }})
         .then(res=>{
             axios.get('/api/history',{ params: {user: username}})
