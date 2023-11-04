@@ -9,34 +9,29 @@ export default async function handler(req, res) {
     // }
         if (req.method === 'GET')
         {
-            const graphUrl = process.env.GRAPH_URL
             const name = req.query.name.includes('+') ? req.query.name.split('+').join(' ') : req.query.name
-            const postObj = {
-                query:
-                `query {
-                    workoutObj (query:{user:"${req.query.user}"}) {
-                    record {
-                        title
-                        date
-                        results {
-                            name
-                            notes
-                            rpe
-                            sets {
-                                reps
-                                weight
-                            }
-                        }
-                    }
-                  }
-                }`
-            }
-            axios.post(graphUrl, JSON.stringify(postObj), { headers: {apiKey: process.env.GRAPH_KEY}})
+            const data = JSON.stringify({
+                "collection": `record`,
+                "database": "gymtrack",
+                "dataSource": "link0",
+                "filter": { user: req.query.user },
+            });
+            const config = {
+                method: 'post',
+                url: 'https://us-east-2.aws.data.mongodb-api.com/app/data-hdjhg/endpoint/data/v1/action/find',
+                headers: {
+                'Content-Type': 'application/json',
+                'Access-Control-Request-Headers': '*',
+                'api-key': process.env.API_KEY,
+                },
+                data: data
+            }; 
+            axios(config)
             .then(function (response) {
-                const responseTemp = response.data
+                const responseTemp =response.data.documents[0].record
                 const workoutsTemp = []
-                console.log(responseTemp.data.workoutObj.record)
-                responseTemp.data.workoutObj.record.forEach((item,id)=>{
+                console.log(responseTemp)
+                responseTemp.forEach((item,id)=>{
                     let resultTemp = item.results.find((result)=>result.name === name)
                     if(resultTemp && resultTemp !== undefined)
                     {
@@ -47,7 +42,6 @@ export default async function handler(req, res) {
                 res.status(200).json(workoutsTemp);
             })
             .catch(function (error) {
-                console.error(error.message)
                 res.status(400).json({data: 'request failed'})
             });
         }
