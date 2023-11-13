@@ -41,25 +41,22 @@ export default async function handler(req, res) {
         else if (req.method === 'PUT')
         {
             const data = JSON.stringify({
-                "collection": "workoutObj",
+                "collection": req.body.newDay >= 0 || req.body.newProgram >= 0 ? "user0" : "workoutObj",
                 "database": "gymtrack",
                 "dataSource": "link0",
                 "filter": {
-                    [`key`]: 'workouts',
                     [`user`]: req.query.user
                 },
                 "update": req.body.newDay >= 0 ?  {
                     "$set": {
-                        [`currentDay`]: req.body.newDay,
-                        [`inProgress.results`]: []
+                        [`currentDay`]: req.body.newDay
                     }
                 }
                 : req.body.newProgram >= 0 ? 
                 {
                     "$set": {
                         [`currentProgram`]: req.body.newProgram,
-                        [`currentDay`]: 0,
-                        [`inProgress.results`]: []
+                        [`currentDay`]: 0
                     }
                 }
                 :

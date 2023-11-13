@@ -1,8 +1,9 @@
-require('dotenv').config()
 const axios = require('axios')
-
-export default async function handler(req, res) {
-    if (req.method === 'GET')
+require('dotenv').config()
+ 
+export default function handler(req, res) {
+    const { programId } = req.query
+    if (req.method === 'PUT')
     {
         const user = req.query.user
         const data = JSON.stringify({
@@ -11,11 +12,16 @@ export default async function handler(req, res) {
             "dataSource": "link0",
             "filter": {
                 [`user`]: user
+            },
+            "update":{
+                "$set": {
+                    [`programs.${programId[0]}.schedule.${programId[1]}.exercises.${programId[2]}.target`]: req.body
+                }
             }
         });
         const config = {
             method: 'post',
-            url: 'https://us-east-2.aws.data.mongodb-api.com/app/data-hdjhg/endpoint/data/v1/action/find',
+            url: 'https://us-east-2.aws.data.mongodb-api.com/app/data-hdjhg/endpoint/data/v1/action/updateOne',
             headers: {
             'Content-Type': 'application/json',
             'Access-Control-Request-Headers': '*',
@@ -25,7 +31,7 @@ export default async function handler(req, res) {
         }; 
         axios(config)
         .then(function (response) {
-            res.status(200).json(response.data.documents[0]);
+            res.status(200).json(response.data);
         })
         .catch(function (error) {
             res.status(400).json({data: 'request failed'})

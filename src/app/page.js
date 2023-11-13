@@ -28,6 +28,7 @@ export default function Home() {
     const [currentProgram, setCurrentProgram] = useState(null)
     const [currentWorkout, setCurrentWorkout] = useState(null)
     const [currentWorkoutIndex, setCurrentWorkoutIndex] = useState(0)
+    const [programIndex, setProgramIndex] = useState(0)
     const [currentDay, setCurrentDay] = useState(0)
     const [workouts, setWorkouts] = useState([])
     const [exercises, setExercises] = useState([])
@@ -46,37 +47,37 @@ export default function Home() {
     useEffect(()=>{
         if (activeUser)
         {
-        setDay(new Date().getDay())
-        const endpoints = ['/api/user', '/api/exercise', '/api/workouts']
-        axios.all(endpoints.map((endpoint) => axios.get(endpoint, { params: {user:activeUser}}))).then(
-            axios.spread((user, exercise, workout) => {
-            setProfile(user.data.profile)
-            setExercises(exercise.data.exercises)
-            const currentIndex = workout.data.currentProgram
-            setCurrentProgram(workout.data.programs[currentIndex])
-            const dayIndex = workout.data.currentDay
-            const workoutIndex = workout.data.programs[currentIndex].schedule[dayIndex]
-            setWorkouts(workout.data.workouts)
-            setCurrentWorkoutIndex(workoutIndex)
-            setCurrentWorkout(workout.data.workouts[workoutIndex])
-            setCurrentDay(dayIndex)
-            setLoading(false)
-            })
-        )
+            setDay(new Date().getDay())
+            const endpoints = ['/api/user', '/api/exercise', '/api/programs']
+            axios.all(endpoints.map((endpoint) => axios.get(endpoint, { params: {user:activeUser}}))).then(
+                axios.spread((user, exercise, programs) => {
+                    setProfile(user.data.profile)
+                    setExercises(exercise.data.exercises)
+                    const currentIndex = user.data.currentProgram
+                    setCurrentProgram(programs.data.programs[currentIndex])
+                    const dayIndex = user.data.currentDay
+                    const workoutIndex = programs.data.programs[currentIndex].schedule[dayIndex]
+                    setCurrentWorkoutIndex(dayIndex)
+                    setCurrentWorkout(workoutIndex)
+                    setProgramIndex(currentIndex)
+                    setCurrentDay(dayIndex)
+                    setLoading(false)
+                })
+            )
         }
         else
         {
-        Refresh()
+            Refresh()
         }
     },[activeUser])
     
     useEffect(()=>{
         if(editing !== null)
         {
-            setEditSets(exercises[editing].target?.sets?.length || 0)
-            setEditReps(exercises[editing].target?.sets[0]?.reps || 0)
-            setEditWeight(exercises[editing].target?.sets[0]?.weight || 0)
-            setEditNotes(exercises[editing].target?.notes)
+            setEditSets(editing.target?.sets?.length || 0)
+            setEditReps(editing.target?.sets[0]?.reps || 0)
+            setEditWeight(editing.target?.sets[0]?.weight || 0)
+            setEditNotes(editing.target?.notes)
         }
     },[editing])
 
@@ -100,14 +101,16 @@ export default function Home() {
             reminder: ""
         }
         setUpdating(true)
-        axios.post('/api/exercise',postObj,{ params: {exercise: editing, user:activeUser, workout:currentWorkoutIndex}})
+        const exIndex = currentWorkout.exercises.findIndex((item)=>item.name === editing.name)
+        axios.put(`/api/program/${programIndex}/${currentDay}/${exIndex}`,postObj, { params: {user: activeUser } })
         .then(res=>{
-        axios.get('/api/exercise',{ params: { user:activeUser }})
-        .then(r=>{
-            setExercises(r.data.exercises)
-            HandleClose()
-            setUpdating(false)
-        })
+            axios.get('/api/programs',{ params: { user:activeUser }})
+            .then(r=>{
+                const workoutIndex = r.data.programs[programIndex].schedule[currentDay]
+                setCurrentWorkout(workoutIndex)
+                HandleClose()
+                setUpdating(false)
+            })
         })
     }
 
@@ -119,63 +122,64 @@ export default function Home() {
     };
 
     function onDragEnd(result) {
-        const { source, destination } = result;
-        // dropped outside the list
-        if (!destination) {
-            return;
-        }
-        //sInd: index of source group
-        const sInd = source.droppableId
-        const postObj = reorder(currentWorkout.exercises, source.index, destination.index);
-        axios.post('/api/workouts',postObj, {params:{workout: currentWorkoutIndex, user:activeUser}})
-        .then(res=>{
-            axios.get('/api/workouts', { params: {user:activeUser}})
-            .then(r=>{
-                const currentIndex = r.data.currentProgram
-                const dayIndex = r.data.currentDay
-                const workoutIndex = r.data.programs[currentIndex].schedule[dayIndex]
-                setCurrentWorkout(r.data.workouts[workoutIndex])
-            })
-        })
+        // const { source, destination } = result;
+        // // dropped outside the list
+        // if (!destination) {
+        //     return;
+        // }
+        // //sInd: index of source group
+        // const sInd = source.droppableId
+        // const postObj = reorder(currentWorkout.exercises, source.index, destination.index);
+        // axios.post('/api/workouts',postObj, {params:{workout: currentWorkoutIndex, user:activeUser}})
+        // .then(res=>{
+        //     axios.get('/api/workouts', { params: {user:activeUser}})
+        //     .then(r=>{
+        //         const currentIndex = r.data.currentProgram
+        //         const dayIndex = r.data.currentDay
+        //         const workoutIndex = r.data.programs[currentIndex].schedule[dayIndex]
+        //         setCurrentWorkout(r.data.workouts[workoutIndex])
+        //     })
+        // })
     }
 
     function UpdateCurrentDay(newDay) {
         setUpdating(true)
         const postObj = {newDay: parseInt(newDay)}
-        axios.post('api/start',{params: {user:activeUser, name:workouts[currentProgram.schedule[newDay]].name}})
+        sessionStorage.removeItem('startTime')
+        axios.delete('api/history',{params: {user:activeUser}})
         axios.put('/api/workouts', postObj, { params: {user:activeUser}})
         .then(r=>{
-        axios.get('/api/workouts', { params: {user:activeUser}})
+        axios.get('/api/programs', { params: {user:activeUser}})
             .then(res=>{
-                const dayIndex = res.data.currentDay
-                const currentIndex = res.data.currentProgram
-                const workoutIndex = res.data.programs[currentIndex].schedule[dayIndex]
+                const dayIndex = newDay
+                const workoutIndex = res.data.programs[programIndex].schedule[dayIndex]
                 setCurrentDay(dayIndex)
-                setCurrentWorkout(res.data.workouts[workoutIndex])
+                setCurrentWorkout(workoutIndex)
+                setCurrentWorkoutIndex(dayIndex)
                 setChangeDay(false)
                 setUpdating(false)
             })
         })
     }
 
-    function CompleteWorkout() {
-        let dayNum = 0 
-        if (currentDay !== currentProgram.schedule.length - 1)
-        {
-            dayNum = currentDay + 1
-        }
-        FinishWorkout(dayNum, activeUser, true, null)
-        .then(r=>{
-            axios.get('/api/workouts', { params: {user:activeUser}})
-            .then(res=>{
-                const dayIndex = res.data.currentDay
-                const currentIndex = res.data.currentProgram
-                const workoutIndex = res.data.programs[currentIndex].schedule[dayIndex]
-                setCurrentDay(dayIndex)
-                setCurrentWorkout(res.data.workouts[workoutIndex])
-            })
-        })
-    }
+    // function CompleteWorkout() {
+    //     let dayNum = 0 
+    //     if (currentDay !== currentProgram.schedule.length - 1)
+    //     {
+    //         dayNum = currentDay + 1
+    //     }
+    //     FinishWorkout(dayNum, activeUser, true, null)
+    //     .then(r=>{
+    //         axios.get('/api/workouts', { params: {user:activeUser}})
+    //         .then(res=>{
+    //             const dayIndex = res.data.currentDay
+    //             const currentIndex = res.data.currentProgram
+    //             const workoutIndex = res.data.programs[currentIndex].schedule[dayIndex]
+    //             setCurrentDay(dayIndex)
+    //             setCurrentWorkout(workoutIndex)
+    //         })
+    //     })
+    // }
 
     const getListStyle = isDraggingOver => ({
         boxShadow: isDraggingOver ? '0 0 10px 2px #2997ff55' : 'none',
@@ -195,6 +199,7 @@ export default function Home() {
 
     function StartWorkout() {
         setStarting(true)
+        sessionStorage.setItem('startTime', new Date().getTime())
         router.prefetch('workout')
         if(paused)
         {
@@ -238,12 +243,12 @@ export default function Home() {
                         </div>
                         <div className='divide-y'>
                             { currentWorkout.exercises.map((item,id)=>
-                                <div className={`text-sm grid grid-cols-6 items-center`} key={exercises[item].name} onClick={()=>setEditing(item)}
+                                <div className={`text-sm grid grid-cols-6 items-center`} key={item.name} onClick={()=>setEditing(item)}
                                 >
-                                    <p className='px-2 py-1 col-span-3'>{exercises[item].name}</p>
-                                    <p className='px-2 py-1'>{exercises[item].target?.sets.length}</p>
-                                    <p className='px-2 py-1'>{exercises[item].target?.sets[0]?.reps}</p>
-                                    <p className='px-2 py-1'>{exercises[item].target?.sets[0]?.weight}</p>
+                                    <p className='px-2 py-1 col-span-3'>{item.name}</p>
+                                    <p className='px-2 py-1'>{item.target?.sets.length}</p>
+                                    <p className='px-2 py-1'>{item.target?.sets[0]?.reps}</p>
+                                    <p className='px-2 py-1'>{item.target?.sets[0]?.weight}</p>
                                 </div>
                             )}
                         </div>
@@ -258,7 +263,7 @@ export default function Home() {
                         :
                         <StartButton text={'Start Workout'} loading={starting} loadingText={'Starting Workout...'} action={StartWorkout} />
                     :
-                    <StartButton text={'Complete Workout'} loading={starting} loadingText={'Completing Workout...'} action={CompleteWorkout} />
+                    <StartButton text={'Complete Workout'} loading={starting} loadingText={'Completing Workout...'} />
                 :
                 <></>
                 }
@@ -316,7 +321,7 @@ export default function Home() {
             {/* <Pagenav page='home' /> */}
             { exercises.length > 0 && editing !== null ? 
                 <Dialog open={editing !== null} onClose={HandleClose} maxWidth="lg" fullWidth>
-                <p className='font-semibold text-lg px-3 py-3'>{exercises[editing].name}</p>
+                <p className='font-semibold text-lg px-3 py-3'>{editing.name}</p>
                 <div className='grid grid-cols-2 px-3 py-3 gap-3'>
                     <p className='text-md'>Sets</p>
                     <select className='text-md border rounded-lg w-full py-1 px-2' value={editSets}
@@ -357,7 +362,7 @@ export default function Home() {
                         <p>Name</p>
                         <select defaultValue={currentDay} className='text-md border rounded-lg w-full py-1 px-2' onChange={(e)=>UpdateCurrentDay(e.target.value)}>
                             { currentProgram.schedule.map((index,i)=>
-                                <option key={i} value={i}>{workouts[index].name}</option>
+                                <option key={i} value={i}>{index.name}</option>
                             )}
                         </select>
                     </>

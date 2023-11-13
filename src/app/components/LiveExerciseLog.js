@@ -18,27 +18,23 @@ export default function LiveExerciseLog({lift, id, currentWorkout, profile, comp
     setCurrentWorkout, setActiveSlide, activeSlide, setComplete
     })
 {
-    const [targetSets, setTargetSets] = useState([])
+    const [targetSets, setTargetSets] = useState([...lift.target.sets])
     const [radioVal, setRadioVal] = useState(6)
     const [addSet, setAddSet] = useState([])
     const [ssId, setSSId] = useState(null)
     const [saving, setSaving] = useState(false)
     const [updating, setUpdating] = useState(false)
     const [swap, setSwap] = useState(false)
-    const [choice, setChoice] = useState(lift)
+    // const [choice, setChoice] = useState(lift)
     const [query, setQuery] = useState('')
     const [initialLift, setInitialLift] = useState(null)
-    useEffect(()=>{
-        setInitialLift(lift)
-        setChoice(lift)
-    },[lift])
 
-    useEffect(()=>{
-        if(exercises.length > 0)
-        {
-            setTargetSets(exercises[choice].target.sets)
-        }
-    },[choice, exercises])
+    // useEffect(()=>{
+    //     if(exercises.length > 0)
+    //     {
+    //         setTargetSets(exercises[choice].target.sets)
+    //     }
+    // },[choice, exercises])
 
     function RemoveTargetSet(index) {
         const setTemp = [...targetSets]
@@ -52,12 +48,12 @@ export default function LiveExerciseLog({lift, id, currentWorkout, profile, comp
         setTemp.pop()
         setAddSet(setTemp)
     }
-    const filteredEx =
-    query === ''
-      ? exercises
-      : exercises.filter((ex) => {
-          return ex.name.toLowerCase().includes(query.toLowerCase())
-    })
+    // const filteredEx =
+    // query === ''
+    //   ? exercises
+    //   : exercises.filter((ex) => {
+    //       return ex.name.toLowerCase().includes(query.toLowerCase())
+    // })
 
 
     return (
@@ -69,7 +65,7 @@ export default function LiveExerciseLog({lift, id, currentWorkout, profile, comp
             key={id}
         >
             <div>
-                <Combobox value={exercises[choice].name} onChange={setChoice}>
+                {/* <Combobox value={exercises[choice].name} onChange={setChoice}>
                     <Combobox.Input onChange={(event) => setQuery(event.target.value)} className="border mx-auto block rounded-md text-center" />
                     <Combobox.Options>
                         {filteredEx.map((ex) => (
@@ -78,7 +74,8 @@ export default function LiveExerciseLog({lift, id, currentWorkout, profile, comp
                         </Combobox.Option>
                         ))}
                     </Combobox.Options>
-                </Combobox>
+                </Combobox> */}
+                <h2 className='w-max mx-auto font-semibold'>{lift.name}</h2>
                 <div className='grid grid-cols-7 mt-4 gap-2 items-center'>
                     <p className='text-xs text-neutral-500 col-span-2'>Set</p>
                     <p className='text-xs text-neutral-500 col-span-2'>Reps</p>
@@ -89,12 +86,12 @@ export default function LiveExerciseLog({lift, id, currentWorkout, profile, comp
             <div>
                 { targetSets.map((set,index)=>
                         <LiveRow key={`${id}-${index}`} index={index} set={set} setLength={targetSets.length} repConstant={repConstant} RemoveTargetSet={RemoveTargetSet}
-                            id={id} username={username} name={exercises[choice].name} extraRow={false} complete={complete} setComplete={setComplete}
+                            id={id} username={username} name={lift.name} extraRow={false} complete={complete} setComplete={setComplete}
                         />
                 )}
                 {addSet.map((set,index)=>
                     <LiveRow key={`${id}extra-${index}`} index={targetSets.length + index} set={set} setLength={addSet.length} repConstant={repConstant} RemoveTargetSet={RemoveExtraSet}
-                        id={id} username={username} name={exercises[choice].name} extraRow={targetSets.length < 1 ? false : true} complete={complete} setComplete={setComplete}
+                        id={id} username={username} name={lift.name} extraRow={targetSets.length < 1 ? false : true} complete={complete} setComplete={setComplete}
                     />
                 )}
                 <div className='grid grid-cols-7 my-2 gap-2 items-center'>

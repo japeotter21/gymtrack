@@ -34,19 +34,27 @@ export default function Workout() {
     useEffect(()=>{
         if(activeUser)
         {
-            const endpoints = ['/api/user', '/api/exercise', '/api/workouts', 'api/history']
+            const endpoints = ['/api/user', '/api/exercise', '/api/programs', 'api/history']
             axios.all(endpoints.map((endpoint) => axios.get(endpoint, {params: {user:activeUser}}))).then(
-            axios.spread((user, exercise, workout, history) => {
+            axios.spread((user, exercise, programs, history) => {
                 setProfile(user.data.profile)
                 setExercises(exercise.data.exercises)
-                const currentIndex = workout.data.currentProgram
-                setCurrentProgram(workout.data.programs[currentIndex])
-                const dayIndex = workout.data.currentDay
-                const workoutIndex = workout.data.programs[currentIndex].schedule[dayIndex]
-                setCurrentWorkoutIndex(workoutIndex)
-                setCurrentWorkout(workout.data.workouts[workoutIndex])
+                const currentIndex = user.data.currentProgram
+                setCurrentProgram(programs.data.programs[currentIndex])
+                const dayIndex = user.data.currentDay
+                const workoutIndex = programs.data.programs[currentIndex].schedule[dayIndex]
+                setCurrentWorkoutIndex(dayIndex)
+                setCurrentWorkout(workoutIndex)
                 setCurrentDay(dayIndex)
-                setStartTime(workout.data.inProgress.date)
+                if(sessionStorage.getItem('startTime') && sessionStorage.getItem('startTime') !== undefined)
+                {
+                    setStartTime(sessionStorage.getItem('startTime'))
+                }
+                else
+                {
+                    const timeNow = new Date().getTime()
+                    setStartTime(timeNow)
+                }
                 setComplete(history.data)
                 setLoading(false)
                 setPaused(false)
@@ -98,10 +106,11 @@ export default function Workout() {
             day: dayNum,
             workout: finishObjFull
         }
+        const dayUpdate = {newDay: dayNum}
+        sessionStorage.removeItem('startTime')
+        axios.put('/api/workouts', dayUpdate, { params: {user:activeUser}})
         axios.post('api/finished',postObj,{ params: { user: activeUser }})
         .then(res=>{
-            // const putObj = {newDay: parseInt(newDay)}
-            // axios.put('/api/workouts', postObj, { params: {user:activeUser}})
             axios.delete('api/history', { params: { user: activeUser }})
             .then(res=>{
                 setFinishing(false)
