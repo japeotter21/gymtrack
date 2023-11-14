@@ -357,7 +357,7 @@ export default function Home() {
             <Dialog open={changeDay} onClose={()=>setChangeDay(false)} maxWidth="sm" fullWidth>
                 <div className='px-4 py-2'>
                 <p className='font-semibold text-lg py-2'>Change Workout</p>
-                    { currentProgram && workouts.length > 0 ? 
+                    { currentProgram ? 
                     <>
                         <p>Name</p>
                         <select defaultValue={currentDay} className='text-md border rounded-lg w-full py-1 px-2' onChange={(e)=>UpdateCurrentDay(e.target.value)}>
