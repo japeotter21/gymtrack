@@ -41,7 +41,7 @@ export default function Home() {
     const [changeDay, setChangeDay] = useState(false)
     const [starting, setStarting] = useState(false)
     const [showInfo, setShowInfo] = useState(false)
-    const {activeUser, Refresh, paused} = useContext(AppContext)
+    const { activeUser, Refresh, paused, setPaused } = useContext(AppContext)
     const router = useRouter()
 
     useEffect(()=>{
@@ -64,6 +64,10 @@ export default function Home() {
                     setLoading(false)
                 })
             )
+            if(localStorage.getItem('startTime') && localStorage.getItem('startTime') !== undefined)
+            {
+                setPaused(true)
+            }
         }
         else
         {
@@ -145,7 +149,7 @@ export default function Home() {
     function UpdateCurrentDay(newDay) {
         setUpdating(true)
         const postObj = {newDay: parseInt(newDay)}
-        sessionStorage.removeItem('startTime')
+        localStorage.removeItem('startTime')
         axios.delete('api/history',{params: {user:activeUser}})
         axios.put('/api/workouts', postObj, { params: {user:activeUser}})
         .then(r=>{
@@ -199,7 +203,7 @@ export default function Home() {
 
     function StartWorkout() {
         setStarting(true)
-        sessionStorage.setItem('startTime', new Date().getTime())
+        localStorage.setItem('startTime', new Date().getTime())
         router.prefetch('workout')
         if(paused)
         {

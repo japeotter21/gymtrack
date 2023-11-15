@@ -46,9 +46,9 @@ export default function Workout() {
                 setCurrentWorkoutIndex(dayIndex)
                 setCurrentWorkout(workoutIndex)
                 setCurrentDay(dayIndex)
-                if(sessionStorage.getItem('startTime') && sessionStorage.getItem('startTime') !== undefined)
+                if(localStorage.getItem('startTime') && localStorage.getItem('startTime') !== undefined)
                 {
-                    setStartTime(sessionStorage.getItem('startTime'))
+                    setStartTime(localStorage.getItem('startTime'))
                 }
                 else
                 {
@@ -84,6 +84,7 @@ export default function Workout() {
     function Cancel() {
         axios.delete('api/history', {params: { user: activeUser }})
         .then(res=>{
+            localStorage.clear()
             router.push('/')
         })
     }
@@ -107,7 +108,7 @@ export default function Workout() {
             workout: finishObjFull
         }
         const dayUpdate = {newDay: dayNum}
-        sessionStorage.removeItem('startTime')
+        localStorage.removeItem('startTime')
         axios.put('/api/workouts', dayUpdate, { params: {user:activeUser}})
         axios.post('api/finished',postObj,{ params: { user: activeUser }})
         .then(res=>{
