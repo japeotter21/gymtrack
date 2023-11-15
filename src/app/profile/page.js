@@ -102,7 +102,6 @@ export default function Schedule() {
 
     function Logout()  {
         sessionStorage.clear()
-        localStorage.clear()
         setActiveUser(null)
         router.push('/')
     }
