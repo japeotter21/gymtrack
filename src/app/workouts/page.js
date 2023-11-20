@@ -33,15 +33,15 @@ export default function Workouts() {
     useEffect(()=>{
         if(activeUser)
         {
-            const endpoints = ['/api/user', '/api/exercise', '/api/workouts']
+            const endpoints = ['/api/user', '/api/exercise', '/api/programs']
             axios.all(endpoints.map((endpoint) => axios.get(endpoint,{params:{user:activeUser}}))).then(
-            axios.spread((user, exercise, workout) => {
+            axios.spread((user, exercise, program) => {
                 setLoading(false)
-                setPrograms(workout.data.programs)
-                const currentIndex = workout.data.currentProgram
+                setPrograms(program.data.programs)
+                const currentIndex = user.data.currentProgram
                 setProgramIndex(currentIndex)
-                setCurrentProgram(workout.data.programs[currentIndex])
-                setWorkouts(workout.data.workouts)
+                setCurrentProgram(program.data.programs[currentIndex])
+                setWorkouts(program.data.programs[currentIndex].schedule)
                 setExercises(exercise.data.exercises)
                 setProfile(user.data.profile)
             }))
@@ -100,7 +100,6 @@ export default function Workouts() {
                 const dayIndex = r.data.currentDay
                 const workoutIndex = r.data.programs[currentIndex].schedule[dayIndex]
                 setPrograms(r.data.programs)
-                setWorkouts(r.data.workouts)
                 HandleClose()
             })
         })
@@ -114,7 +113,6 @@ export default function Workouts() {
             .then(r=>{
                 const currentIndex = r.data.currentProgram
                 setCurrentProgram(r.data.programs[currentIndex])
-                setWorkouts(r.data.workouts)
             })
             
         })
@@ -190,11 +188,11 @@ export default function Workouts() {
                 </div>
                 <hr className='my-2 w-full border-gray-300' />
                 <div className='flex flex-col gap-4 w-full mb-4'>
-                    {programs[programIndex].schedule.map((day,i)=>
-                        <div key={`${i}-${day}`} className='bg-stone-50 rounded-md shadow-md'> 
-                            <WorkoutList currentWorkout={workouts[day]} exercises={exercises} setCurrentWorkout={setCurrentWorkout} setExercises={setExercises}
-                                setPrograms={setPrograms} setCurrentProgram={setCurrentProgram} workouts={workouts} currentProgram={currentProgram}
-                                profile={profile} setWorkouts={setWorkouts} day={day} i={i} activeUser={activeUser} HandleDelete={HandleDelete}
+                    {currentProgram.schedule.map((lift,i)=>
+                        <div key={`${i}-${lift}`} className='bg-stone-50 rounded-md shadow-md'> 
+                            <WorkoutList currentWorkout={lift} exercises={exercises} setCurrentWorkout={setCurrentWorkout} setExercises={setExercises}
+                                setPrograms={setPrograms} setCurrentProgram={setCurrentProgram} workouts={workouts} currentProgram={programIndex}
+                                profile={profile} setWorkouts={setWorkouts} day={i} i={i} activeUser={activeUser} HandleDelete={HandleDelete}
                             />
                         </div>
                     )}

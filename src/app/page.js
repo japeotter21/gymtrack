@@ -118,34 +118,6 @@ export default function Home() {
         })
     }
 
-    const reorder = (list, startIndex, endIndex) => {
-        const result = list
-        const [removed] = result.splice(startIndex, 1);
-        result.splice(endIndex, 0, removed);
-        return result;
-    };
-
-    function onDragEnd(result) {
-        // const { source, destination } = result;
-        // // dropped outside the list
-        // if (!destination) {
-        //     return;
-        // }
-        // //sInd: index of source group
-        // const sInd = source.droppableId
-        // const postObj = reorder(currentWorkout.exercises, source.index, destination.index);
-        // axios.post('/api/workouts',postObj, {params:{workout: currentWorkoutIndex, user:activeUser}})
-        // .then(res=>{
-        //     axios.get('/api/workouts', { params: {user:activeUser}})
-        //     .then(r=>{
-        //         const currentIndex = r.data.currentProgram
-        //         const dayIndex = r.data.currentDay
-        //         const workoutIndex = r.data.programs[currentIndex].schedule[dayIndex]
-        //         setCurrentWorkout(r.data.workouts[workoutIndex])
-        //     })
-        // })
-    }
-
     function UpdateCurrentDay(newDay) {
         setUpdating(true)
         const postObj = {newDay: parseInt(newDay)}
@@ -184,17 +156,6 @@ export default function Home() {
     //         })
     //     })
     // }
-
-    const getListStyle = isDraggingOver => ({
-        boxShadow: isDraggingOver ? '0 0 10px 2px #2997ff55' : 'none',
-        padding: 0,
-        width: '100%',
-        minHeight: 50
-    })
-    const getItemStyle = (isDragging, draggableStyle) => ({
-        userSelect: 'none',
-        ...draggableStyle
-    })
 
     function Navigate(destination)
     {

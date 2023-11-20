@@ -7,7 +7,7 @@ import DialogButton from './DialogButton'
 import GroupExercises from './GroupExercises'
 import { setConstant, repConstant } from '@/globals'
 export default function PostExercise({username, currentWorkoutIndex, currentWorkout, setCurrentWorkout, exercises, setExercises,
-    homepage, setWorkouts, setPrograms, setCurrentProgram, setCurrentWorkoutIndex
+    homepage, setWorkouts, setPrograms, setCurrentProgram, setCurrentWorkoutIndex, currentProgram
     })
 {
     const [loading, setLoading] = useState(false)
@@ -66,33 +66,25 @@ export default function PostExercise({username, currentWorkoutIndex, currentWork
     }
     
     function AddToWorkout() {
+        const newExercise = exercises[parseInt(choice)]
         if(edited)
         {
-            HandleEdit()
+            const newSets = parseInt(editSets)
+            const newReps = parseInt(editReps)
+            const newWeight = editWeight
+            let newPostArr = Array.from({length: newSets}, x=>0)
+            newPostArr.forEach((item,id)=>newPostArr[id]={reps:newReps, weight:newWeight})
+            newExercise.target.sets = newPostArr
         }
-        const newExercise = parseInt(choice)
         const newWorkout = currentWorkout.exercises
         newWorkout.push(newExercise)
         const postObj = newWorkout
         setLoading(true)
-        axios.post('/api/workouts',postObj, {params:{workout: currentWorkoutIndex, user:username}})
+        axios.post(`/api/program/${currentProgram}/${currentWorkoutIndex}`, postObj, { params:{ user:username } })
         .then(res=>{
-            axios.get('/api/workouts', {params: { user: username }})
+            axios.get('/api/programs', { params: { user: username } })
             .then(r=>{
-                const currentIndex = r.data.currentProgram
-                const dayIndex = r.data.currentDay
-                const workoutIndex = r.data.programs[currentIndex].schedule[dayIndex]
-                if(homepage)
-                {
-                    setCurrentWorkout(r.data.workouts[workoutIndex])
-                }
-                else
-                {
-                    setPrograms(r.data.programs)
-                    const currentIndex = r.data.currentProgram
-                    setCurrentProgram(r.data.programs[currentIndex])
-                    setWorkouts(r.data.workouts)
-                }
+                setCurrentProgram(r.data.programs[currentProgram])
                 HandleClose()
             })
             .catch(err=>{
@@ -249,7 +241,7 @@ export default function PostExercise({username, currentWorkoutIndex, currentWork
     )
 }
 
-export function DeleteExercise ({item, id, currentWorkout, setCurrentWorkout, currentWorkoutIndex, username, homepage, setPrograms, setCurrentProgram, setWorkouts, exercises, displayText}){
+export function DeleteExercise ({item, id, currentWorkout, setCurrentWorkout, currentWorkoutIndex, username, homepage, setPrograms, currentProgram, setCurrentProgram, setWorkouts, exercises, displayText}){
     const [deleting, setDeleting] = useState(null)
     const [loading, setLoading] = useState(false)
 
@@ -264,22 +256,11 @@ export function DeleteExercise ({item, id, currentWorkout, setCurrentWorkout, cu
             postObj = []
         }
         setLoading(true)
-        axios.post('/api/workouts',postObj, {params:{workout: currentWorkoutIndex, user: username }})
+        axios.post(`/api/program/${currentProgram}/${currentWorkoutIndex}`,postObj, {params:{ user: username }})
         .then(res=>{
-            axios.get('/api/workouts', { params: { user: username } })
+            axios.get('/api/programs', { params: { user: username } })
             .then(r=>{
-                if(homepage)
-                {
-                    const tempObj = r.data.workouts[currentWorkoutIndex]
-                    setCurrentWorkout(tempObj)
-                }
-                else
-                {
-                    setPrograms(r.data.programs)
-                    const currentIndex = r.data.currentProgram
-                    setCurrentProgram(r.data.programs[currentIndex])
-                    setWorkouts(r.data.workouts)
-                }
+                setCurrentProgram(r.data.programs[currentProgram])
                 setLoading(false)
                 setDeleting(null)
             })
@@ -296,11 +277,11 @@ export function DeleteExercise ({item, id, currentWorkout, setCurrentWorkout, cu
         <button className={`px-2 py-1 ${displayText ? 'text-neutral-400' : 'text-red-500'} text-sm block ml-auto cursor-pointer`} onClick={()=>setDeleting(id)}>
             {displayText ? <>{displayText}</> : <BsTrash size={15} />}    
         </button>
-        { exercises.length > 0 && deleting !== null ? 
+        { deleting !== null ? 
           <Dialog open={deleting !== null} onClose={()=>setDeleting(null)} maxWidth="sm" fullWidth>
               <p className='font-semibold text-lg px-3 py-3'>Remove exercise</p>
               <div className='px-3 py-3'>
-                <p className='text-md'>Are you sure you want to remove {exercises[item].name}?</p>
+                <p className='text-md'>Are you sure you want to remove {item?.name}?</p>
               </div>
               <div className='flex justify-end px-3 py-3 gap-3'>
                   <button className='border border-gray-400 py-1 px-3 rounded-xl hover:bg-red-100 hover:border-red-200 hover:text-red-500 hover:scale-105 transition duration-200'
