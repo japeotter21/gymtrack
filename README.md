@@ -8,7 +8,7 @@ I created this site primarily to solve a few problems that I noticed with tracki
 - Excel layouts that force users to scroll through a long history of workouts to record a new workout session
 - Spreadsheet templates that rely on formulas are inflexible
 - Difficult to visualize progress across sessions
-- No way to indicate when exercises were completed back-to-back in a superset
+- Sharing workouts can be difficult
 
 ## Details
 
