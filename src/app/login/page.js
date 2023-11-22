@@ -171,9 +171,9 @@ export default function Schedule() {
                     
                 </form>
                 <div className={`text-red-600 text-xs break-words text-center ${warning === null ? 'invisible' : ''}`}>{warning}.</div>
-                <button onClick={()=>setNewUser(!newUser)} className='text-gray-500'>
+                {/* <button onClick={()=>setNewUser(!newUser)} className='text-gray-500'>
                     {newUser ? <p>Already have an Account? <span className='underline'>Sign In</span></p> : <p>New User? <span className='underline'>Sign Up</span></p>}
-                </button>
+                </button> */}
                 { newUser ? 
                     <div className='text-sm bg-blue-200 bg-opacity-80 rounded-md px-2 py-0.5 text-blue-600 border border-blue-300'
                 >This app is still in Alpha and does not support password reset. Please write down your password or else you will lose your data!</div>
