@@ -16,7 +16,16 @@ export default function handler(req, res) {
             let currentName = ''
             let workoutObj = []
             const workoutTemp = req.body.workout
-            workoutTemp.results.forEach((item,id)=>{
+            const sorted = workoutTemp.results.sort((a, b) => {
+                if (nameA < nameB) {
+                  return -1;
+                }
+                if (nameA > nameB) {
+                  return 1;
+                }
+                return 0;
+            });
+            sorted.forEach((item,id)=>{
                 if(item.name.split('-')[0] === currentName)
                 {
                     const wIndex = workoutObj.findIndex((w)=>w.name === currentName)
