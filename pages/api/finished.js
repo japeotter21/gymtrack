@@ -17,10 +17,10 @@ export default function handler(req, res) {
             let workoutObj = []
             const workoutTemp = req.body.workout
             const sorted = workoutTemp.results.sort((a, b) => {
-                if (nameA < nameB) {
+                if (a.name < b.name) {
                   return -1;
                 }
-                if (nameA > nameB) {
+                if (a.name > b.name) {
                   return 1;
                 }
                 return 0;
