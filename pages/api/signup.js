@@ -53,58 +53,12 @@ export default function handler(req, res) {
                     'api-key': process.env.API_KEY,
                     },
                     data: userData
-                }; 
-                const workoutData = JSON.stringify({
-                    "collection": "workoutObj",
-                    "database": "gymtrack",
-                    "dataSource": "link0",
-                    "document": userWork
-                });
-                const workoutDataConfig = {
-                    method: 'post',
-                    url: 'https://us-east-2.aws.data.mongodb-api.com/app/data-hdjhg/endpoint/data/v1/action/insertOne',
-                    headers: {
-                    'Content-Type': 'application/json',
-                    'Access-Control-Request-Headers': '*',
-                    'api-key': process.env.API_KEY,
-                    },
-                    data: workoutData
-                }; 
-                const exData = JSON.stringify({
-                    "collection": "exercises",
-                    "database": "gymtrack",
-                    "dataSource": "link0",
-                    "document": userEx
-                });
-                const exDataConfig = {
-                    method: 'post',
-                    url: 'https://us-east-2.aws.data.mongodb-api.com/app/data-hdjhg/endpoint/data/v1/action/insertOne',
-                    headers: {
-                    'Content-Type': 'application/json',
-                    'Access-Control-Request-Headers': '*',
-                    'api-key': process.env.API_KEY,
-                    },
-                    data: exData
-                }; 
+                };  
                 axios(userDataConfig)
                 .then(function (response) {
                     axios(config)
                     .then(function (response) {
-                        axios(workoutDataConfig)
-                        .then(function (response) {
-                            axios(exDataConfig)
-                            .then(function (response) {
-                                res.status(200).json({data:true});
-                            })
-                            .catch(function (error) {
-                                console.error(error.message)
-                                res.status(400).json({data: 'failed to create user exercises'})
-                            });
-                        })
-                        .catch(function (error) {
-                            console.error(error.message)
-                            res.status(400).json({data: 'failed to create user workouts'})
-                        });
+                        res.status(200).json({data:true});
                     })
                     .catch(function (error) {
                         console.error(error.message)
@@ -115,8 +69,6 @@ export default function handler(req, res) {
                     console.error(error.message)
                     res.status(400).json({data: 'failed to create user data'})
                 });
-                
-                
             }
         });
         
