@@ -27,7 +27,6 @@ export default function Home() {
     const [loading, setLoading] = useState(true)
     const [currentProgram, setCurrentProgram] = useState(null)
     const [currentWorkout, setCurrentWorkout] = useState(null)
-    const [currentWorkoutIndex, setCurrentWorkoutIndex] = useState(0)
     const [programIndex, setProgramIndex] = useState(0)
     const [currentDay, setCurrentDay] = useState(0)
     const [workouts, setWorkouts] = useState([])
@@ -57,7 +56,6 @@ export default function Home() {
                     setCurrentProgram(programs.data.programs[currentIndex])
                     const dayIndex = user.data.currentDay
                     const workoutIndex = programs.data.programs[currentIndex].schedule[dayIndex]
-                    setCurrentWorkoutIndex(dayIndex)
                     setCurrentWorkout(workoutIndex)
                     setProgramIndex(currentIndex)
                     setCurrentDay(dayIndex)
@@ -125,16 +123,10 @@ export default function Home() {
         axios.delete('api/history',{params: {user:activeUser}})
         axios.put('/api/workouts', postObj, { params: {user:activeUser}})
         .then(r=>{
-        axios.get('/api/programs', { params: {user:activeUser}})
-            .then(res=>{
-                const dayIndex = newDay
-                const workoutIndex = res.data.programs[programIndex].schedule[dayIndex]
-                setCurrentDay(dayIndex)
-                setCurrentWorkout(workoutIndex)
-                setCurrentWorkoutIndex(dayIndex)
-                setChangeDay(false)
-                setUpdating(false)
-            })
+            setCurrentDay(newDay)
+            setCurrentWorkout(currentProgram.schedule[newDay])
+            setChangeDay(false)
+            setUpdating(false)
         })
     }
 
