@@ -27,6 +27,7 @@ export default function Home() {
     const [loading, setLoading] = useState(true)
     const [currentProgram, setCurrentProgram] = useState(null)
     const [currentWorkout, setCurrentWorkout] = useState(null)
+    const [programs, setPrograms] = useState([])
     const [programIndex, setProgramIndex] = useState(0)
     const [currentDay, setCurrentDay] = useState(0)
     const [workouts, setWorkouts] = useState([])
@@ -51,14 +52,21 @@ export default function Home() {
             axios.all(endpoints.map((endpoint) => axios.get(endpoint, { params: {user:activeUser}}))).then(
                 axios.spread((user, exercise, programs) => {
                     setProfile(user.data.profile)
-                    setExercises(exercise.data.exercises)
-                    const currentIndex = user.data.currentProgram
-                    setCurrentProgram(programs.data.programs[currentIndex])
-                    const dayIndex = user.data.currentDay
-                    const workoutIndex = programs.data.programs[currentIndex].schedule[dayIndex]
-                    setCurrentWorkout(workoutIndex)
-                    setProgramIndex(currentIndex)
-                    setCurrentDay(dayIndex)
+                    setExercises(exercise.data?.exercises)
+                    const currentIndex = user.data?.currentProgram
+                    if(!!currentIndex)
+                    {
+                        setCurrentProgram(programs.data?.programs[currentIndex])
+                        const dayIndex = user.data?.currentDay
+                        const workoutIndex = programs.data?.programs[currentIndex].schedule[dayIndex]
+                        setCurrentWorkout(workoutIndex)
+                        setProgramIndex(currentIndex)
+                        setCurrentDay(dayIndex)
+                    }
+                    if(programs.data?.programs)
+                    {
+                        setPrograms(programs.data?.programs)
+                    }
                     setLoading(false)
                 })
             )
@@ -178,18 +186,27 @@ export default function Home() {
         )
     }
 
+    if(programs.length === 0)
+    {
+        return (
+            <main className="flex min-h-screen flex-col items-center py-12 px-2 gap-1">
+                <div>Create a Workout Program</div>
+            </main>
+        )
+    }
+
     return (
         <main className="flex min-h-screen flex-col items-center py-12 px-2 gap-1">
             <div className='w-full lg:w-1/2 flex-col gap-2 items-center border border-gray-300 rounded-md bg-stone-50 shadow-lg cursor-pointer px-3 pt-1'>
                 <div className='flex items-center'>
                 <p className='text-gray-600 text-lg my-2'>Today's Workout:&nbsp;</p>
-                <p className='font-semibold text-lg my-2'>{currentWorkout.name}</p>
+                <p className='font-semibold text-lg my-2'>{currentWorkout?.name}</p>
                 
                 <button className='px-2 py-0.5 rounded-md ml-auto mr-0 block text-neutral-500'
                     onClick={()=>setShowInfo(!showInfo)}
                 ><BsInfoCircle size={20} /></button>
                 </div>
-                <p className='text-sm text-gray-600'>from {currentProgram.name}</p>
+                <p className='text-sm text-gray-600'>from {currentProgram?.name}</p>
                 { showInfo ? 
                     <div className='mt-4 mb-4 border border-gray-300 rounded-md'>
                         <div className='text-sm font-semibold grid grid-cols-6 border-b-[1px]'>
@@ -276,7 +293,7 @@ export default function Home() {
             </div>
             
             {/* <Pagenav page='home' /> */}
-            { exercises.length > 0 && editing !== null ? 
+            { exercises?.length > 0 && editing !== null ? 
                 <Dialog open={editing !== null} onClose={HandleClose} maxWidth="lg" fullWidth>
                 <p className='font-semibold text-lg px-3 py-3'>{editing.name}</p>
                 <div className='grid grid-cols-2 px-3 py-3 gap-3'>
