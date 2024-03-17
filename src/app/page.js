@@ -51,21 +51,21 @@ export default function Home() {
             const endpoints = ['/api/user', '/api/exercise', '/api/programs']
             axios.all(endpoints.map((endpoint) => axios.get(endpoint, { params: {user:activeUser}}))).then(
                 axios.spread((user, exercise, programs) => {
-                    setProfile(user.data.profile)
+                    setProfile(user.data?.profile)
                     setExercises(exercise.data?.exercises)
                     const currentIndex = user.data?.currentProgram
-                    if(!!currentIndex)
+                    if(currentIndex !== null && currentIndex !==  undefined)
                     {
                         setCurrentProgram(programs.data?.programs[currentIndex])
-                        const dayIndex = user.data?.currentDay
-                        const workoutIndex = programs.data?.programs[currentIndex].schedule[dayIndex]
+                        const dayIndex = user.data.currentDay
+                        const workoutIndex = programs.data.programs[currentIndex].schedule[dayIndex]
                         setCurrentWorkout(workoutIndex)
                         setProgramIndex(currentIndex)
                         setCurrentDay(dayIndex)
                     }
                     if(programs.data?.programs)
                     {
-                        setPrograms(programs.data?.programs)
+                        setPrograms(programs.data.programs)
                     }
                     setLoading(false)
                 })
