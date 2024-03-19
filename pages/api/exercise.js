@@ -29,9 +29,41 @@ export default async function handler(req, res) {
                 },
                 data: data
             }; 
-            axios(config)
-            .then(function (response) {
-                res.status(200).json(response.data.documents[0]);
+            const defaultData = JSON.stringify({
+                "collection": "exercises",
+                "database": "gymtrack",
+                "dataSource": "link0",
+                "filter": {
+                    [`key`]: 'exercises',
+                    [`user`]: 'default'
+                }
+            });
+            const defaultConfig = {
+                method: 'post',
+                url: 'https://us-east-2.aws.data.mongodb-api.com/app/data-hdjhg/endpoint/data/v1/action/find',
+                headers: {
+                'Content-Type': 'application/json',
+                'Access-Control-Request-Headers': '*',
+                'api-key': process.env.API_KEY,
+                },
+                data: defaultData
+            }; 
+            axios(defaultConfig)
+            .then(function (r) {
+                const defaultExercises = r.data.documents[0].exercises
+                axios(config)
+                .then(function (response) {
+                    const allExercises = defaultExercises.concat(response.data.documents[0].exercises)
+                    const returnObj = {
+                        key: response.data.documents[0].key,
+                        user: response.data.documents[0].user,
+                        exercises: allExercises
+                    }
+                    res.status(200).json(returnObj);
+                })
+                .catch(function (error) {
+                    res.status(400).json({data: 'request failed'})
+                });
             })
             .catch(function (error) {
                 res.status(400).json({data: 'request failed'})

@@ -194,7 +194,7 @@ export default function Home() {
             </main>
         )
     }
-
+    
     return (
         <main className="flex min-h-screen flex-col items-center py-12 px-2 gap-1">
             <div className='w-full lg:w-1/2 flex-col gap-2 items-center border border-gray-300 rounded-md bg-stone-50 shadow-lg cursor-pointer px-3 pt-1'>
