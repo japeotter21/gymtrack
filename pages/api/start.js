@@ -15,24 +15,14 @@ export default function handler(req, res) {
             const user = req.query.user
             const timeNow = new Date().getTime()
             const data = JSON.stringify({
-                "collection": "workoutObj",
+                "collection": `inProgress_${req.query.user.split('@')[0]}`,
                 "database": "gymtrack",
                 "dataSource": "link0",
-                "filter": {
-                    [`key`]: 'workouts',
-                    [`user`]: user
-                },
-                "update": {
-                    "$set": {
-                        [`inProgress.title`]: req.query.name,
-                        [`inProgress.results`]: [],
-                        [`inProgress.date`]: timeNow
-                    }
-                }
+                "documents": req.body
             });
             const config = {
                 method: 'post',
-                url: 'https://us-east-2.aws.data.mongodb-api.com/app/data-hdjhg/endpoint/data/v1/action/updateOne',
+                url: 'https://us-east-2.aws.data.mongodb-api.com/app/data-hdjhg/endpoint/data/v1/action/insertMany',
                 headers: {
                 'Content-Type': 'application/json',
                 'Access-Control-Request-Headers': '*',

@@ -24,6 +24,7 @@ export default function Workout() {
     const [workoutComplete, setWorkoutComplete] = useState(false)
     const [finishing, setFinishing] = useState(false)
     const [activeSlide, setActiveSlide] = useState(0)
+    const [groups, setGroups] = useState([])
     const [supersets, setSupersets] = useState([])
     const [startTime, setStartTime] = useState(null)
     const [finishObj, setFinishObj] = useState({})
@@ -76,6 +77,27 @@ export default function Workout() {
             })
         }
     },[workoutComplete])
+
+    useEffect(()=>{
+        if(complete)
+        {
+            let groupTemp = []
+            complete.forEach((ex,id)=>{
+                if(id > 0)
+                {
+                    if(ex.name.split('-')[0] !== complete[id-1].name.split('-')[0])
+                    {
+                        groupTemp.push(ex.name.split('-')[0])
+                    }
+                }
+                else
+                {
+                    groupTemp.push(ex.name.split('-')[0])
+                }
+            })
+            setGroups(groupTemp)
+        }
+    },[complete])
 
     useEffect(()=>{
         router.prefetch('/')
@@ -152,7 +174,7 @@ export default function Workout() {
                 </div>
             </div>
             <div className='flex flex-col items-center gap-4 w-5/6 px-2 pt-8 pb-12'>
-                { currentWorkout.exercises.map((lift,id)=>
+                { groups.map((lift,id)=>
                 <>
                     <LiveExerciseLog key={`exercise${id}`} lift={lift} id={id} complete={complete} setComplete={setComplete} currentWorkout={currentWorkout} currentWorkoutIndex={currentWorkoutIndex}
                         profile={profile} exercises={exercises} username={activeUser} setExercises={setExercises} setCurrentWorkout={setCurrentWorkout}
@@ -160,9 +182,6 @@ export default function Workout() {
                     />
                 </>
                 )}
-                {/* <PostExercise currentWorkout={currentWorkout} currentWorkoutIndex={currentWorkoutIndex} setCurrentWorkout={setCurrentWorkout} 
-                    username={activeUser} exercises={exercises} homepage={true} setExercises={setExercises}
-                /> */}
             </div>
             <Dialog open={workoutComplete} onClose={()=>setWorkoutComplete(false)}>
                 <div className='px-4 py-3'>

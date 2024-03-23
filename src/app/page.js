@@ -172,13 +172,16 @@ export default function Home() {
         }
         else
         {
-            axios.post('api/start', {}, {params: {user:activeUser, name:currentWorkout.name}})
+            let postArr = []
+            currentWorkout.exercises.forEach((item,id)=>{
+                item.target.sets.forEach((set,ind)=>postArr.push({reps:set.reps, weight:set.weight, name:`${item.name}-${ind}`}))
+            })
+            axios.post('api/start', postArr, {params: {user:activeUser, name:currentWorkout.name}})
             .then(res=>{
                 router.push('/workout')
             })
         }
     }
-
     if(loading)
     {
         return (

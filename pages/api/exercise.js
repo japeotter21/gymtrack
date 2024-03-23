@@ -62,7 +62,12 @@ export default async function handler(req, res) {
                     res.status(200).json(returnObj);
                 })
                 .catch(function (error) {
-                    res.status(400).json({data: 'request failed'})
+                    const returnObj = {
+                        key: r.data.documents[0].key,
+                        user: r.data.documents[0].user,
+                        exercises: defaultExercises
+                    }
+                    res.status(200).json(returnObj);
                 });
             })
             .catch(function (error) {
