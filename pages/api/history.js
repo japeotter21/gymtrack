@@ -35,32 +35,54 @@ export default async function handler(req, res) {
         }
         else if (req.method === 'PUT')
         {
-            // ----------------------------------------------------------------------------------------------------------------
-            // post to records
-            // ----------------------------------------------------------------------------------------------------------------
-            const data = JSON.stringify({
-                "collection": `inProgress_${req.query.user.split('@')[0]}`,
-                "database": "gymtrack",
-                "dataSource": "link0",
-                "filter": { name: req.query.name },
-                "update": {
-                    "$set": {
-                        name: req.query.name, reps: req.body.reps, weight: req.body.weight
-                    }
-                },
-                "upsert": true
-                
-            });
-            const config = {
-                method: 'post',
-                url: 'https://us-east-2.aws.data.mongodb-api.com/app/data-hdjhg/endpoint/data/v1/action/updateOne',
-                headers: {
-                'Content-Type': 'application/json',
-                'Access-Control-Request-Headers': '*',
-                'api-key': process.env.API_KEY,
-                },
-                data: data
-            }; 
+            let config = {}
+            let data = {}
+            if(req.query.delete === 'true')
+            {
+                data = JSON.stringify({
+                    "collection": `inProgress_${req.query.user.split('@')[0]}`,
+                    "database": "gymtrack",
+                    "dataSource": "link0",
+                    "filter": { name: req.body.name }
+                    
+                });
+                config = {
+                    method: 'post',
+                    url: 'https://us-east-2.aws.data.mongodb-api.com/app/data-hdjhg/endpoint/data/v1/action/deleteOne',
+                    headers: {
+                    'Content-Type': 'application/json',
+                    'Access-Control-Request-Headers': '*',
+                    'api-key': process.env.API_KEY,
+                    },
+                    data: data
+                };
+            }
+            else
+            {
+                data = JSON.stringify({
+                    "collection": `inProgress_${req.query.user.split('@')[0]}`,
+                    "database": "gymtrack",
+                    "dataSource": "link0",
+                    "filter": { name: req.body.name },
+                    "update": {
+                        "$set": {
+                            name: req.body.name, reps: req.body.reps, weight: req.body.weight
+                        }
+                    },
+                    "upsert": true
+                    
+                });
+                config = {
+                    method: 'post',
+                    url: 'https://us-east-2.aws.data.mongodb-api.com/app/data-hdjhg/endpoint/data/v1/action/updateOne',
+                    headers: {
+                    'Content-Type': 'application/json',
+                    'Access-Control-Request-Headers': '*',
+                    'api-key': process.env.API_KEY,
+                    },
+                    data: data
+                };
+            } 
             axios(config)
             .then(function (response) {
                 res.status(200).json(response.data);

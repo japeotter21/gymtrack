@@ -1,5 +1,5 @@
 "use client"
-import React, { useState, useEffect, useContext } from 'react'
+import React, { useState, useEffect, useContext, useRef } from 'react'
 import { BsChevronLeft, BsChevronRight, BsCircle, BsCircleFill, BsPause, BsPauseBtn, BsPlay } from 'react-icons/bs'
 import axios from 'axios'
 import { useRouter } from 'next/navigation';
@@ -27,10 +27,10 @@ export default function Workout() {
     const [groups, setGroups] = useState([])
     const [supersets, setSupersets] = useState([])
     const [startTime, setStartTime] = useState(null)
-    const [finishObj, setFinishObj] = useState({})
+    const [updating, setUpdating] = useState(false)
     const router = useRouter()
     const {activeUser, Refresh, paused, setPaused} = useContext(AppContext)
-
+    const prevHistory = usePrevious(complete)
 
     useEffect(()=>{
         if(activeUser)
@@ -69,23 +69,13 @@ export default function Workout() {
     },[activeUser])    
 
     useEffect(()=>{
-        if(workoutComplete)
-        {
-            axios.get('api/history', { params: { user: activeUser } })
-            .then(res=>{
-                setFinishObj(res.data)
-            })
-        }
-    },[workoutComplete])
-
-    useEffect(()=>{
         if(complete)
         {
             let groupTemp = []
             complete.forEach((ex,id)=>{
                 if(id > 0)
                 {
-                    if(ex.name.split('-')[0] !== complete[id-1].name.split('-')[0])
+                    if(groupTemp.findIndex(group => group === ex.name.split('-')[0]) < 0)
                     {
                         groupTemp.push(ex.name.split('-')[0])
                     }
@@ -96,6 +86,29 @@ export default function Workout() {
                 }
             })
             setGroups(groupTemp)
+            console.log(prevHistory, complete)
+            if(prevHistory?.length !== complete.length && prevHistory?.length > 0)
+            {
+                if(complete.length > prevHistory.length)
+                {
+                    complete.forEach((item,index)=>{
+                        if(prevHistory.findIndex(ex=>ex.name === item.name) < 0)
+                        {
+                            axios.put('api/history', item, { params: { user: activeUser } })
+                        }
+                    })
+                }
+                else
+                {
+                    prevHistory.forEach((item,index)=>{
+                        if(complete.findIndex(ex=>ex.name === item.name) < 0)
+                        {
+                            axios.put('api/history', item, { params: { user: activeUser, delete: true } })
+                        }
+                    })
+
+                }
+            }
         }
     },[complete])
 
@@ -111,6 +124,14 @@ export default function Workout() {
         })
     }
 
+    function usePrevious(value) {
+        const ref = useRef();
+        useEffect(() => {
+          ref.current = value; //assign the value of ref to the argument
+        },[value]); //this code will run when the value of 'value' changes
+        return ref.current; //in the end, return the current ref value.
+    }
+
     function SaveWorkout() {
         let dayNum = 0 
         setFinishing(true)
@@ -123,7 +144,7 @@ export default function Workout() {
             title: currentWorkout.name,
             date: startTime,
             end: endTime,
-            results: finishObj
+            results: complete
         } 
         const postObj = {
             day: dayNum,
@@ -132,7 +153,7 @@ export default function Workout() {
         const dayUpdate = {newDay: dayNum}
         localStorage.removeItem('startTime')
         axios.put('/api/workouts', dayUpdate, { params: {user:activeUser}})
-        axios.post('api/finished',postObj,{ params: { user: activeUser }})
+        axios.post('api/finished',postObj, { params: { user: activeUser }})
         .then(res=>{
             axios.delete('api/history', { params: { user: activeUser }})
             .then(res=>{
@@ -178,7 +199,7 @@ export default function Workout() {
                 <>
                     <LiveExerciseLog key={`exercise${id}`} lift={lift} id={id} complete={complete} setComplete={setComplete} currentWorkout={currentWorkout} currentWorkoutIndex={currentWorkoutIndex}
                         profile={profile} exercises={exercises} username={activeUser} setExercises={setExercises} setCurrentWorkout={setCurrentWorkout}
-                        setActiveSlide={setActiveSlide} activeSlide={activeSlide}
+                        setActiveSlide={setActiveSlide} activeSlide={activeSlide} updating={updating} setUpdating={setUpdating}
                     />
                 </>
                 )}
@@ -192,7 +213,7 @@ export default function Workout() {
                         <button className='border border-neutral-300 shadow-md rounded-md px-3 py-1'
                             onClick={()=>setWorkoutComplete(false)}
                         >Cancel</button>
-                        <DialogButton text='Finish Workout' loading={finishing} loadingText='Saving...' type='button' action={SaveWorkout} />
+                        <DialogButton text='Finish Workout' loading={updating||finishing} loadingText={updating ? 'Saving...' : 'Finishing Up...'} type='button' action={SaveWorkout} />
                     </div>
                 </div>
             </Dialog>
