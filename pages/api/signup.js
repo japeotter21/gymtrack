@@ -2,7 +2,7 @@ require('dotenv').config()
 const axios = require('axios')
 const bcrypt = require('bcrypt')
 const saltRounds = 11
-import { userProfile, userEx, userWork } from '@/globals'
+import { userProfile } from '@/globals'
 
 export default function handler(req, res) {
     if (req.method === 'POST')
@@ -33,11 +33,7 @@ export default function handler(req, res) {
                     data: data
                 }; 
 
-                // create user data for profile, workouts, and exercises
                 userProfile.user = username
-                userEx.user = username
-                userWork.user = username
-
                 const userData = JSON.stringify({
                     "collection": "user0",
                     "database": "gymtrack",

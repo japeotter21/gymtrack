@@ -10,11 +10,10 @@ export default async function handler(req, res) {
         if (req.method === 'GET')
         {
             const data = JSON.stringify({
-                "collection": "workoutObj",
+                "collection": "programs",
                 "database": "gymtrack",
                 "dataSource": "link0",
                 "filter": {
-                    [`key`]: 'workouts',
                     [`user`]: req.query.user
                 }
             });
@@ -41,7 +40,7 @@ export default async function handler(req, res) {
         else if (req.method === 'PUT')
         {
             const data = JSON.stringify({
-                "collection": req.body.newDay >= 0 || req.body.newProgram >= 0 ? "user0" : "workoutObj",
+                "collection": req.body.newDay >= 0 || req.body.newProgram >= 0 ? "user0" : "programs",
                 "database": "gymtrack",
                 "dataSource": "link0",
                 "filter": {
@@ -89,11 +88,10 @@ export default async function handler(req, res) {
             const workout = req.query.workout
             
             const data = JSON.stringify({
-                "collection": "workoutObj",
+                "collection": "programs",
                 "database": "gymtrack",
                 "dataSource": "link0",
                 "filter": {
-                    [`key`]: 'workouts',
                     [`user`]: req.query.user
                 },
                 "update": {

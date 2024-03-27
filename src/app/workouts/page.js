@@ -8,6 +8,7 @@ import WorkoutList from '../components/WorkoutList'
 import AppContext from '../AppContext'
 import DialogButton from '../components/DialogButton'
 import Link from 'next/link'
+import CreateNewProgram from '../components/CreateNewProgram'
 
 export default function Workouts() {
     const [profile, setProfile] = useState(null)
@@ -41,7 +42,6 @@ export default function Workouts() {
                 const currentIndex = user.data.currentProgram
                 setProgramIndex(currentIndex)
                 setCurrentProgram(program.data.programs[currentIndex])
-                setWorkouts(program.data.programs[currentIndex].schedule)
                 setExercises(exercise.data.exercises)
                 setProfile(user.data.profile)
             }))
@@ -73,7 +73,7 @@ export default function Workouts() {
             exercises: [],
             superset: []
         }
-        const newWorkoutIndex = workouts.length
+        const newWorkoutIndex = programs[programIndex].schedule.length
         axios.post('/api/routine', postObj, {params:{workout: newWorkoutIndex, user:activeUser, program: programIndex }})
         .then(res=>{
             axios.get('/api/workouts',{params:{user:activeUser}})
@@ -82,7 +82,6 @@ export default function Workouts() {
                 const dayIndex = r.data.currentDay
                 const workoutIndex = r.data.programs[currentIndex].schedule[dayIndex]
                 setPrograms(r.data.programs)
-                setWorkouts(r.data.workouts)
                 HandleClose()
             })
         })
@@ -94,11 +93,8 @@ export default function Workouts() {
         const postObj = {data: scheduleTemp}
         axios.put('/api/routine', postObj, {params:{user:activeUser, program: programIndex }})
         .then(res=>{
-            axios.get('/api/workouts',{params:{user:activeUser}})
+            axios.get('/api/programs',{params:{user:activeUser}})
             .then(r=>{
-                const currentIndex = r.data.currentProgram
-                const dayIndex = r.data.currentDay
-                const workoutIndex = r.data.programs[currentIndex].schedule[dayIndex]
                 setPrograms(r.data.programs)
                 HandleClose()
             })
@@ -109,35 +105,48 @@ export default function Workouts() {
         const postObj = {newProgram: parseInt(programIndex)}
         axios.put('/api/workouts', postObj, {params:{user:activeUser}})
         .then(res=>{
-            axios.get('/api/workouts',{params:{user:activeUser}})
-            .then(r=>{
-                const currentIndex = r.data.currentProgram
-                setCurrentProgram(r.data.programs[currentIndex])
-            })
-            
+                setCurrentProgram(programIndex)
         })
     }
 
-    function AddProgram(e) {
+    function AddProgram(e, defaultTemplate) {
         e.preventDefault()
         setUpdating(true)
-        const postObj = {
-            name: e.target[0].value,
-            description: e.target[1].value,
-            schedule: []
-        }
-        const newProgramIndex = programs.length
-        axios.post('/api/routine', postObj, {params:{user:activeUser, program: newProgramIndex, newProgram: true }})
-        .then(res=>{
-            axios.get('/api/workouts',{params:{user:activeUser}})
-            .then(r=>{
-                setProgramIndex(r.data.programs.length - 1)
-                setPrograms(r.data.programs)
-                setWorkouts(r.data.workouts)
-                setNewProgram(false)
-                HandleClose()
+        if(!!defaultTemplate)
+        {
+            const templateValues = JSON.parse(defaultTemplate)
+            console.log(templateValues)
+            const newProgramIndex = programs.length
+            axios.post('/api/routine', templateValues, {params:{user:activeUser, program: newProgramIndex, newProgram: true }})
+            .then(res=>{
+                axios.get('/api/programs',{params:{user:activeUser}})
+                .then(r=>{
+                    setPrograms(r.data.programs)
+                    setNewProgram(false)
+                    setProgramIndex(newProgramIndex)
+                    HandleClose()
+                })
             })
-        })
+        }
+        else
+        {
+            const postObj = {
+                name: e.target[0].value,
+                description: e.target[1].value,
+                schedule: []
+            }
+            const newProgramIndex = programs.length
+            axios.post('/api/routine', postObj, {params:{user:activeUser, program: newProgramIndex, newProgram: true }})
+            .then(res=>{
+                axios.get('/api/programs',{params:{user:activeUser}})
+                .then(r=>{
+                    setPrograms(r.data.programs)
+                    setProgramIndex(newProgramIndex)
+                    setNewProgram(false)
+                    HandleClose()
+                })
+            })
+        }
     }
 
     function EditProgram() {
@@ -266,28 +275,7 @@ export default function Workouts() {
                 </div>
             </Dialog>
             <Dialog open={newProgram} onClose={()=>setNewProgram(false)} maxWidth="lg" fullWidth>
-                <div className='bg-stone-50 px-4 py-3'>
-                    <p className='font-semibold mb-4'>Add New Program</p>
-                    <form id='newProgram' onSubmit={(e)=>AddProgram(e)} className='w-full flex flex-col items-center gap-2'>
-                        <input id="name" name="name" type="text" placeholder='Name' className='border border-gray-400 rounded-md p-1'
-                        />
-                        <textarea id="description" name="description" type="text" placeholder='Description' className='w-full border border-gray-400 rounded-md p-1'
-                        />
-                        <p className='text-xs'>Choose from Template</p>
-                        <select disabled id="template" name="template" className='border border-gray-400 rounded-md p-1'>
-                            <option value={0}>Custom</option>
-                            <option value={1}>Push/Pull/Legs</option>
-                            <option value={2}>Arnold Split</option>
-                            <option value={3}>5-Day Split</option>
-                        </select>
-                        <div className='flex justify-between mt-4 w-full'>
-                            <button className='px-3 py-2 rounded-lg shadow-md bg-opacity-90 bg-gray-300' type='button'
-                                onClick={()=>setNewProgram(false)}
-                            >Cancel</button>
-                            <DialogButton text="Add" loading={updating} loadingText="Adding..." type="submit" action={null} disabled={false} />
-                        </div>
-                    </form>
-                </div>
+                <CreateNewProgram AddProgram={AddProgram} setNewProgram={setNewProgram} updating={updating} />
             </Dialog>
             <Dialog open={editing} onClose={()=>setEditing(false)} maxWidth="lg" fullWidth>
                 <div className='bg-stone-50 p-2 flex flex-col gap-4'>

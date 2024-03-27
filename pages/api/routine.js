@@ -13,49 +13,80 @@ export default async function handler(req, res) {
         {
             if(req.query.newProgram)
             {
-                const program = req.query.program
-                const data = JSON.stringify({
-                    "collection": "workoutObj",
-                    "database": "gymtrack",
-                    "dataSource": "link0",
-                    "filter": {
-                        [`key`]: 'workouts',
-                        [`user`]: req.query.user
-                    },
-                    "update": {
-                        "$push": {
-                            [`programs`]: req.body
-                        }
+                if(req.query.newUser)
+                {
+                    const postObj = {
+                        programs: [req.body],
+                        user: req.query.user
                     }
-                });
-                const config = {
-                    method: 'post',
-                    url: 'https://us-east-2.aws.data.mongodb-api.com/app/data-hdjhg/endpoint/data/v1/action/updateOne',
-                    headers: {
-                    'Content-Type': 'application/json',
-                    'Access-Control-Request-Headers': '*',
-                    'api-key': process.env.API_KEY,
-                    },
-                    data: data
-                }; 
-                axios(config)
-                .then(function (response) {
-                    res.status(200).json(response.data);
-                })
-                .catch(function (error) {
-                    res.status(400).json({data: 'request failed'})
-                });
+                    const data = JSON.stringify({
+                        "collection": "programs",
+                        "database": "gymtrack",
+                        "dataSource": "link0",
+                        "document": postObj
+                    });
+                    const config = {
+                        method: 'post',
+                        url: 'https://us-east-2.aws.data.mongodb-api.com/app/data-hdjhg/endpoint/data/v1/action/insertOne',
+                        headers: {
+                        'Content-Type': 'application/json',
+                        'Access-Control-Request-Headers': '*',
+                        'api-key': process.env.API_KEY,
+                        },
+                        data: data
+                    }; 
+                    axios(config)
+                    .then(function (response) {
+                        res.status(200).json(response.data);
+                    })
+                    .catch(function (error) {
+                        res.status(400).json({data: 'request failed'})
+                    });
+                }
+                else
+                {
+                    const program = req.query.program
+                    const data = JSON.stringify({
+                        "collection": "programs",
+                        "database": "gymtrack",
+                        "dataSource": "link0",
+                        "filter": {
+                            [`user`]: req.query.user
+                        },
+                        "update": {
+                            "$push": {
+                                [`programs`]: req.body
+                            }
+                        }
+                    });
+                    const config = {
+                        method: 'post',
+                        url: 'https://us-east-2.aws.data.mongodb-api.com/app/data-hdjhg/endpoint/data/v1/action/updateOne',
+                        headers: {
+                        'Content-Type': 'application/json',
+                        'Access-Control-Request-Headers': '*',
+                        'api-key': process.env.API_KEY,
+                        },
+                        data: data
+                    }; 
+                    axios(config)
+                    .then(function (response) {
+                        res.status(200).json(response.data);
+                    })
+                    .catch(function (error) {
+                        res.status(400).json({data: 'request failed'})
+                    });
+                }
             }
             else
             {
                 const workout = parseInt(req.query.workout)
                 const program = req.query.program
                 const data = JSON.stringify({
-                    "collection": "workoutObj",
+                    "collection": "programs",
                     "database": "gymtrack",
                     "dataSource": "link0",
                     "filter": {
-                        [`key`]: 'workouts',
                         [`user`]: req.query.user
                     },
                     "update": {
@@ -88,11 +119,10 @@ export default async function handler(req, res) {
         {
             const program = req.query.program
             const data = JSON.stringify({
-                "collection": "workoutObj",
+                "collection": "programs",
                 "database": "gymtrack",
                 "dataSource": "link0",
                 "filter": {
-                    [`key`]: 'workouts',
                     [`user`]: req.query.user
                 },
                 "update": req.query.meta !== undefined ? {

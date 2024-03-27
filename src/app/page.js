@@ -20,6 +20,7 @@ import StartButton from './components/StartButton'
 import DialogButton from './components/DialogButton'
 import { BiDumbbell, BiListUl, BiSolidEditAlt } from 'react-icons/bi'
 import GroupExercises from './components/GroupExercises'
+import CreateNewProgram from './components/CreateNewProgram'
 
 export default function Home() {
     const [day, setDay] = useState(0)
@@ -54,7 +55,7 @@ export default function Home() {
                     setProfile(user.data?.profile)
                     setExercises(exercise.data?.exercises)
                     const currentIndex = user.data?.currentProgram
-                    if(currentIndex !== null && currentIndex !==  undefined)
+                    if(programs?.data)
                     {
                         setCurrentProgram(programs.data?.programs[currentIndex])
                         const dayIndex = user.data.currentDay
@@ -182,6 +183,33 @@ export default function Home() {
             })
         }
     }
+
+    function AddProgram(e, defaultTemplate) {
+        e.preventDefault()
+        setUpdating(true)
+        if(!!defaultTemplate)
+        {
+            const templateValues = JSON.parse(defaultTemplate)
+            console.log(templateValues)
+            axios.post('/api/routine', templateValues, {params:{user:activeUser, program: 0, newProgram: true, newUser: true }})
+            .then(res=>{
+                router.push('/workouts')
+            })
+        }
+        else
+        {
+            const postObj = {
+                name: e.target[0].value,
+                description: e.target[1].value,
+                schedule: []
+            }
+            axios.post('/api/routine', postObj, {params:{user:activeUser, program: 0, newProgram: true, newUser: true }})
+            .then(res=>{
+                router.push('/workouts')
+            })
+        }
+    }
+
     if(loading)
     {
         return (
@@ -193,7 +221,7 @@ export default function Home() {
     {
         return (
             <main className="flex min-h-screen flex-col items-center py-12 px-2 gap-1">
-                <div>Create a Workout Program</div>
+                <CreateNewProgram AddProgram={AddProgram} updating={updating} />
             </main>
         )
     }

@@ -10,7 +10,7 @@ export default async function handler(req, res) {
             "database": "gymtrack",
             "dataSource": "link0",
             "filter": {
-                [`user`]: user
+                [`user`]: req.query.default || user
             }
         });
         const config = {
