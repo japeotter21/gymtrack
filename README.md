@@ -33,7 +33,7 @@ To Do:
 <p>✅ User associated data</p>
 <p>✅ Add exercises and assign attributes (back/pull/etc.)</p>
 <p>✅ duration tracking of exercises and workouts</p>
-<p>⬜ Create workout routine templates</p>
+<p>✅ Create workout routine templates</p>
 <p>✅ Audit/log requests</p>
 <p>✅ Migrate React Scheduler to custom calendar</p>
 <p>⬜ API cleanup (separate GraphQL service)</p>
