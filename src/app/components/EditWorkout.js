@@ -74,7 +74,7 @@ export default function PostExercise({username, currentWorkoutIndex, currentWork
             const newWeight = editWeight
             let newPostArr = Array.from({length: newSets}, x=>0)
             newPostArr.forEach((item,id)=>newPostArr[id]={reps:newReps, weight:newWeight})
-            newExercise.target.sets = newPostArr
+            Object.assign(newExercise,{target: {sets: newPostArr}})
         }
         const newWorkout = currentWorkout.exercises
         newWorkout.push(newExercise)
