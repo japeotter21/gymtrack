@@ -7,7 +7,7 @@ import DialogButton from './DialogButton'
 import GroupExercises from './GroupExercises'
 import { setConstant, repConstant } from '@/globals'
 export default function PostExercise({username, currentWorkoutIndex, currentWorkout, setCurrentWorkout, exercises, setExercises,
-    homepage, setWorkouts, setPrograms, setCurrentProgram, setCurrentWorkoutIndex, currentProgram
+    homepage, setWorkouts, setPrograms, setCurrentProgram, setCurrentWorkoutIndex, programIndex
     })
 {
     const [loading, setLoading] = useState(false)
@@ -80,11 +80,11 @@ export default function PostExercise({username, currentWorkoutIndex, currentWork
         newWorkout.push(newExercise)
         const postObj = newWorkout
         setLoading(true)
-        axios.post(`/api/program/${currentProgram}/${currentWorkoutIndex}`, postObj, { params:{ user:username } })
+        axios.post(`/api/program/${programIndex}/${currentWorkoutIndex}`, postObj, { params:{ user:username } })
         .then(res=>{
             axios.get('/api/programs', { params: { user: username } })
             .then(r=>{
-                setCurrentProgram(r.data.programs[currentProgram])
+                setCurrentProgram(r.data.programs[programIndex])
                 HandleClose()
             })
             .catch(err=>{
@@ -241,7 +241,7 @@ export default function PostExercise({username, currentWorkoutIndex, currentWork
     )
 }
 
-export function DeleteExercise ({item, id, currentWorkout, setCurrentWorkout, currentWorkoutIndex, username, homepage, setPrograms, currentProgram, setCurrentProgram, setWorkouts, exercises, displayText}){
+export function DeleteExercise ({item, id, currentWorkout, setCurrentWorkout, currentWorkoutIndex, username, homepage, setPrograms, programIndex, setCurrentProgram, setWorkouts, exercises, displayText}){
     const [deleting, setDeleting] = useState(null)
     const [loading, setLoading] = useState(false)
 
@@ -256,11 +256,11 @@ export function DeleteExercise ({item, id, currentWorkout, setCurrentWorkout, cu
             postObj = []
         }
         setLoading(true)
-        axios.post(`/api/program/${currentProgram}/${currentWorkoutIndex}`,postObj, {params:{ user: username }})
+        axios.post(`/api/program/${programIndex}/${currentWorkoutIndex}`,postObj, {params:{ user: username }})
         .then(res=>{
             axios.get('/api/programs', { params: { user: username } })
             .then(r=>{
-                setCurrentProgram(r.data.programs[currentProgram])
+                setCurrentProgram(r.data.programs[programIndex])
                 setLoading(false)
                 setDeleting(null)
             })

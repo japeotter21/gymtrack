@@ -157,7 +157,7 @@ export default function Workouts() {
         }
         axios.put('/api/routine', postObj, {params:{user:activeUser, meta: true, program: programIndex }})
         .then(res=>{
-            axios.get('/api/workouts',{params:{user:activeUser}})
+            axios.get('/api/routine',{params:{user:activeUser}})
             .then(r=>{
                 setPrograms(r.data.programs)
                 const currentIndex = r.data.currentProgram
@@ -200,7 +200,7 @@ export default function Workouts() {
                     {currentProgram.schedule.map((lift,i)=>
                         <div key={`${i}-${lift}`} className='bg-stone-50 rounded-md shadow-md'> 
                             <WorkoutList currentWorkout={lift} exercises={exercises} setCurrentWorkout={setCurrentWorkout} setExercises={setExercises}
-                                setPrograms={setPrograms} setCurrentProgram={setCurrentProgram} workouts={workouts} currentProgram={programIndex}
+                                setPrograms={setPrograms} setCurrentProgram={setCurrentProgram} workouts={workouts} programIndex={programIndex}
                                 profile={profile} setWorkouts={setWorkouts} day={i} i={i} activeUser={activeUser} HandleDelete={HandleDelete}
                             />
                         </div>

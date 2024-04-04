@@ -11,7 +11,7 @@ import { HiArrowUp, HiArrowUpLeft, HiChevronUpDown, HiLink } from 'react-icons/h
 import GroupExercises from './GroupExercises'
 import DialogButton from './DialogButton';
 
-export default function WorkoutList({exercises, setExercises, currentWorkout, setCurrentWorkout, day, i, profile, workouts, setPrograms, setCurrentProgram, setWorkouts, activeUser, currentProgram, HandleDelete}) {
+export default function WorkoutList({exercises, setExercises, currentWorkout, setCurrentWorkout, day, i, profile, workouts, setPrograms, setCurrentProgram, setWorkouts, activeUser, programIndex, HandleDelete}) {
     const [loading, setLoading] = useState(0)
     const [edited, setEdited] = useState(false)
     const [show, setShow] = useState(false)
@@ -29,10 +29,10 @@ export default function WorkoutList({exercises, setExercises, currentWorkout, se
     useEffect(()=>{
         if(editing !== null)
         {
-            setEditSets(exercises[editing].target?.sets?.length || 0)
-            setEditReps(exercises[editing].target?.sets[0]?.reps || 0)
-            setEditWeight(exercises[editing].target?.sets[0]?.weight || 0)
-            setEditNotes(exercises[editing].target?.notes)
+            setEditSets(editing.target?.sets?.length || 0)
+            setEditReps(editing.target?.sets[0]?.reps || 0)
+            setEditWeight(editing.target?.sets[0]?.weight || 0)
+            setEditNotes(editing.target?.notes)
         }
     },[editing])
 
@@ -76,11 +76,11 @@ export default function WorkoutList({exercises, setExercises, currentWorkout, se
         //sInd: index of source group
         const sInd = source.droppableId
         const postObj = reorder(currentWorkout.exercises, source.index, destination.index);
-        axios.post(`/api/program/${currentProgram}/${day}`,postObj, {params:{user:activeUser}})
+        axios.post(`/api/program/${programIndex}/${day}`,postObj, {params:{user:activeUser}})
         .then(res=>{
           axios.get('/api/programs', {params: {user: activeUser}})
           .then(r=>{
-              setCurrentWorkout(r.data.programs[currentProgram].schedule[day])
+              setCurrentWorkout(r.data.programs[programIndex].schedule[day])
           })
         })
     }
@@ -97,14 +97,16 @@ export default function WorkoutList({exercises, setExercises, currentWorkout, se
             reminder: ""
         }
         setUpdating(true)
-        axios.post('/api/exercise',postObj,{ params: {exercise: editing, user:activeUser, workout:day}})
+        const exIndex = currentWorkout.exercises.findIndex((item)=>item.name === editing.name)
+        axios.put(`/api/program/${programIndex}/${programIndex}/${exIndex}`,postObj, { params: {user: activeUser } })
         .then(res=>{
-        axios.get('/api/exercise',{ params: { user:activeUser }})
-        .then(r=>{
-            setExercises(r.data.exercises)
-            HandleEditClose()
-            setUpdating(false)
-        })
+            axios.get('/api/programs',{ params: { user:activeUser }})
+            .then(r=>{
+                const workoutIndex = r.data.programs[programIndex]
+                setCurrentProgram(workoutIndex)
+                HandleEditClose()
+                setUpdating(false)
+            })
         })
     }
 
@@ -142,15 +144,6 @@ export default function WorkoutList({exercises, setExercises, currentWorkout, se
         const postObj = {name: editName}
         axios.put('/api/workouts',postObj,{params:{workout: day, user:activeUser}})
         .then(res=>{
-          axios.get('/api/workouts', { params: {user:activeUser}})
-          .then(r=>{
-              const currentIndex = r.data.currentProgram
-              const dayIndex = r.data.currentDay
-              const workoutIndex = r.data.programs[currentIndex].schedule[dayIndex]
-              setWorkouts(r.data.workouts)
-              setEditName(null)
-                setUpdating(false)
-          })
         })
     }
     const ConditionalWrapper = ({ condition, wrapper, children }) =>
@@ -206,9 +199,6 @@ export default function WorkoutList({exercises, setExercises, currentWorkout, se
                                 {...provided.droppableProps}
                             >
                                 { currentWorkout.exercises.map((ex,ind)=>
-                                    currentWorkout.superset?.includes(currentWorkout.exercises[ind-1]) ?
-                                    <></>
-                                    :
                                     <Draggable key={ex.name} draggableId={ex.name} index={ind}>
                                         {(provided, snapshot)=>(
                                             <div className={`text-sm ${!show ? 'h-[0px]' : 'h-max'}`}
@@ -216,76 +206,29 @@ export default function WorkoutList({exercises, setExercises, currentWorkout, se
                                                 style={getItemStyle(snapshot.isDragging,
                                                     provided.draggableProps.style)}
                                                 {...provided.draggableProps}
+                                                {...provided.dragHandleProps}
                                             >
-                                                 <ConditionalWrapper
-                                                    condition={!(currentWorkout.superset.includes(ex))}
-                                                    wrapper={children => <a {...provided.dragHandleProps}>{children}</a>}
-                                                >
-                                                    <div className='w-full p-2'>
-                                                        <div className='flex items-start gap-6'>
-                                                            <div className={`items-center gap-3 ${currentWorkout.superset.includes(ex) ? 'w-full px-2 grid grid-cols-3' : 'flex justify-normal'} `}>
-                                                                <p className='break-words w-fit'>{ex.name}</p>
-                                                                {  currentWorkout.superset.includes(ex) ?
-                                                                    <>
-                                                                        <button onClick={()=>RemoveSS(ex)} className='block mx-auto'>
-                                                                            <HiLink size={20} className='text-blue-500' />
-                                                                        </button>
-                                                                        <span>{exercises[currentWorkout.exercises[ind+1]].name}</span>
-                                                                    </>
-                                                                : ind === 0 || currentWorkout.superset.includes(currentWorkout.exercises[ind-1]) || currentWorkout.superset.includes(currentWorkout.exercises[ind-2]) ?
-                                                                    <></>
-                                                                :
-                                                                    // <p className="underline text-xs text-blue-500">
-                                                                    //     <button type='button' className='text-blue-500 flex items-center'
-                                                                    //         onClick={()=>AddSuperset(currentWorkout.exercises[ind-1])}
-                                                                    //     ><HiArrowUpLeft />&nbsp;Superset</button>
-                                                                    // </p>
-                                                                    <></>
-                                                                }
-                                                            </div>
-                                                            {  !currentWorkout.superset.includes(ex) ?
-                                                            <>
-                                                                <div className='grid grid-cols-3 gap-x-2 text-xs w-max' onClick={()=>setEditing(ex)}>
-                                                                    <p>{ex.target.sets.length}</p>
-                                                                    <p>{ex.target.sets[0]?.reps}</p>
-                                                                    <p>{ex.target.sets[0]?.weight}</p>
-                                                                    <p className='text-gray-400'>Sets</p>
-                                                                    <p className='text-gray-400'>Reps</p>
-                                                                    <p className='text-gray-400'>Weight</p>
-                                                                </div>
-                                                                <DeleteExercise currentWorkout={currentWorkout} currentWorkoutIndex={day} currentProgram={currentProgram}
-                                                                    setPrograms={setPrograms} setCurrentProgram={setCurrentProgram} homepage={false}
-                                                                    username={activeUser} item={ex} id={ind} setWorkouts={setWorkouts} exercises={exercises}
-                                                                />
-                                                            </>
-                                                            :
-                                                            <></>
-                                                            }
+                                                <div className='w-full p-2'>
+                                                    <div className='flex justify-between items-start gap-6'>
+                                                        <div className={`items-center gap-3 ${currentWorkout?.superset.includes(ex) ? 'w-full px-2 grid grid-cols-3' : 'flex justify-normal'} `}>
+                                                            <p className='break-words w-fit'>{ex.name}</p>
                                                         </div>
-                                                        {  currentWorkout.superset.includes(ex) ?
-                                                            <div className='flex w-full justify-between px-2 mt-2'>
-                                                                <div className='grid grid-cols-3 gap-x-2 text-xs w-max'>
-                                                                    <p>{ex.target.sets.length}</p>
-                                                                    <p>{ex.target.sets[0]?.reps}</p>
-                                                                    <p>{ex.target.sets[0]?.weight}</p>
-                                                                    <p className='text-gray-400'>Sets</p>
-                                                                    <p className='text-gray-400'>Reps</p>
-                                                                    <p className='text-gray-400'>Weight</p>
-                                                                </div>
-                                                                <div className='grid grid-cols-3 gap-x-2 text-xs w-max'>
-                                                                    <p>{exercises[currentWorkout.exercises[ind+1]].target.sets.length}</p>
-                                                                    <p>{exercises[currentWorkout.exercises[ind+1]].target.sets[0]?.reps}</p>
-                                                                    <p>{exercises[currentWorkout.exercises[ind+1]].target.sets[0]?.weight}</p>
-                                                                    <p className='text-gray-400'>Sets</p>
-                                                                    <p className='text-gray-400'>Reps</p>
-                                                                    <p className='text-gray-400'>Weight</p>
-                                                                </div>
+                                                        <div className='flex'>
+                                                            <div className='grid grid-cols-3 gap-x-2 text-xs w-max' onClick={()=>setEditing(ex)}>
+                                                                <p>{ex.target.sets.length}</p>
+                                                                <p>{ex.target.sets[0]?.reps}</p>
+                                                                <p>{ex.target.sets[0]?.weight}</p>
+                                                                <p className='text-gray-400'>Sets</p>
+                                                                <p className='text-gray-400'>Reps</p>
+                                                                <p className='text-gray-400'>Weight</p>
                                                             </div>
-                                                            :
-                                                            <></>
-                                                        }
+                                                            <DeleteExercise currentWorkout={currentWorkout} currentWorkoutIndex={day} programIndex={programIndex}
+                                                                setPrograms={setPrograms} setCurrentProgram={setCurrentProgram} homepage={false}
+                                                                username={activeUser} item={ex} id={ind} setWorkouts={setWorkouts} exercises={exercises}
+                                                            />
+                                                        </div>
                                                     </div>
-                                                </ConditionalWrapper>
+                                                </div>
                                             </div>
                                         )}
                                     </Draggable>
@@ -296,7 +239,7 @@ export default function WorkoutList({exercises, setExercises, currentWorkout, se
                         </Droppable>
                         <PostExercise currentWorkout={currentWorkout} currentWorkoutIndex={day} setCurrentWorkout={setCurrentWorkout} setCurrentProgram={setCurrentProgram}
                             username={activeUser} exercises={exercises} setPrograms={setPrograms} setWorkouts={setWorkouts} homepage={false} setExercises={setExercises}
-                            currentProgram={currentProgram}
+                            programIndex={programIndex}
                         />
                     </div>
             </form>
@@ -319,7 +262,7 @@ export default function WorkoutList({exercises, setExercises, currentWorkout, se
             }
             { exercises.length > 0 && editing !== null ? 
                 <Dialog open={editing !== null} onClose={HandleEditClose} maxWidth="lg" fullWidth>
-                <p className='font-semibold text-lg px-3 py-3'>{exercises[editing].name}</p>
+                <p className='font-semibold text-lg px-3 py-3'>{editing.name}</p>
                 <div className='grid grid-cols-2 px-3 py-3 gap-3'>
                     <p className='text-md'>Sets</p>
                     <select className='text-md border rounded-lg w-full py-1 px-2' value={editSets}

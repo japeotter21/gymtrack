@@ -175,7 +175,7 @@ export default function Home() {
         {
             let postArr = []
             currentWorkout.exercises.forEach((item,id)=>{
-                item.target.sets.forEach((set,ind)=>postArr.push({reps:set.reps, weight:set.weight, name:`${item.name}-${ind}`}))
+                item.target.sets.forEach((set,ind)=>postArr.push({reps:0, weight:set.weight, name:`${item.name}-${ind}`}))
             })
             axios.post('api/start', postArr, {params: {user:activeUser, name:currentWorkout.name}})
             .then(res=>{
@@ -326,35 +326,35 @@ export default function Home() {
             {/* <Pagenav page='home' /> */}
             { exercises?.length > 0 && editing !== null ? 
                 <Dialog open={editing !== null} onClose={HandleClose} maxWidth="lg" fullWidth>
-                <p className='font-semibold text-lg px-3 py-3'>{editing.name}</p>
-                <div className='grid grid-cols-2 px-3 py-3 gap-3'>
-                    <p className='text-md'>Sets</p>
-                    <select className='text-md border rounded-lg w-full py-1 px-2' value={editSets}
-                    onChange={(e)=>setEditSets(e.target.value)}
-                    >
-                    {setConstant.map((num,setNum)=>
-                        <option value={num} key={setNum}>{num}</option>
-                    )}
-                    </select>
-                    <p className='text-md'>Reps</p>
-                    <select className='text-md border rounded-lg w-full py-1 px-2' value={editReps}
-                    onChange={(e)=>setEditReps(e.target.value)}
-                    >
-                    {repConstant.map((num,setNum)=>
-                        <option value={num} key={setNum}>{num}</option>
-                    )}
-                    </select>
-                    <p className='text-md'>Weight (lbs)</p>
-                    <input className='text-md border rounded-lg w-full py-1 px-2' value={editWeight}
-                    onChange={(e)=>setEditWeight(e.target.value)}
-                    />
-                </div>
-                <div className='flex justify-end px-3 py-3 gap-3'>
-                    <button className='border border-gray-400 py-1 px-3 rounded-xl lg:hover:bg-red-100 lg:hover:border-red-200 lg:hover:text-red-500 lg:hover:scale-105 transition duration-200'
-                        onClick={HandleClose}
-                    >Cancel</button>
-                    <DialogButton disabled={updating} loading={updating} action={HandleEdit} text={'Update'} loadingText={'Updating...'} type="button"/>
-                </div>
+                    <p className='font-semibold text-lg px-3 py-3'>{editing.name}</p>
+                    <div className='grid grid-cols-2 px-3 py-3 gap-3'>
+                        <p className='text-md'>Sets</p>
+                        <select className='text-md border rounded-lg w-full py-1 px-2' value={editSets}
+                        onChange={(e)=>setEditSets(e.target.value)}
+                        >
+                        {setConstant.map((num,setNum)=>
+                            <option value={num} key={setNum}>{num}</option>
+                        )}
+                        </select>
+                        <p className='text-md'>Reps</p>
+                        <select className='text-md border rounded-lg w-full py-1 px-2' value={editReps}
+                        onChange={(e)=>setEditReps(e.target.value)}
+                        >
+                        {repConstant.map((num,setNum)=>
+                            <option value={num} key={setNum}>{num}</option>
+                        )}
+                        </select>
+                        <p className='text-md'>Weight (lbs)</p>
+                        <input className='text-md border rounded-lg w-full py-1 px-2' value={editWeight}
+                        onChange={(e)=>setEditWeight(e.target.value)}
+                        />
+                    </div>
+                    <div className='flex justify-end px-3 py-3 gap-3'>
+                        <button className='border border-gray-400 py-1 px-3 rounded-xl lg:hover:bg-red-100 lg:hover:border-red-200 lg:hover:text-red-500 lg:hover:scale-105 transition duration-200'
+                            onClick={HandleClose}
+                        >Cancel</button>
+                        <DialogButton disabled={updating} loading={updating} action={HandleEdit} text={'Update'} loadingText={'Updating...'} type="button"/>
+                    </div>
                 </Dialog>
                 :
                 <></>
