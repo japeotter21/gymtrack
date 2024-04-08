@@ -1,6 +1,7 @@
 require('dotenv').config()
 const axios = require('axios')
 const bcrypt = require('bcrypt')
+const jwt = require('jsonwebtoken')
 
 export default function handler(req, res) {
     if (req.method === 'GET')
@@ -58,10 +59,9 @@ export default function handler(req, res) {
         axios(config)
         .then(function (response) {
             bcrypt.compare(password, response.data.document.password, function(err, result) {
-                // result == true
                 if(result == true)
                 {
-                    res.status(200).json({data:true});
+                    res.status(200).json({data:jwt.sign({username: username}, process.env.TOKEN, {expiresIn: '30m'})});
                 }
                 else
                 {

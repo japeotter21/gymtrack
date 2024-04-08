@@ -92,6 +92,7 @@ export default function Schedule() {
             .then(res=>{
                 if(res.data)
                 {
+                    axios.defaults.headers.common['Authorization'] = `Bearer ${res.data.data}`
                     setActiveUser(username)
                     sessionStorage.setItem('user',username)
                     setSuccess('Logged In successfully!')
