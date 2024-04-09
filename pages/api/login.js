@@ -61,7 +61,7 @@ export default function handler(req, res) {
             bcrypt.compare(password, response.data.document.password, function(err, result) {
                 if(result == true)
                 {
-                    res.status(200).json({data:jwt.sign({username: username}, process.env.TOKEN, {expiresIn: '30m'})});
+                    res.status(200).json({data:jwt.sign({username: username}, process.env.JWT_TOKEN, {expiresIn: '30m'})});
                 }
                 else
                 {
