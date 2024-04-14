@@ -1,5 +1,3 @@
-import { inProgressObj } from '@/globals';
-
 require('dotenv').config()
 const axios = require('axios')
 

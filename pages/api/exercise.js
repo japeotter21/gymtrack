@@ -1,5 +1,6 @@
 require('dotenv').config()
 const axios = require('axios')
+const jwt = require('jsonwebtoken')
 
 export default async function handler(req, res) {
     // let auth = false
@@ -7,6 +8,12 @@ export default async function handler(req, res) {
     // {
     //     auth = req.headers.authorization.split(' ')[1] === btoa(process.env.EDIT_USE+':'+process.env.EDIT_PW)
     // }
+    try {
+        console.log(jwt.verify(req.headers?.authorization.split(' ')[1], process.env.JWT_TOKEN))
+    }
+    catch {
+        console.log('error')
+    }
         if (req.method === 'GET')
         {
             const user = req.query.user
